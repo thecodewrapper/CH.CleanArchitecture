@@ -1,0 +1,22 @@
+﻿@inherits BaseComponent
+
+@if (Visible)
+{
+    @if (Success != null)
+    {
+        @Success
+    }
+    else
+    {
+        @ChildContent
+    }
+
+}
+else
+{
+    if (Failed != null)
+    {
+        @Failed
+    }
+
+}

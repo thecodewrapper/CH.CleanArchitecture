@@ -1,0 +1,45 @@
+﻿<CascadingValue Value="this">
+
+    <ul class="nav nav-tabs nav-tabs-custom nav-justified" role="tablist">
+        @foreach (TabPage tabPage in Pages)
+        {
+        <li class="nav-item animate">
+            <a class="nav-link @GetButtonClass(tabPage)" href="#" 
+               @onclick="(() => ActivatePage(tabPage))"
+               @onclick:preventDefault >
+                <span class="d-md-none"><i class="@tabPage.IconCss"></i></span>
+                <span class="d-none d-sm-block">@tabPage.Title</span>
+            </a>
+        </li>
+        }
+    </ul>
+
+    @ChildContent
+</CascadingValue>
+
+<style>
+    .tabItem {
+	overflow: hidden;
+	cursor: pointer;
+	outline: 0;
+	border: none;
+	text-align: center;
+	padding: 3px 12px;
+	margin: 1px;
+}
+.tabItem.active {
+	overflow: hidden;
+	cursor: pointer;
+	outline: 0;
+	border: solid 1px lightgray;
+	text-align: center;
+}
+.tabItem:disabled {
+	pointer-events: none;
+	opacity: 0.7;
+}
+.animate {
+	-webkit-transition: background-color 0.5s; /* For Safari 3.1 to 6.0 */
+	transition: background-color 0.5s;
+}
+</style>

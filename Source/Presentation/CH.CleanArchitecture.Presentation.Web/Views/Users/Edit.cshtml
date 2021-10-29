@@ -1,0 +1,87 @@
+﻿@model EditUserViewModel
+@inject CH.CleanArchitecture.Presentation.Web.Helpers.UserHelper _userHelper;
+@{
+    ViewBag.Title = L[ResourceKeys.Titles_EditUser];
+    ViewBag.pTitle = L[ResourceKeys.Titles_EditUser];
+    ViewBag.pageTitle = L[ResourceKeys.Titles_Users];
+}
+
+<partial name="_CrudCss" />
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <form asp-controller="Users" asp-action="Edit" method="post" asp-route-id="@Model.Id">
+                    <div class="form-group row mb-4">
+                        <label asp-for="Username" class="col-form-label col-lg-2"></label>
+                        <div class="col-lg-10">
+                            <input asp-for="Username" class="form-control" readonly>
+                            <span asp-validation-for="Username"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-4">
+                        <label asp-for="Name" class="col-form-label col-lg-2"></label>
+                        <div class="col-lg-10">
+                            <input asp-for="Name" class="form-control">
+                            <span asp-validation-for="Name"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-4">
+                        <label asp-for="Email" class="col-form-label col-lg-2"></label>
+                        <div class="col-lg-10">
+                            <input asp-for="Email" class="form-control">
+                            <span asp-validation-for="Email"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-4">
+                        <label asp-for="Password" class="col-form-label col-lg-2"></label>
+                        <div class="col-lg-10">
+                            <input asp-for="Password" class="form-control">
+                            <span asp-validation-for="Password"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-4">
+                        <label asp-for="PhoneNumber" class="col-form-label col-lg-2"></label>
+                        <div class="col-lg-10">
+                            <input asp-for="PhoneNumber" class="form-control">
+                            <span asp-validation-for="PhoneNumber"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-4">
+                        <label asp-for="Roles" class="col-form-label col-lg-2"></label>
+                        <div class="col-lg-10">
+                            <select asp-for="Roles" asp-items="@_userHelper.GetAvailableRoles()" class="form-control select2 select2-multiple" multiple="multiple" data-placeholder="@L[ResourceKeys.Labels_Choose]">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-4">
+                        <label asp-for="IsActive" class="col-form-label col-lg-2">@L[ResourceKeys.Labels_Status]</label>
+                        <div class="col-lg-10">
+                            <input type="checkbox" asp-for="IsActive" checked="@Model.IsActive" data-toggle="toggle"
+                                   data-onstyle="success" data-offstyle="danger" data-width="300" data-on="@L[ResourceKeys.Labels_Enabled]" data-off="@L[ResourceKeys.Labels_Disabled]">
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-end">
+                        <div class="col-lg-10">
+                            <button type="submit" class="btn btn-primary">@L[ResourceKeys.Buttons_Save]</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+    <partial name="_CrudJS" />
+}
+
+

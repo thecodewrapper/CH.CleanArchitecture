@@ -1,0 +1,27 @@
+﻿using AutoMapper;
+using CH.CleanArchitecture.Core.Application.Mappings;
+using CH.CleanArchitecture.Core.Domain;
+using CH.CleanArchitecture.Core.Domain.Entities.OrderAggregate;
+using CH.CleanArchitecture.Infrastructure.Data.Models;
+
+namespace CH.CleanArchitecture.Infrastructure.Data.Mappings
+{
+    public class AppProfile : Profile
+    {
+        public AppProfile() {
+            CreateMap<string, PhoneNumber>().ConvertUsing<StringToPhoneNumberConverter>();
+            CreateMap<PhoneNumber, string>().ConvertUsing<PhoneNumberToStringConverter>();
+
+            CreateMap<OrderItem, OrderItemEntity>().ReverseMap();
+            CreateMap<Order, OrderEntity>()
+                .ForMember(target => target.AddressCity, opt => opt.MapFrom(source => source.Address.City))
+                .ForMember(target => target.AddressCountry, opt => opt.MapFrom(source => source.Address.Country))
+                .ForMember(target => target.AddressLine1, opt => opt.MapFrom(source => source.Address.Line1))
+                .ForMember(target => target.AddressLine2, opt => opt.MapFrom(source => source.Address.Line2))
+                .ForMember(target => target.AddressPostcode, opt => opt.MapFrom(source => source.Address.Postcode));
+
+            CreateMap<OrderEntity, Order>()
+                .ForMember(target => target.Address, opt => opt.MapFrom<OrderAddressResolver>());
+        }
+    }
+}

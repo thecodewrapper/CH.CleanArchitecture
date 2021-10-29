@@ -1,0 +1,52 @@
+﻿@inject IAuthenticatedUserService UserService
+@{
+    ViewBag.Title = @L[ResourceKeys.Titles_UserProfile];
+    ViewBag.pTitle = @L[ResourceKeys.Titles_UserProfile];
+    ViewBag.pageTitle = "Clean Architecture";
+}
+<partial name="_CrudCss" />
+<div>
+    <div class="row">
+        <div class="col-xl-2 col-sm-3">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="btn nav-link active pt-0 pt-sm-10 pb-0 pb-sm-10" id="v-pills-profile-tab" data-toggle="pill" href="#profile" role="tab" aria-controls="v-pills-profile" aria-selected="true">
+                    <i class="fas fa-user d-block check-nav-icon mt-4 mb-2"></i>
+                    <p class="font-weight-bold mb-4">@L[ResourceKeys.Labels_Settings]</p>
+                </a>
+                <a class="btn nav-link pt-0 pt-sm-10 pb-0 pb-sm-10" id="v-pills-change-password-tab" data-toggle="pill" href="#changepassword" role="tab" aria-controls="v-pills-change-password" aria-selected="false">
+                    <i class="fas fa-key d-block check-nav-icon mt-4 mb-2"></i>
+                    <p class="font-weight-bold mb-4">@L[ResourceKeys.Labels_ChangePassword]</p>
+                </a>
+            </div>
+        </div>
+        <div class="col-xl-10 col-sm-9">
+            <div class="card">
+                <div class="card-body">
+                    <div class="tab-content" id="v-pills-tabContent">
+                        <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                            <vc:update-user-profile></vc:update-user-profile>
+                        </div>
+                        <div class="tab-pane fade" id="changepassword" role="tabpanel" aria-labelledby="v-pills-change-password-tab">
+                            <partial name="_ChangePassword" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+    <partial name="_CrudJS" />
+    <script>
+        $(function() {
+            var t = '@Context.Request.Query["t"]';
+            if (t.length) {
+                $('#v-pills-tab a[href="#' + t + '"]').tab('show');
+            }
+
+        });
+    </script>
+}

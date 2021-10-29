@@ -1,0 +1,72 @@
+﻿@model UserDetailsModel
+@inject CH.CleanArchitecture.Presentation.Web.Helpers.UserHelper _userHelper;
+@{
+    ViewBag.Title = L[ResourceKeys.Titles_UserDetails];
+    ViewBag.pTitle = L[ResourceKeys.Titles_UserDetails];
+    ViewBag.pageTitle = L[ResourceKeys.Titles_Users];
+}
+
+<partial name="_CrudCss" />
+
+<div class="row">
+    <div class="col-lg-12">
+        <a class="btn btn-warning" href="@Url.Action("Edit", "Users", new { id = Model.Id })"><i class="fas fa-edit"></i> @L[ResourceKeys.Buttons_Edit]</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group row mb-4">
+                    <label asp-for="Username" class="col-form-label col-lg-2"></label>
+                    <div class="col-lg-10">
+                        <input asp-for="Username" disabled class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row mb-4">
+                    <label asp-for="Name" class="col-form-label col-lg-2"></label>
+                    <div class="col-lg-10">
+                        <input asp-for="Name" disabled class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row mb-4">
+                    <label asp-for="Email" class="col-form-label col-lg-2"></label>
+                    <div class="col-lg-10">
+                        <input asp-for="Email" disabled class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row mb-4">
+                    <label asp-for="PhoneNumber" class="col-form-label col-lg-2"></label>
+                    <div class="col-lg-10">
+                        <input asp-for="PhoneNumber" disabled class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group row mb-4">
+                    <label asp-for="Roles" class="col-form-label col-lg-2"></label>
+                    <div class="col-lg-10">
+                        <select asp-for="Roles" asp-items="@_userHelper.GetAvailableRoles()" class="form-control select2 select2-multiple" disabled multiple="multiple" data-placeholder="@L[ResourceKeys.Labels_Choose]">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row mb-4">
+                    <label asp-for="IsActive" class="col-form-label col-lg-2">@L[ResourceKeys.Labels_Status]</label>
+                    <div class="col-lg-10">
+                        <input type="checkbox" name="IsActive" disabled checked="@Model.IsActive" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-on="@L[ResourceKeys.Labels_Enabled]" data-off="@L[ResourceKeys.Labels_Disabled]">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+    <partial name="_CrudJS" />
+}
+
+

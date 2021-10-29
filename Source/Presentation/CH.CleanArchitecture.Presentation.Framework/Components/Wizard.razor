@@ -1,0 +1,58 @@
+﻿<CascadingValue Value="this">
+    <div>
+        <div class="row">
+            <div class="col-xl-2 col-sm-3 d-none d-md-block">
+                <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
+                    @foreach (var step in Steps)
+                    {
+                        <a class="btn nav-link @((ActiveStep == step) ? "active" : "")"
+                           id="step-@(StepsIndex(step) + 1)" data-toggle="pill" @onclick="() => GoToStep(step)"
+                           role="tab">
+                            @if (!string.IsNullOrWhiteSpace(step.IconCssClass))
+                            {
+                                <i class="@step.IconCssClass d-block check-nav-icon mt-4 mb-2"></i>
+                            }
+                            <p class="font-weight-bold mb-4">@step.Name</p>
+                        </a>
+                    }
+                </div>
+            </div>
+            <div class="col-xl-10 col-sm-9">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content" id="v-pills-tabContent">
+                            @ChildContent
+                        </div>
+                    </div>
+                </div>
+                @if (IsLoaded)
+                {
+                    <div class="row mt-4">
+                        <div class="col-sm-6">
+                            @if (!IsFirstStep)
+                            {
+                                <a @onclick="GoBack" class="btn btn-primary btn-lg mb-1">
+                                    <i class="mdi mdi-arrow-left mr-1"></i> @PreviousButtonCaption
+                                </a>
+                            }
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="text-sm-right">
+                                @if (IsLastStep)
+                                {
+                                    <button type="submit" class="btn btn-success btn-lg "><i class="mdi mdi-arrow-up-bold-circle mr-1"></i> @SubmitButtonCaption</button>
+                                }
+                                else
+                                {
+                                    <a @onclick="GoNext" class="btn btn-primary btn-lg">
+                                        <i class="mdi mdi-arrow-right mr-1"></i> @NextButtonCaption
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</CascadingValue>

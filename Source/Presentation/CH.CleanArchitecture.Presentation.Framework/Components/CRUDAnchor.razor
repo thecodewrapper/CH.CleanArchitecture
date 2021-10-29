@@ -1,0 +1,33 @@
+﻿@if (Download)
+{
+    <a class="btn btn-md @_btn" href="@Href" data-toggle="tooltip" data-placement="top" title="Title" download>@((MarkupString)_icon)</a>
+}
+else
+{
+    <a class="btn btn-md @_btn" href="@Href" data-toggle="tooltip" data-placement="top" title="Title">@((MarkupString)_icon)</a>
+}
+
+
+@code {
+    [Parameter]
+    public string Href { get; set; }
+
+    [Parameter]
+    public bool Download { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public CRUDElementTypeEnum Type { get; set; }
+
+    private string _icon;
+    private string _btn;
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        await base.SetParametersAsync(parameters);
+        _icon = CRUDElementsHelper.GetCRUDIconHTML(Type);
+        _btn = CRUDElementsHelper.GetCRUDButtonHtml(Type);
+    }
+}

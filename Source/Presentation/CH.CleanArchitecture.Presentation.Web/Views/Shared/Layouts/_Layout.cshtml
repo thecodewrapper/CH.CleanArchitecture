@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<base href="~/" />
+<html lang="@CultureInfo.CurrentCulture.Name">
+
+<head>
+    <base href="~/" />
+    <partial name="_TitleMeta" />
+    <partial name="_HeadCss" />
+    <link href="~/_content/Blazored.Modal/blazored-modal.css" rel="stylesheet" />
+    <link href="~/_content/Blazored.Toast/blazored-toast.min.css" rel="stylesheet" />
+    @RenderSection("Styles", false)
+</head>
+
+
+<body data-topbar="light" data-layout="horizontal">
+    <div id="layout-wrapper">
+
+        <script src="~/assets/libs/jquery/jquery.min.js"></script>
+        <vc:top-bar></vc:top-bar>
+
+        <div class="main-content">
+            <component type="typeof(CascadingBlazoredModal)" render-mode="Server" param-UseCustomLayout="true" />
+            <component type="typeof(LoaderComponent)" render-mode="Server" />
+            <div class="page-content">
+                <div class="container-fluid">
+                    <partial name="_PageTitle" />
+                    <partial name="_Notifications" />
+                    <component type="typeof(BlazoredToasts)" render-mode="Server" param-Position="ToastPosition.BottomRight" />
+
+                    @RenderBody()
+                </div>
+            </div>
+            <vc:footer></vc:footer>
+            <a id="back-to-top" href="#" class="btn btn-primary btn-lg back-to-top" role="button"><i class="fas fa-chevron-up"></i></a>
+        </div>
+
+        <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="~/assets/libs/bootstrap-toggle/js/bootstrap-toggle.js"></script>
+        <script src="~/assets/libs/metismenu/metisMenu.min.js"></script>
+        <script src="~/assets/libs/simplebar/simplebar.min.js"></script>
+        <script src="~/assets/libs/node-waves/waves.min.js"></script>
+        <script src="~/assets/js/common.js"></script>
+        <script src="~/assets/js/app.js"></script>
+        <script src="~/js/site.js"></script>
+
+        @RenderSection("Scripts", required: false)
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,374 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+    color: #0366d6;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    /*margin-bottom: 60px;*/
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+}
+
+/* Validation */
+.field-validation-error {
+    color: red;
+}
+
+.validation-message {
+    color: red;
+}
+
+
+.validation-summary-errors ul {
+    list-style: none;
+    display: inline;
+    padding: 0;
+}
+
+/* Notifications */
+.alert {
+    margin-bottom: 3px;
+    border-radius: 0 0 3px 3px;
+}
+
+.required:after {
+    content: " *";
+    color: red;
+}
+
+.alert-success {
+    border-color: #02A91E;
+    color: white;
+    font-weight: bold;
+}
+
+.alert-danger {
+    background-color: #f16f6f;
+    border-color: #f16f6f;
+    color: white;
+}
+
+.toast-hidden {
+    display: none;
+}
+
+.toast-visible {
+    display: block;
+    animation: fadein 1.5s;
+}
+
+.callout.callout-success, .alert-success,
+.label-success, .modal-success .modal-body {
+    background-color: #17b76d !important;
+}
+
+
+.m-fadeIn {
+    visibility: visible;
+    opacity: 1;
+    animation: fadein 500ms;
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.m-fadeOut {
+    animation: fadeout 800ms;
+}
+
+@keyframes fadeout {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+/* Blazor Overlay */
+#components-reconnect-show, #components-reconnect-failed, #components-reconnect-rejected, #components-reconnect-modal {
+    display: none;
+    transition: unset;
+    visibility: hidden;
+}
+
+.components-reconnect-show, .components-reconnect-failed, .components-reconnect-rejected {
+    display: none;
+}
+
+/*  LOADING SPINNER  */
+.loadingDiv-parent {
+    position: fixed;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    z-index: 999998;
+}
+
+.loadingDiv {
+    position: fixed;
+    text-align: center;
+    top: 40%;
+    left: 45%;
+    z-index: 999999;
+}
+
+    .loadingDiv .loading-image {
+        display: block;
+        margin: 25px 75px;
+    }
+
+.my-card {
+    position: absolute;
+    left: 40%;
+    top: -20px;
+    border-radius: 50%;
+}
+
+
+
+.card-header .fa {
+    transition: .3s transform ease-in-out;
+}
+
+.card-header .collapsed .fa {
+    transform: rotate(90deg);
+}
+
+.toggle-button {
+    transition: background 500ms ease-in-out, color 200ms ease;
+}
+
+.select2 {
+    width: 100% !important;
+}
+
+.modal {
+    overflow-y: auto;
+}
+
+.loader-overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    --sk-color: white;
+}
+
+.width-30 {
+    width: 30px;
+}
+
+.height-30 {
+    height: 30px;
+}
+
+.width-40 {
+    width: 40px;
+}
+
+.height-40 {
+    height: 40px;
+}
+
+.font-size-15 {
+    font-size: 15px;
+}
+
+.resizable-textarea {
+    border-style: none;
+    border-color: transparent;
+    color: unset;
+    overflow: hidden;
+    width: 100%;
+    resize: none;
+    color: black;
+}
+
+textarea[disabled] {
+    background-color: transparent;
+    color: unset;
+}
+
+.back-to-top {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    display: none;
+}
+
+.popover-wrapper {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+    cursor: pointer;
+}
+
+.hlist {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+    .hlist li {
+        list-style-type: none;
+        
+        box-sizing: border-box;
+        padding: 10px;
+        /*width: 100%;*/
+    }
+
+@media screen and (max-width: 768px) {
+    .hlist {
+        flex-wrap: wrap;
+    }
+        .hlist li {
+            width: 50%;
+        }
+}
+
+.blazored-toast-container {
+    z-index: 1003 !important;
+}
+
+.blazored-toast-heading {
+    display: none;
+}
+
+.blazored-toast-body .blazored-toast-header {
+    display: flex;
+    align-items: flex-end !important;
+    justify-content: flex-end !important;
+}
+
+.unselectable {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+}
+
+.nopadding {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.btn{
+    padding: 0.27rem 0.55rem;
+}
+
+.observation-header {
+    padding: 0.35rem 1.25rem;
+}
+.descrec-single {
+    padding-top: 10px;
+}
+
+.description-container {
+    border: 1px solid #F0F0F0;
+    margin-bottom: 20px;
+    display:block;
+}
+
+.repeated-comment{
+    color:orangered;
+}
+
+.border-bottom-straight{
+    border-bottom:1px solid #F0F0F0;
+    border-radius:0px;
+}
+
+.observation-title{
+    font-weight:600;
+    text-decoration: underline;
+}
+
+.no-margin{
+    margin:0px;
+}
+
+.general-comment-single{
+}
+
+.general-comment-container {
+    margin-bottom: 10px;
+    display: block;
+    border: 1px solid #F0F0F0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}

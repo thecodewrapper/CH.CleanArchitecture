@@ -1,0 +1,90 @@
+﻿@inherits BaseComponent
+@using CH.CleanArchitecture.Infrastructure.Data.DbContexts;
+@using CH.CleanArchitecture.Infrastructure.Data.Models;
+@using System.IO;
+@using Newtonsoft.Json;
+@inject EventStoreDbContext _eventStoreDbContext;
+
+<div class="row mb-2 mt-4">
+    <div class=" col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <TabGroup>
+                    <TabPage Title="Event Store" IconCss="fas fa-comments">
+                        <div class="col-md-12">
+                            <label>Aggregate Id: </label>
+                            <input type="text" @bind="_showEventsAggregateId" />
+
+                            <label>No. of events to load: </label>
+                            <input type="number" @bind="_showEventsLastNumberOfEventsToShow" />
+
+                            <button @onclick="LoadEventsForAggregate">Show Events For Aggregate</button>
+                            <button @onclick="LoadAllEvents">Show All Events (risky, limit number of records)</button>
+                            <button @onclick="ClearEvents">Clear</button>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Aggregate Name</th>
+                                        <th scope="col">Event Name</th>
+                                        <th scope="col">Version</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Data</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var ev in _events)
+                                    {
+                                        <tr>
+                                            <th scope="row">@ev.Id</th>
+                                            <td>@ev.AggregateName</td>
+                                            <td>@ev.Name</td>
+                                            <td>@ev.Version</td>
+                                            <td>@ev.CreatedAt</td>
+                                            <td><pre>@JsonPrettify(ev.Data)</pre></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </TabPage>
+                </TabGroup>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string _showEventsAggregateId;
+    private int _showEventsLastNumberOfEventsToShow;
+    private List<EventEntity> _events = new List<EventEntity>();
+
+    protected void LoadEventsForAggregate()
+    {
+        _events = _eventStoreDbContext.Set<EventEntity>().Where(e => e.AggregateId == _showEventsAggregateId).OrderByDescending(e => e.CreatedAt).Take(_showEventsLastNumberOfEventsToShow).ToList();
+        ToastService.ShowSuccess($"{_events.Count} events loaded for aggregate {_showEventsAggregateId}");
+    }
+
+    protected void LoadAllEvents()
+    {
+        _events = _eventStoreDbContext.Set<EventEntity>().OrderByDescending(e => e.CreatedAt).Take(_showEventsLastNumberOfEventsToShow).ToList();
+        ToastService.ShowSuccess($"{_events.Count} events loaded");
+    }
+
+    protected void ClearEvents()
+    {
+        _events.Clear();
+    }
+
+    private string JsonPrettify(string json)
+    {
+        using (var stringReader = new StringReader(json))
+        using (var stringWriter = new StringWriter())
+        {
+            var jsonReader = new JsonTextReader(stringReader);
+            var jsonWriter = new JsonTextWriter(stringWriter) { Formatting = Formatting.Indented };
+            jsonWriter.WriteToken(jsonReader);
+            return stringWriter.ToString();
+        }
+    }
+}

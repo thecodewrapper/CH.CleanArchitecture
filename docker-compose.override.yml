@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  chcleanarchitecture.app:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=DockerCompose
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro

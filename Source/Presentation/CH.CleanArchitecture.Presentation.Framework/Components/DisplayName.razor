@@ -1,0 +1,46 @@
+﻿@using System.Reflection
+@using System.Linq.Expressions;
+@using System.ComponentModel.DataAnnotations;
+@using System.Globalization;
+@using System.Linq;
+@using System.Resources;
+@using Microsoft.Extensions.Localization
+@using CH.CleanArchitecture.Core.Application
+
+@typeparam T
+@if (ChildContent == null) {
+    <label @attributes="AdditionalAttributes">@label</label>
+}
+else {
+    <label>
+        @label
+        @ChildContent
+    </label>
+}
+@code {
+    [Inject]
+    public ILocalizationService Localizer { get; set; }
+
+    [Parameter] public Expression<Func<T>> For { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IDictionary<string, object> AdditionalAttributes { get; set; }
+    private string label => GetDisplayName();
+
+    private string GetDisplayName() {
+        var expression = (MemberExpression)For.Body;
+        var value = expression.Member.GetCustomAttribute(typeof(DisplayAttribute), true) as DisplayAttribute;
+        if (value == null) {
+            return expression.Member.Name;
+
+        }
+        return Localizer[value.Name];
+    }
+
+    private static string GetDisplayNameFromResource(DisplayAttribute mPropAttr) {
+        ResourceManager rm = new ResourceManager(mPropAttr.ResourceType);
+        var dispName = rm.GetString(mPropAttr.Name, CultureInfo.CurrentCulture);
+        return dispName;
+    }
+}

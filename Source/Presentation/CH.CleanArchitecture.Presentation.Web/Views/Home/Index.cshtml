@@ -1,0 +1,50 @@
+﻿@model HomeViewModel
+@using CH.CleanArchitecture.Presentation.Web.Helpers
+@inject IAuthenticatedUserService UserService
+@inject ILocalizationKeyProvider LocalizationKeyProvider
+@{
+    ViewBag.Title = @L[ResourceKeys.Labels_Home];
+    ViewBag.pTitle = @L[ResourceKeys.Labels_Home];
+    ViewBag.pageTitle = "CH.CleanArchitecture";
+}
+
+<partial name="_DatatablesCss" />
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="media">
+                            <div class="media-body align-self-center">
+                                <div class="text-muted">
+                                    <p class="mb-2">@L[ResourceKeys.Labels_Welcome]</p>
+                                    <h5 class="mb-1">@UserService.Name</h5>
+                                    @foreach (var role in UserService.Roles)
+                                    {
+                                        <div class="badge badge-soft-primary font-size-11 m-1 " onclick="return false;">
+                                            @L[LocalizationKeyProvider.GetRoleLocalizationKey(role)]
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 d-none d-lg-block">
+                        <div class="clearfix  mt-4 mt-lg-0">
+                            <div class="dropdown float-right">
+                                <a class="btn btn-primary dropdown-toggle" asp-controller="UserProfile" asp-action="Index">
+                                    @L[ResourceKeys.Labels_Profile]
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+        </div>
+    </div>
+</div>
+

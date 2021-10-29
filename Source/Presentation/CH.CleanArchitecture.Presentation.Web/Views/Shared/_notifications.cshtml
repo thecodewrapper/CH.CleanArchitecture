@@ -1,0 +1,42 @@
+﻿@using Newtonsoft.Json
+@using CH.CleanArchitecture.Presentation.Web.Constants
+@{
+    //Get messages from TempData
+    var notes = TempData.ContainsKey(Constants.NotificationListKey)
+        ? JsonConvert.DeserializeObject<IList<NotificationData>>(TempData[Constants.NotificationListKey].ToString())
+        : null;
+    if (notes != null)
+    {
+        foreach (var note in notes)
+        {
+            var cssStyle = "";
+            switch (note.Type)
+            {
+                case NotificationType.Success:
+                    cssStyle = "alert-success";
+                    break;
+                case NotificationType.Error:
+                    cssStyle = "alert-danger";
+                    break;
+                case NotificationType.Warning:
+                    cssStyle = "alert-warning";
+                    break;
+            }
+            <div class="alert @cssStyle alert-dismissable mb-2">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                @if (note.Encode)
+                {
+                    <text>
+                        @note.Message
+                    </text>
+                }
+                else
+                {
+                    <text>
+                        @Html.Raw(note.Message)
+                    </text>
+                }
+            </div>
+        }
+    }
+}

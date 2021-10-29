@@ -1,0 +1,8 @@
+﻿<div class="tab-pane @((@Parent.ActiveStep == this) ? "show active m-fadeIn" : "m-fadeOut") text-ce" id="v-pills-step-@(Parent.StepsIndex(this) + 1)" role="tabpanel">
+    <div>
+        <h3>@Name</h3>
+
+        @ChildContent
+
+    </div>
+</div>

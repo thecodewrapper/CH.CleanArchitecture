@@ -1,0 +1,82 @@
+﻿@model TopBarViewModel
+<header id="page-topbar">
+    <div class="navbar-header">
+        <div class="d-flex">
+            <!-- LOGO -->
+            <div class="navbar-brand-box">
+                <a asp-controller="Home" asp-action="Index" class="logo logo-light">
+                    <img src="~/assets/images/logo-topbar-light.png" alt="" height="60">
+                </a>
+
+                <a asp-controller="Home" asp-action="Index" class="logo logo-dark">
+                    <img src="~/assets/images/logo-topbar-dark.png" alt="" height="60">
+                </a>
+            </div>
+
+            <button type="button" class="btn btn-sm px-3 font-size-16 d-lg-none header-item waves-effect waves-light" data-toggle="collapse" data-target="#topnav-menu-content">
+                <i class="fa fa-fw fa-bars"></i>
+            </button>
+        </div>
+
+        <div class="d-flex">
+            <div class="dropdown d-none d-lg-inline-block ml-1">
+                <button type="button" class="btn header-item noti-icon waves-effect" data-toggle="fullscreen">
+                    <i class="bx bx-fullscreen"></i>
+                </button>
+            </div>
+
+            <div class="dropdown d-inline-block">
+                <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="d-none d-xl-inline-block ml-1" key="t-henry">@Model.Username</span>
+                    <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" asp-controller="UserProfile" asp-action="Index"><i class="bx bx-user font-size-16 align-middle mr-1"></i> <span key="t-profile">@L[ResourceKeys.Labels_Profile]</span></a>
+                    <div class="dropdown-divider"></div>
+                    @using (Html.BeginForm("Logout", "Auth", FormMethod.Post, new { name = "logoutForm", id = "logoutForm" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <a id="logoutLink" href="#" class="dropdown-item text-danger"><i class="bx bx-power-off font-size-16 align-middle mr-1 text-danger"></i> <span key="t-logout">@L[ResourceKeys.Labels_Logout]</span></a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="topnav">
+    <div class="container-fluid">
+        <nav class="navbar navbar-light navbar-expand-lg topnav-menu">
+
+            <div class="collapse navbar-collapse" id="topnav-menu-content">
+                <ul class="navbar-nav">
+                    @if (Model.IsAdmin) {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" asp-controller="Users" asp-action="Index" id="topnav-users" role="button">
+                                <i class="fas fa-user mr-2"></i><span key="t-users">@L[ResourceKeys.Navigation_Top_Users]</span>
+                            </a>
+                        </li>
+                    }
+
+                    @if (Model.IsSuperAdmin) {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" asp-controller="Developer" asp-action="Index" id="topnav-dashboard" role="button">
+                                <i class="fa fa-file-medical-alt mr-2"></i><span key="t-reports">Developer</span>
+                            </a>
+                        </li>
+                    }
+
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#logoutLink').click(function () {
+            document.logoutForm.submit(); return false;
+        }).show();
+    });
+</script>

@@ -1,0 +1,9 @@
+﻿@typeparam TItem
+@inherits Select2Base<TItem>
+
+    <select class="form-group select2" id="@Id" disabled="@IsDisabled" style="width: 100%">
+        @if (Placeholder != null)
+        {
+            <option></option>
+        }
+    </select>

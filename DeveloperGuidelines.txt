@@ -1,0 +1,19 @@
+- Classes inheriting from DomainEventBase<TId> need to have an internal empty constructor
+- Classes inheriting from AggregateRootBase<TId> meant for use with the event store, need to have a private empty constructor
+- Commands and queries should implement IRequest and IHandler respectively
+- Data-only (persistence-related) models should implement IDataEntity<TId>
+- Aggregate roots should implement IAggregateRoot<T, TId>
+
+To add migrations for application:
+add-migration {MIGRATION_NAME_HERE} -context ApplicationDbContext -o Migrations/Application
+
+To add migrations for event store context:
+add-migration {MIGRATION_NAME_HERE} -context EventStoreDbContext -o Migrations/EventStore
+
+To add migrations for identity context:
+add-migration {MIGRATION_NAME_HERE} -context IdentityDbContext -o Migrations/Identity
+
+
+#Docker Compose
+To start the solution with docker, including running MSSQL server inside a container
+docker-compose up

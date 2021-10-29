@@ -1,0 +1,309 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Buttons_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Buttons_CreateOrder" xml:space="preserve">
+    <value>Create Order</value>
+  </data>
+  <data name="Buttons_CreateUser" xml:space="preserve">
+    <value>Create User</value>
+  </data>
+  <data name="Buttons_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Buttons_Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="Buttons_Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Buttons_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Common_No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Common_SomethingWentWrong" xml:space="preserve">
+    <value>Something went wrong</value>
+  </data>
+  <data name="Common_Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Labels_Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="Labels_ChangePassword" xml:space="preserve">
+    <value>Please change your password</value>
+  </data>
+  <data name="Labels_Choose" xml:space="preserve">
+    <value>Choose</value>
+  </data>
+  <data name="Labels_ConfirmPassword" xml:space="preserve">
+    <value>Confirm Password</value>
+  </data>
+  <data name="Labels_Copyright" xml:space="preserve">
+    <value>Clean Architecture by Charalambos Hadjiantoniou</value>
+  </data>
+  <data name="Labels_Disabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="Labels_Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Labels_Enabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="Labels_FirstPage" xml:space="preserve">
+    <value>First Page</value>
+  </data>
+  <data name="Labels_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Labels_LastPage" xml:space="preserve">
+    <value>Last Page</value>
+  </data>
+  <data name="Labels_Loading" xml:space="preserve">
+    <value>Loading</value>
+  </data>
+  <data name="Labels_Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="Labels_Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="Labels_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Labels_NextPage" xml:space="preserve">
+    <value>Next Page</value>
+  </data>
+  <data name="Labels_NoResults" xml:space="preserve">
+    <value>No results</value>
+  </data>
+  <data name="Labels_Of" xml:space="preserve">
+    <value>of</value>
+  </data>
+  <data name="Labels_Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Labels_Phone" xml:space="preserve">
+    <value>Phone</value>
+  </data>
+  <data name="Labels_PreviousPage" xml:space="preserve">
+    <value>Previous Page</value>
+  </data>
+  <data name="Labels_Processing" xml:space="preserve">
+    <value>Processing</value>
+  </data>
+  <data name="Labels_Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="Labels_RememberMe" xml:space="preserve">
+    <value>Remember me</value>
+  </data>
+  <data name="Labels_Roles" xml:space="preserve">
+    <value>Roles</value>
+  </data>
+  <data name="Labels_Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Labels_Searching" xml:space="preserve">
+    <value>Searching...</value>
+  </data>
+  <data name="Labels_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Labels_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Labels_Username" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="Labels_Welcome" xml:space="preserve">
+    <value>Welcome</value>
+  </data>
+  <data name="Navigation_Top_Users" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="Notifications_Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Notifications_PasswordChange_Success" xml:space="preserve">
+    <value>Your password has been change succesfully</value>
+  </data>
+  <data name="Notifications_Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="Notifications_UserCreated_Success" xml:space="preserve">
+    <value>User has been created succesfully</value>
+  </data>
+  <data name="Notifications_UserUpdated_Success" xml:space="preserve">
+    <value>User updated succesfully</value>
+  </data>
+  <data name="Notifications_Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="Roles_Admin" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="Roles_SuperAdmin" xml:space="preserve">
+    <value>Super-Admin</value>
+  </data>
+  <data name="Roles_User" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="Titles_ChangePassword" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="Titles_EditUser" xml:space="preserve">
+    <value>Edit User</value>
+  </data>
+  <data name="Titles_Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="Titles_NewUser" xml:space="preserve">
+    <value>New User</value>
+  </data>
+  <data name="Titles_UserDetails" xml:space="preserve">
+    <value>User Details</value>
+  </data>
+  <data name="Titles_UserProfile" xml:space="preserve">
+    <value>User Profile</value>
+  </data>
+  <data name="Titles_Users" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="Validations_EmailFormat" xml:space="preserve">
+    <value>Field {0} is not a valid email address.</value>
+  </data>
+  <data name="Validations_FieldLength" xml:space="preserve">
+    <value>Field {0} must be at least {1} characters long</value>
+  </data>
+  <data name="Validations_PasswordsDoNotMatch" xml:space="preserve">
+    <value>The passwords do not match</value>
+  </data>
+  <data name="Validations_Required" xml:space="preserve">
+    <value>Field {0} is required</value>
+  </data>
+  <data name="Validations_UseDifferentPassword" xml:space="preserve">
+    <value>Please use a different password</value>
+  </data>
+</root>

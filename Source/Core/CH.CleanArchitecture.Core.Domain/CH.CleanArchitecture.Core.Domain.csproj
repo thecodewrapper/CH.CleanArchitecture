@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Entities\ContactAggregate\**" />
+    <EmbeddedResource Remove="Entities\ContactAggregate\**" />
+    <None Remove="Entities\ContactAggregate\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ardalis.GuardClauses" Version="3.2.0" />
+  </ItemGroup>
+
+</Project>

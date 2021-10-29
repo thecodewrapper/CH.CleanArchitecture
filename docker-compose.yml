@@ -1,0 +1,28 @@
+version: '3.4'
+
+services:
+  chcleanarchitecture.app:
+    image: ${DOCKER_REGISTRY-}chcleanarchitecture-app
+    build:
+      context: .
+      dockerfile: CH.CleanArchitecture.Presentation.Web/Dockerfile
+    ports:
+    - '8001:80'
+    depends_on:
+    - mssql
+    networks:
+    - chcleanarchitecturedev
+    restart: on-failure
+  mssql:
+    image: "mcr.microsoft.com/mssql/server"
+    environment:
+        SA_PASSWORD: "5b0451546a750925ff20f2f72a036f70364c2cdf170c54ff0893d030e0e617f8"
+        ACCEPT_EULA: "Y"
+    ports:
+     - '8433:1433'
+    networks:
+    - chcleanarchitecturedev
+networks:
+  chcleanarchitecturedev:
+    external: false
+    name: chcleanarchitecturedev

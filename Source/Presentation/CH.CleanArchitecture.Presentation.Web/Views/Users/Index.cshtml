@@ -1,0 +1,118 @@
+﻿@{
+    ViewBag.Title = @L[ResourceKeys.Titles_Users];
+    ViewBag.pTitle = @L[ResourceKeys.Titles_Users];
+    ViewBag.pageTitle = "CH.CleanArchitecture";
+}
+
+<partial name="_DatatablesCss" />
+
+<div class="row mb-2">
+    <div class="col-lg-10">
+        <a class="btn btn-primary" asp-controller="Users" asp-action="Create"><i class="fas fa-user-plus"></i> @L[ResourceKeys.Buttons_CreateUser]</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <table id="users" class="table table-striped table-hover dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                    <thead class="thead-light">
+
+                        <tr>
+                            <th>Id</th>
+                            <th>@L[ResourceKeys.Labels_Username]</th>
+                            <th>@L[ResourceKeys.Labels_Name]</th>
+                            <th>@L[ResourceKeys.Labels_Email]</th>
+                            <th>@L[ResourceKeys.Labels_Roles]</th>
+                            <th>@L[ResourceKeys.Labels_Status]</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div> <!-- end row -->
+
+@section Scripts{
+    <partial name="_DatatablesJS" />
+    <script>
+    $(document).ready(function () {
+        $("#users").DataTable({
+            pageLength: 10,
+            responsive: true,
+            processing: true,
+            serverSide: true,
+            filter: true,
+            orderMulti: false,
+            columnDefs: [
+                {
+                    targets: [0],
+                    visible: false,
+                    searchable: false
+                },
+                { responsivePriority: 1, targets: 0 },
+                { responsivePriority: 2, targets: 6 },
+                {
+                    defaultContent: "-",
+                    targets: "_all",
+                    sortable: false
+                }],
+            ajax: {
+                url: "@Url.Action("LoadData")",
+                type: "POST",
+                datatype: "json"
+            },
+            columns: [
+                { data: "id", name: "Id", autoWidth: true },
+                { data: "username", name: "Username", autoWidth: true },
+                { data: "name", name: "Name", autoWidth: true, sortable: true },
+                { data: "email", name: "Email", autoWidth: true, sortable: true },
+                {
+                    data: "localizedRoles",
+                    name: "Roles",
+                    render: function (data, type, row) {
+                        var roles = '';
+                        for (i = 0; i < data.length; i++) {
+                            roles += ' <div class="badge badge-soft-primary font-size-11 m-1 " onclick="return false;">' + data[i] + '</div>'
+                        }
+                        return roles;
+                    }
+                },
+                {
+                    data: "isActive",
+                    render: function (data, type, full, meta) {
+                        return data ? '<div class="badge badge-primary font-size-11 m-1" >@L[ResourceKeys.Labels_Enabled]</a>' : '<a href="#" class="badge badge-danger font-size-11 m-1">@L[ResourceKeys.Labels_Disabled]</div>';
+                    }
+                },
+                {
+                    render: function (data, type, full, meta) {
+                        return GetViewBtnHtml("@Url.Action(nameof(UsersController.Details), new {id = "tmpid"})", "@L[ResourceKeys.Buttons_Details]", full.id);
+                    }
+                }
+            ],
+            language: {
+                emptyTable: "@L[ResourceKeys.Labels_NoResults]",
+                info: "_START_ - _END_ @L[ResourceKeys.Labels_Of] _TOTAL_",
+                infoEmpty: "",
+                infoFiltered: "",
+                infoPostFix: "",
+                thousands: ",",
+                lengthMenu: "",
+                loadingRecords: "@L[ResourceKeys.Labels_Loading]",
+                processing: "@L[ResourceKeys.Labels_Processing]",
+                search: "@L[ResourceKeys.Labels_Search]",
+                zeroRecords: "@L[ResourceKeys.Labels_NoResults]",
+                paginate: {
+                    first: "@L[ResourceKeys.Labels_FirstPage]",
+                    last: "@L[ResourceKeys.Labels_LastPage]",
+                    next: "@L[ResourceKeys.Labels_NextPage]",
+                    previous: "@L[ResourceKeys.Labels_PreviousPage]"
+                }
+            }
+        });
+    });
+
+    </script>
+}

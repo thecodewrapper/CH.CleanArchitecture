@@ -1,0 +1,19 @@
+﻿@if (Parent.ActivePage == this)
+{
+        <div class="tab-content p-3 text-muted">
+            <div class="@(Parent.Animate ? "tabContentAnimate" : "") @(_visible ? "visible" : "")">
+                @ChildContent
+            </div>
+        </div>
+}
+<style>
+    .tabContentAnimate {
+        opacity: 0;
+        -webkit-transition: opacity 1s; /* For Safari 3.1 to 6.0 */
+        transition: opacity 1s;
+    }
+
+    .visible {
+        opacity: 1;
+    }
+</style>

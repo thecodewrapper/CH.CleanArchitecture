@@ -1,0 +1,41 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title | CH.CleanArchitecture</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Clean Architecture" name="description" />
+    <meta content="Charalambos Hadjiantoniou" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/assets/images/favicon.ico">
+
+    <!-- Bootstrap Css -->
+    <link href="~/assets/css/bootstrap.css" rel="stylesheet" />
+    <!-- Icons Css -->
+    <link href="~/assets/css/icons.css" rel="stylesheet" />
+    <!-- App Css-->
+    <link href="~/assets/css/app.css" rel="stylesheet" />
+    <!-- Custom Css-->
+    <link href="~/css/site.css" rel="stylesheet" />
+
+    @RenderSection("styles", required: false)
+
+</head>
+
+<body>
+    @RenderBody()
+
+    <!-- JAVASCRIPT -->
+    <script src="~/assets/libs/jquery/jquery.min.js"></script>
+    <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/libs/metismenu/metisMenu.min.js"></script>
+    <script src="~/assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/assets/libs/node-waves/waves.min.js"></script>
+
+    @RenderSection("scripts", required: false)
+    <!-- App js -->
+    <script src="~/assets/js/app.js"></script>
+</body>
+</html>

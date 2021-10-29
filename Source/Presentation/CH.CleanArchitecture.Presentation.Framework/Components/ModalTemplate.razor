@@ -1,0 +1,23 @@
+﻿<div class="modal fade show d-block" role="dialog" id="@Id">
+    <div class="modal-backdrop fade show" @onclick="Cancel"></div>
+    <div class="modal-dialog model-dialog-scrollable modal-dialog-centered" style="z-index: 1050" >
+        <div class="modal-content" >
+            <div class="modal-header">
+                <h5 class="modal-title">@Modal.Title</h5>
+                <button type="button" class="close" aria-label="Close" @onclick="Cancel">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @Body
+            </div>
+            @if (Footer is not null)
+            {
+                <div class="modal-footer">
+                    @Footer
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

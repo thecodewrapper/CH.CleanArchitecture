@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MassTransit" Version="7.2.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Localization" Version="2.2.0" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
+    <PackageReference Include="Storage.Net" Version="9.3.0" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\CH.CleanArchitecture.Common\CH.CleanArchitecture.Common.csproj" />
+    <ProjectReference Include="..\..\Core\CH.CleanArchitecture.Core.Application\CH.CleanArchitecture.Core.Application.csproj" />
+    <ProjectReference Include="..\CH.CleanArchitecture.Infrastructure.Data\CH.CleanArchitecture.Infrastructure.Data.csproj" />
+    <ProjectReference Include="..\CH.CleanArchitecture.Infrastructure.Resources\CH.CleanArchitecture.Infrastructure.Resources.csproj" />
+  </ItemGroup>
+
+</Project>

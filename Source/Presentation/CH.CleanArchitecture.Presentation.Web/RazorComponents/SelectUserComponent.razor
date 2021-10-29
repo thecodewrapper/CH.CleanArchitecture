@@ -1,0 +1,16 @@
+﻿@inherits BaseComponent
+@using CH.CleanArchitecture.Core.Application.ReadModels
+
+<Select2 TItem="UserReadModel"
+         Id="@Id"
+         ParentId="@ParentId"
+         @ref="SelectReference"
+         Data="@AvailableUsers.ToList()"
+         ValueChanged="@(item => UserSelected(item))"
+         ValueExpression="@(() => SelectedUser)"
+         Placeholder="@L[ResourceKeys.Labels_Choose]"
+         TextExpression="@(item =>  $"{item.Username} - {item.Name}")"
+         SearchingText="@L[ResourceKeys.Labels_Searching]"
+         NoResultsText="@L[ResourceKeys.Labels_NoResults]">
+</Select2>
+

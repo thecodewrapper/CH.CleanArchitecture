@@ -1,0 +1,39 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Xml" #>
+<#@ assembly name="System.Xml.Linq" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Globalization" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Xml.Linq" #>
+<#@ output extension=".cs" #>
+<#
+    string resourceFileName = "SharedResources.resx";
+    string resourcesFile = Host.ResolvePath(resourceFileName);
+
+    var doc = XDocument.Load(resourcesFile);
+    var entries =
+        from d in doc.Root.Elements("data")
+        select new
+        {
+            Name = d.Attribute("name").Value
+        };
+#>
+using System;
+using System.Globalization;
+using System.Reflection;
+using System.Resources;
+
+namespace CH.CleanArchitecture.Infrastructure.Resources
+{
+    /// This file is auto generated from ResourceKeys.tt template file
+    /// It contains constants for all the keys in SharedResources.resx file
+    public static class ResourceKeys
+    {
+<# foreach(var entry in entries) { #>
+        public const string <#= entry.Name.Replace('.', '_') #> = "<#= entry.Name #>";
+<# } #>
+    }
+}
