@@ -1,5 +1,5 @@
 trigger:
-- master
+- develop
 
 pool:
   vmImage: 'windows-latest'
@@ -31,8 +31,8 @@ steps:
     projects: '**/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
 
-# - task: DotNetCoreCLI@2
-#   inputs:
-#     command: test
-#     projects: '**/*Tests/*.csproj'
-#     arguments: '--configuration $(buildConfiguration)'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: test
+    projects: '**/*Tests/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
