@@ -23,9 +23,11 @@ steps:
     includePreviewVersions: true
 - task: NuGetToolInstaller@1
 
-- task: NuGetCommand@2
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet restore'
   inputs:
-    restoreSolution: '$(solution)'
+    command: restore
+    projects: '**/*.csproj'
 
 - task: VSBuild@1
   inputs:
