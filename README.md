@@ -1,3 +1,5 @@
+[![Build Status](https://dev.azure.com/chadjiantoniou/CleanArchitecture/_apis/build/status/thecodewrapper.CH.CleanArchitecture?branchName=master)](https://dev.azure.com/chadjiantoniou/CleanArchitecture/_build/latest?definitionId=2&branchName=master)
+
 # Clean Architecture
 My personal take on Clean Architecture. Please read my post at [Implementing a Clean Architecture in ASP.NET Core 6](https://thecodewrapper.com/dev/tcw-clean-achitecture) for more information.
 
