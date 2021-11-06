@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using CH.CleanArchitecture.Infrastructure.Data.Services;
+using CH.CleanArchitecture.Infrastructure.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,7 +30,7 @@ namespace CH.CleanArchitecture.Presentation.Web
                 var services = scope.ServiceProvider;
                 var logger = services.GetRequiredService<ILogger<Program>>();
                 try {
-                    var dbInitializer = services.GetRequiredService<DbInitializerService>();
+                    var dbInitializer = services.GetRequiredService<IDbInitializerService>();
                     logger.LogInformation($"Running database migration/seed");
                     dbInitializer.Migrate();
                     dbInitializer.Seed();

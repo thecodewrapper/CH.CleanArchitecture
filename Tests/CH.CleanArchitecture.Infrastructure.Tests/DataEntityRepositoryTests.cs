@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CH.CleanArchitecture.Core.Application;
-using CH.CleanArchitecture.Infrastructure.Data.Models;
+using CH.CleanArchitecture.Infrastructure.Models;
 using CH.CleanArchitecture.Tests;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

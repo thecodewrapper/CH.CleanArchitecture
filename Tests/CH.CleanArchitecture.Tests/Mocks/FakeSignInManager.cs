@@ -1,4 +1,4 @@
-﻿using CH.CleanArchitecture.Infrastructure.Data.Models;
+﻿using CH.CleanArchitecture.Infrastructure.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;

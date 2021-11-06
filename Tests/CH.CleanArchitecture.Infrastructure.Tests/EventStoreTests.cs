@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Core.Domain;
-using CH.CleanArchitecture.Infrastructure.Data.Models;
+using CH.CleanArchitecture.Infrastructure.Models;
 using CH.CleanArchitecture.Tests;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
