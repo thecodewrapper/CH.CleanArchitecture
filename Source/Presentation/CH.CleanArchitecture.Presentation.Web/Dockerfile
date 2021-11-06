@@ -9,7 +9,7 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
 COPY ["CH.CleanArchitecture.Presentation.Web/CH.CleanArchitecture.Presentation.Web.csproj", "CH.CleanArchitecture.Presentation.Web/"]
 COPY ["CH.CleanArchitecture.Presentation.Resources/CH.CleanArchitecture.Presentation.Resources.csproj", "CH.CleanArchitecture.Presentation.Resources/"]
-COPY ["CH.CleanArchitecture.Infrastructure.Data/CH.CleanArchitecture.Infrastructure.Data.csproj", "CH.CleanArchitecture.Infrastructure.Data/"]
+COPY ["CH.CleanArchitecture.Infrastructure/CH.CleanArchitecture.Infrastructure.csproj", "CH.CleanArchitecture.Infrastructure/"]
 COPY ["CH.CleanArchitecture.Core.Application/CH.CleanArchitecture.Core.Application.csproj", "CH.CleanArchitecture.Core.Application/"]
 COPY ["CH.CleanArchitecture.Core.Domain/CH.CleanArchitecture.Core.Domain.csproj", "CH.CleanArchitecture.Core.Domain/"]
 COPY ["CH.CleanArchitecture.Common/CH.CleanArchitecture.Common.csproj", "CH.CleanArchitecture.Common/"]

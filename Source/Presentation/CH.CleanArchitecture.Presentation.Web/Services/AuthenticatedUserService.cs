@@ -4,7 +4,7 @@ using System.Security.Claims;
 using CH.CleanArchitecture.Common;
 using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Core.Domain;
-using CH.CleanArchitecture.Infrastructure.Data.Models;
+using CH.CleanArchitecture.Infrastructure.Models;
 using Microsoft.AspNetCore.Http;
 
 namespace CH.CleanArchitecture.Presentation.Web.Services

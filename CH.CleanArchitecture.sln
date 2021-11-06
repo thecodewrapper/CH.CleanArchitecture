@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CH.CleanArchitecture.Presentation.Web", "Source\Presentation\CH.CleanArchitecture.Presentation.Web\CH.CleanArchitecture.Presentation.Web.csproj", "{F111CFD8-BBF5-4760-8F9E-3436D8D553E9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CH.CleanArchitecture.Infrastructure.Data", "Source\Infrastructure\CH.CleanArchitecture.Infrastructure.Data\CH.CleanArchitecture.Infrastructure.Data.csproj", "{3C5A9F7D-BA49-41E1-9C03-DF51DE1B974C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CH.CleanArchitecture.Infrastructure", "Source\Infrastructure\CH.CleanArchitecture.Infrastructure\CH.CleanArchitecture.Infrastructure.csproj", "{3C5A9F7D-BA49-41E1-9C03-DF51DE1B974C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CH.CleanArchitecture.Infrastructure.Shared", "Source\Infrastructure\CH.CleanArchitecture.Infrastructure.Shared\CH.CleanArchitecture.Infrastructure.Shared.csproj", "{BC8F60A1-DF11-4652-ABC1-21AC46984249}"
 EndProject

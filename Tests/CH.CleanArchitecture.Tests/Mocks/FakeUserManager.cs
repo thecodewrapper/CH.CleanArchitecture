@@ -1,4 +1,5 @@
-﻿using CH.CleanArchitecture.Infrastructure.Data.Models;
+﻿using System;
+using CH.CleanArchitecture.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

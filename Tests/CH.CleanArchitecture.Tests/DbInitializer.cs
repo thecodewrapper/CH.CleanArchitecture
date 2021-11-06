@@ -1,9 +1,11 @@
-﻿using CH.CleanArchitecture.Infrastructure.Data.DbContexts;
-using CH.CleanArchitecture.Infrastructure.Data.Models;
+﻿using System.Collections.Generic;
+using System.Linq;
+using CH.CleanArchitecture.Infrastructure.DbContexts;
+using CH.CleanArchitecture.Infrastructure.Models;
 
 namespace CH.CleanArchitecture.Tests
 {
-    public class DbInitializer
+    internal class DbInitializer
     {
         #region Application
         public static void Initialize(ApplicationDbContext context) {

@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Source\Infrastructure\CH.CleanArchitecture.Infrastructure\CH.CleanArchitecture.Infrastructure.csproj" />
     <ProjectReference Include="..\CH.CleanArchitecture.Tests\CH.CleanArchitecture.Tests.csproj" />
   </ItemGroup>
 

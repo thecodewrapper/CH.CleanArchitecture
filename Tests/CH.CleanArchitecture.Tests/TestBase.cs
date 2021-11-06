@@ -1,14 +1,17 @@
-﻿using CH.CleanArchitecture.Core.Application;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Core.Application.Extensions;
 using CH.CleanArchitecture.Core.Domain;
-using CH.CleanArchitecture.Infrastructure.Data.DbContexts;
-using CH.CleanArchitecture.Infrastructure.Data.Extensions;
-using CH.CleanArchitecture.Infrastructure.Data.Models;
-using CH.CleanArchitecture.Infrastructure.Shared;
-using CH.CleanArchitecture.Infrastructure.Shared.Extensions;
+using CH.CleanArchitecture.Infrastructure.DbContexts;
+using CH.CleanArchitecture.Infrastructure.Extensions;
+using CH.CleanArchitecture.Infrastructure.Models;
 using CH.CleanArchitecture.Tests.Mocks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -26,7 +29,8 @@ namespace CH.CleanArchitecture.Tests
         public readonly IServiceProvider ServiceProvider;
 
         public TestBase() {
-            var serviceProvider = BuildServiceProvider();
+            var configuration = BuildConfiguration();
+            var serviceProvider = BuildServiceProvider(configuration);
             ServiceProvider = serviceProvider;
             ApplicationContext = serviceProvider.GetService<ApplicationDbContext>();
             IdentityContext = serviceProvider.GetService<IdentityDbContext>();
@@ -38,11 +42,10 @@ namespace CH.CleanArchitecture.Tests
         /// Build services for testing
         /// </summary>
         /// <returns></returns>
-        private IServiceProvider BuildServiceProvider() {
+        private IServiceProvider BuildServiceProvider(IConfiguration configuration) {
             IServiceCollection services = new ServiceCollection();
-            services.AddInfrastructureLayer();
+            services.AddInfrastructureLayer(configuration);
             services.AddApplicationLayer();
-            services.AddSharedServices();
             services.AddTransient<IAuthenticatedUserService, MockAuthenticatedUserService>();
             services.AddScoped<SignInManager<ApplicationUser>>(_ => InitializeSignInManager());
             services.AddScoped<UserManager<ApplicationUser>>(_ => InitializeUserManager());
@@ -51,7 +54,7 @@ namespace CH.CleanArchitecture.Tests
             services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("ApplicationDb"));
             services.AddDbContext<EventStoreDbContext>(options => options.UseInMemoryDatabase("EventStoreDb"));
 
-            services.AddSingleton<ILogger<ApplicationUserService>, NullLogger<ApplicationUserService>>();
+            //services.AddSingleton<ILogger<ApplicationUserService>, NullLogger<ApplicationUserService>>();
             services.AddSingleton<ILoggerFactory, NullLoggerFactory>();
             services.AddLogging();
 
@@ -59,6 +62,12 @@ namespace CH.CleanArchitecture.Tests
             services.AddScoped(_ => localizationService.Object);
 
             return services.BuildServiceProvider();
+        }
+
+        private IConfiguration BuildConfiguration() {
+            var configuration = new ConfigurationBuilder().AddInMemoryCollection().Build();
+            configuration["UseInMemoryDatabase"] = "true";
+            return configuration;
         }
 
         /// <summary>
