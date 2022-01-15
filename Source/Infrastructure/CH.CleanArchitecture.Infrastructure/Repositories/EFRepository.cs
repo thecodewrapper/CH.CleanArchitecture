@@ -11,10 +11,10 @@ using CH.CleanArchitecture.Infrastructure.Models;
 
 namespace CH.CleanArchitecture.Infrastructure
 {
-    ///<inheritdoc cref="IEFRepository{T, M, TId}"/>
+    ///<inheritdoc cref="IAggregateRepository{T, TId}"/>
     ///<summary>
     /// Repository implementation of <see cref="IAggregateRepository{T, M, TId}"/>.
-    /// Operates on <see cref="AggregateRootBase{TId}"/> by having the underlying data entity of <see cref="DataEntityBase{TId}"/>
+    /// Operates on <see cref="IAggregateRoot{TId}"/> by having the underlying data entity of <see cref="IDataEntity{TId}"/>
     /// </summary>
     internal abstract class EFRepository<T, M, TId> : IAggregateRepository<T, TId>
         where T : class, IAggregateRoot<TId>
