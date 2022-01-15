@@ -7,6 +7,9 @@ using CH.CleanArchitecture.Infrastructure.Models;
 
 namespace CH.CleanArchitecture.Infrastructure
 {
+    /// <summary>
+    /// Implementation of <see cref="IOrderRepository"/> which allows persistence on both EventStore and relational store.
+    /// </summary>
     internal class OrderRepository : EFRepository<Order, OrderEntity, Guid>, IOrderRepository
     {
         private readonly IESRepository<Order, Guid> _eventStoreRepository;

@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Application\Queries\**" />
     <Compile Remove="Setup\**" />
+    <EmbeddedResource Remove="Application\Queries\**" />
     <EmbeddedResource Remove="Setup\**" />
+    <None Remove="Application\Queries\**" />
     <None Remove="Setup\**" />
   </ItemGroup>
 
@@ -23,10 +26,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Application\Queries\" />
   </ItemGroup>
 
   <ItemGroup>
