@@ -47,6 +47,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CH.CleanArchitecture.Infrastructure.Tests", "Tests\CH.CleanArchitecture.Infrastructure.Tests\CH.CleanArchitecture.Infrastructure.Tests.csproj", "{92FE348E-A75F-4DF5-B6F5-C9ED15F48643}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{9D25B1F7-3124-4A06-A61C-15F6E2B963B3}"
+	ProjectSection(SolutionItems) = preProject
+		Source\Dockerfile = Source\Dockerfile
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6ACCBAB0-D17A-41C2-B7C6-EE20314ED863}"
 EndProject
