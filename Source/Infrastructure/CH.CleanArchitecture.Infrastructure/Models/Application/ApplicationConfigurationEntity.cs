@@ -1,5 +1,8 @@
 ﻿namespace CH.CleanArchitecture.Infrastructure.Models
 {
+    /// <summary>
+    /// Data entity for application-specific configurations
+    /// </summary>
     public class ApplicationConfigurationEntity : DataEntityBase<string>
     {
         /// <summary>

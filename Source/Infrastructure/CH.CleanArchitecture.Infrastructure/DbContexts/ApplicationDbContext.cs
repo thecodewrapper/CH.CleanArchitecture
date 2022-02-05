@@ -7,6 +7,7 @@ using CH.CleanArchitecture.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
 [assembly: InternalsVisibleTo("CH.CleanArchitecture.Tests")]
+
 namespace CH.CleanArchitecture.Infrastructure.DbContexts
 {
     public class ApplicationDbContext : DbContext, IUnitOfWork
@@ -18,8 +19,10 @@ namespace CH.CleanArchitecture.Infrastructure.DbContexts
 
         public DbSet<OrderEntity> Orders { get; set; }
         public DbSet<OrderItemEntity> OrderItems { get; set; }
+        public DbSet<AuditHistory> AuditHistory { get; set; }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IAuthenticatedUserService authenticatedUser) : base(options) {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IAuthenticatedUserService authenticatedUser) : base(options)
+        {
             _authenticatedUser = authenticatedUser;
         }
 
@@ -27,7 +30,8 @@ namespace CH.CleanArchitecture.Infrastructure.DbContexts
         /// Entity model definitions
         /// </summary>
         /// <param name="builder"></param>
-        protected override void OnModelCreating(ModelBuilder builder) {
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
             base.OnModelCreating(builder);
             builder.EnableAuditHistory();
 
@@ -63,7 +67,8 @@ namespace CH.CleanArchitecture.Infrastructure.DbContexts
         /// </summary>
         /// <param name="acceptAllChangesOnSuccess"></param>
         /// <returns></returns>
-        public override int SaveChanges(bool acceptAllChangesOnSuccess) {
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
             DbContextUpdateOperations.UpdateDates(ChangeTracker.Entries<AuditableEntity>(), _authenticatedUser.Username);
             this.EnsureAuditHistory(_authenticatedUser.Username);
             return base.SaveChanges(acceptAllChangesOnSuccess);
@@ -73,7 +78,8 @@ namespace CH.CleanArchitecture.Infrastructure.DbContexts
         /// Overrides the <see cref="DbContext.SaveChanges()"/>.
         /// </summary>
         /// <returns></returns>
-        public override int SaveChanges() {
+        public override int SaveChanges()
+        {
             DbContextUpdateOperations.UpdateDates(ChangeTracker.Entries<AuditableEntity>(), _authenticatedUser.Username);
             this.EnsureAuditHistory(_authenticatedUser.Username);
             return base.SaveChanges(true);
@@ -85,7 +91,8 @@ namespace CH.CleanArchitecture.Infrastructure.DbContexts
         /// <param name="acceptAllChangesOnSuccess"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default) {
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        {
             DbContextUpdateOperations.UpdateDates(ChangeTracker.Entries<AuditableEntity>(), _authenticatedUser.Username);
             this.EnsureAuditHistory(_authenticatedUser.Username);
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
@@ -96,7 +103,8 @@ namespace CH.CleanArchitecture.Infrastructure.DbContexts
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) {
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
             DbContextUpdateOperations.UpdateDates(ChangeTracker.Entries<AuditableEntity>(), _authenticatedUser.Username);
             this.EnsureAuditHistory(_authenticatedUser.Username);
             return base.SaveChangesAsync(true, cancellationToken);
