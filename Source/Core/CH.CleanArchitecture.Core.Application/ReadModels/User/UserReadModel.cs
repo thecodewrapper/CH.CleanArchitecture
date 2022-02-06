@@ -11,7 +11,7 @@ namespace CH.CleanArchitecture.Core.Application.ReadModels
         public string Username { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
-        public IReadOnlyCollection<RolesEnum> Roles { get; set; }
+        public IReadOnlyCollection<RoleEnum> Roles { get; set; }
         public IReadOnlyCollection<string> LocalizedRoles { get; set; }
         public string PhoneNumber { get; set; }
         public string Fax { get; set; }

@@ -22,8 +22,8 @@ namespace CH.CleanArchitecture.Presentation.Web.Helpers
         public IEnumerable<SelectListItem> GetAvailableRoles() {
             var currentUserHighestRole = _userService.Roles.Max();
 
-            return Enum.GetValues(typeof(RolesEnum))
-                                 .Cast<RolesEnum>()
+            return Enum.GetValues(typeof(RoleEnum))
+                                 .Cast<RoleEnum>()
                                  .Where(e => e <= currentUserHighestRole)
                                  .Select(e => new SelectListItem
                                  {

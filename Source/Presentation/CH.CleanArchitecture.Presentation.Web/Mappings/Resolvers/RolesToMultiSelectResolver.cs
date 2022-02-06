@@ -14,7 +14,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Mappings
         }
 
         public IEnumerable<SelectListItem> Resolve(UserReadModel source, T destination, IEnumerable<SelectListItem> destinationMember, ResolutionContext context) {
-            var result = _htmlHelper.GetEnumSelectList<RolesEnum>();
+            var result = _htmlHelper.GetEnumSelectList<RoleEnum>();
             //foreach (SelectListItem role in result)
             //{
             //    if (source.Roles.Contains(role.Text))

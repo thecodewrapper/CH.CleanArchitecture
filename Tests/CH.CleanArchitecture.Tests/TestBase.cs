@@ -108,7 +108,7 @@ namespace CH.CleanArchitecture.Tests
         private static FakeUserManager InitializeUserManager() {
             var fakeUserManager = new Mock<FakeUserManager>();
             var users = PrepareUsers;
-            var availableRoles = Enum.GetValues(typeof(RolesEnum)).Cast<RolesEnum>();
+            var availableRoles = Enum.GetValues(typeof(RoleEnum)).Cast<RoleEnum>();
 
             fakeUserManager.Setup(x => x.Users)
                 .Returns(users.AsQueryable());
@@ -194,7 +194,7 @@ namespace CH.CleanArchitecture.Tests
 
                 superAdminUser.Roles.Add(new ApplicationUserRole
                 {
-                    Role = new ApplicationRole { Name = RolesEnum.SuperAdmin.ToString() }
+                    Role = new ApplicationRole { Name = RoleEnum.SuperAdmin.ToString() }
                 });
 
                 var basicUser = new ApplicationUser
@@ -208,7 +208,7 @@ namespace CH.CleanArchitecture.Tests
 
                 basicUser.Roles.Add(new ApplicationUserRole
                 {
-                    Role = new ApplicationRole { Name = RolesEnum.User.ToString() }
+                    Role = new ApplicationRole { Name = RoleEnum.User.ToString() }
                 });
 
                 var users = new List<ApplicationUser>();

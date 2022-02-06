@@ -25,7 +25,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Services
 
             var roles = httpContextAccessor.HttpContext?.User?.Claims.Where(c => c.Type == ClaimTypes.Role);
             if (roles != null)
-                Roles = roles.Select(r => r.Value.ToEnum<RolesEnum>());
+                Roles = roles.Select(r => r.Value.ToEnum<RoleEnum>());
         }
 
         public string UserId { get; }
@@ -35,7 +35,12 @@ namespace CH.CleanArchitecture.Presentation.Web.Services
         public string ProfilePicture { get; }
         public string Culture { get; set; }
         public string UiCulture { get; set; }
-        public IEnumerable<RolesEnum> Roles { get; }
+        public IEnumerable<RoleEnum> Roles { get; }
         public ThemeEnum Theme { get; private set; }
+
+        public bool HasRole(RoleEnum role)
+        {
+            return Roles.Contains(role);
+        }
     }
 }

@@ -11,8 +11,8 @@ namespace CH.CleanArchitecture.Infrastructure.Mappings
     internal class UserProfile : Profile
     {
         public UserProfile() {
-            CreateMap<ApplicationUserRole, RolesEnum>()
-                .ConvertUsing(r => r.Role.Name.ToEnum<RolesEnum>());
+            CreateMap<ApplicationUserRole, RoleEnum>()
+                .ConvertUsing(r => r.Role.Name.ToEnum<RoleEnum>());
 
             CreateMap<User, ApplicationUser>()
                 .ForMember(target => target.Roles, opt => opt.Ignore())

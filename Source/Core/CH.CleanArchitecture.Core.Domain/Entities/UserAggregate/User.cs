@@ -10,7 +10,7 @@ namespace CH.CleanArchitecture.Core.Domain.Entities.UserAggregate
         public string PrimaryPhoneNumber { get; private set; }
         public string SecondaryPhoneNumber { get; private set; }
         public string Email { get; private set; }
-        public IReadOnlyCollection<RolesEnum> Roles { get; private set; }
+        public IReadOnlyCollection<RoleEnum> Roles { get; private set; }
         public bool IsActive { get; private set; }
 
         private User() {

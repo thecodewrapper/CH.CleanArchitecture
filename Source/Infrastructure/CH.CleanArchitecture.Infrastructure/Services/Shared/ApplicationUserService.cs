@@ -351,7 +351,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
         private List<string> GetInvalidRoles(List<string> rolesToCheck) {
             List<string> invalidRoles = new List<string>();
             foreach (var roleToCheck in rolesToCheck) {
-                var isRoleInvalid = !Enum.IsDefined(typeof(RolesEnum), roleToCheck);
+                var isRoleInvalid = !Enum.IsDefined(typeof(RoleEnum), roleToCheck);
                 if (isRoleInvalid)
                     invalidRoles.Add(roleToCheck);
             }

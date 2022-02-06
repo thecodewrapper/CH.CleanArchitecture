@@ -16,7 +16,7 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Commands
         public async void AddRoles_WhenRoleIsValidAndNotAssigned_ShouldSucceed() {
             var command = new AddRolesCommand("basicUser", new List<string>
                 {
-                    RolesEnum.SuperAdmin.ToString()
+                    RoleEnum.SuperAdmin.ToString()
                 });
 
             var result = await ServiceBus.Send(command);

@@ -16,7 +16,7 @@ namespace CH.CleanArchitecture.Core.Application.Authorization
                 case OPERATIONS.USER.EDIT:
                 case OPERATIONS.USER.DELETE:
                 case OPERATIONS.USER.READ:
-                    context.EvaluateRequirement(requirement, () => context.User.IsInRole(RolesEnum.Admin.ToString()));
+                    context.EvaluateRequirement(requirement, () => context.User.IsInRole(RoleEnum.Admin.ToString()));
                     break;
             }
             return Task.CompletedTask;

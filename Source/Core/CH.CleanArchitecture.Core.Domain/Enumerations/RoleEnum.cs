@@ -1,6 +1,6 @@
 ﻿namespace CH.CleanArchitecture.Core.Domain
 {
-    public enum RolesEnum
+    public enum RoleEnum
     {
         User = 2,
         Admin = 4,
