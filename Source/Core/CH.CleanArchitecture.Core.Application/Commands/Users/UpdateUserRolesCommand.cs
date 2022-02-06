@@ -4,8 +4,15 @@ using CH.CleanArchitecture.Common;
 
 namespace CH.CleanArchitecture.Core.Application.Commands
 {
-    public record UpdateUserRolesCommand(string Username, List<string> Roles) : IRequest<Result>
+    public class UpdateUserRolesCommand : IRequest<Result>
     {
+        public UpdateUserRolesCommand()
+        {
+
+        }
+
+        public string Username { get; set; }
+        public List<string> Roles { get; set; }
     }
 
     /// <summary>

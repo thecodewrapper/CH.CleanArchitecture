@@ -5,8 +5,19 @@ using CH.CleanArchitecture.Core.Application.DTOs;
 
 namespace CH.CleanArchitecture.Core.Application.Commands
 {
-    public record UpdateUserDetailsCommand(string UserId, string Username, string Email, string Name, string PrimaryPhone, string SecondaryPhone) : IRequest<Result>
+    public class UpdateUserDetailsCommand : IRequest<Result>
     {
+        public UpdateUserDetailsCommand()
+        {
+
+        }
+
+        public string Id { get; set; }
+        public string Username { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string PrimaryPhone { get; set; }
+        public string SecondaryPhone { get; set; }
     }
 
     /// <summary>
