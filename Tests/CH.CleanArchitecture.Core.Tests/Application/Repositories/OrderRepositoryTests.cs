@@ -29,7 +29,7 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Repositories
             var order = new Order("1234");
             await _orderRepository.SaveToEventStoreAsync(order);
 
-            var events = await _eventStore.LoadAsync<Guid>(order.Id.ToString(), nameof(Order), 0, 1);
+            var events = await _eventStore.LoadAsync(order.Id, nameof(Order), 0, 1);
 
             Assert.NotEmpty(events);
             Assert.IsType<OrderCreatedEvent>(events.Single());
@@ -42,7 +42,7 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Repositories
             var order = new Order(trackingNumber);
             await _orderRepository.SaveToEventStoreAsync(order);
 
-            var events = await _eventStore.LoadAsync<Guid>(order.Id.ToString(), nameof(Order), 0, 1);
+            var events = await _eventStore.LoadAsync(order.Id, nameof(Order), 0, 1);
 
             Assert.Equal(trackingNumber, ((OrderCreatedEvent)events.Single()).TrackingNumber);
         }
@@ -54,7 +54,7 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Repositories
             order.AddOrderItem("Product name", 100, 2);
             await _orderRepository.SaveToEventStoreAsync(order);
 
-            var events = await _eventStore.LoadAsync<Guid>(order.Id.ToString(), nameof(Order), 0, int.MaxValue);
+            var events = await _eventStore.LoadAsync(order.Id, nameof(Order), 0, int.MaxValue);
 
             Assert.Contains(events, (e) => e is OrderItemAddedEvent);
         }
@@ -69,7 +69,7 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Repositories
             order.AddOrderItem(productName, price, quantity);
             await _orderRepository.SaveToEventStoreAsync(order);
 
-            var events = await _eventStore.LoadAsync<Guid>(order.Id.ToString(), nameof(Order), 0, int.MaxValue);
+            var events = await _eventStore.LoadAsync(order.Id, nameof(Order), 0, int.MaxValue);
 
             var orderItemAddedEvent = (OrderItemAddedEvent)events.Single(e => e is OrderItemAddedEvent);
 

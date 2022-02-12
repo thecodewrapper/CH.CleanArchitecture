@@ -31,51 +31,51 @@ namespace CH.CleanArchitecture.Infrastructure.Tests
 
         [Fact]
         public async Task EventStore_LoadAsync_AggregateNotFound_ReturnsEmptyDomainEventList() {
-            var events = await _eventStore.LoadAsync<Guid>("aggregate root id which does not exist", "Order", 0, 1);
+            var events = await _eventStore.LoadAsync(Guid.NewGuid(), "Order", 0, 1);
 
             Assert.Empty(events);
         }
 
         [Fact]
         public async Task EventStore_LoadAsync_FromVersion_Negative_ThrowsArgumentException() {
-            await Assert.ThrowsAsync<ArgumentException>(async () => await _eventStore.LoadAsync<Guid>("", "", -1, 0));
+            await Assert.ThrowsAsync<ArgumentException>(async () => await _eventStore.LoadAsync(Guid.NewGuid(), "", -1, 0));
         }
 
         [Fact]
         public async Task EventStore_LoadAsync_ToVersion_Negative_ThrowsArgumentException() {
-            await Assert.ThrowsAsync<ArgumentException>(async () => await _eventStore.LoadAsync<Guid>("", "", 0, -1));
+            await Assert.ThrowsAsync<ArgumentException>(async () => await _eventStore.LoadAsync(Guid.NewGuid(), "", 0, -1));
         }
 
         [Fact]
         public async Task EventStore_LoadAsync_ToVersionSmallerThanFromVersion_ThrowsArgumentException() {
-            await Assert.ThrowsAsync<ArgumentException>(async () => await _eventStore.LoadAsync<Guid>("", "", 6, 5));
+            await Assert.ThrowsAsync<ArgumentException>(async () => await _eventStore.LoadAsync(Guid.NewGuid(), "", 6, 5));
         }
 
         [Fact]
         public async Task EventStore_LoadAsync_AggregateVersionNotFound_ReturnsEmptyDomainEventList() {
-            string aggregateId = "8fd1f798-073a-4c40-b1da-f462876c8933";
-            AddDummyEvent(typeof(OrderCreatedEvent), aggregateId, 0);
-            var events = await _eventStore.LoadAsync<Guid>(aggregateId, "Order", 10, 11);
+            Guid aggregateId = Guid.NewGuid();
+            AddDummyEvent(typeof(OrderCreatedEvent), aggregateId.ToString(), 0);
+            var events = await _eventStore.LoadAsync(aggregateId, "Order", 10, 11);
 
             Assert.Empty(events);
         }
 
         [Fact]
         public async Task EventStore_LoadAsync_ReturnsDomainEventsForAggregate_NotEmpty() {
-            string aggregateId = "8fd1f798-073a-4c40-b1da-f462876c8933";
+            Guid aggregateId = Guid.NewGuid();
             int aggergateVersion = 0;
-            AddDummyEvent(typeof(OrderCreatedEvent), aggregateId, aggergateVersion);
-            var events = await _eventStore.LoadAsync<Guid>(aggregateId, "Order", aggergateVersion, 1);
+            AddDummyEvent(typeof(OrderCreatedEvent), aggregateId.ToString(), aggergateVersion);
+            var events = await _eventStore.LoadAsync(aggregateId, "Order", aggergateVersion, 1);
 
             Assert.NotEmpty(events);
         }
 
         [Fact]
         public async Task EventStore_LoadAsync_ReturnsDomainEventsForAggregate_Events_ContainEventType() {
-            string aggregateId = "8fd1f798-073a-4c40-b1da-f462876c8933";
+            Guid aggregateId = Guid.NewGuid();
             Type eventType = typeof(OrderCreatedEvent);
-            AddDummyEvent(eventType, aggregateId, 0);
-            var events = await _eventStore.LoadAsync<Guid>(aggregateId, "Order", 0, 1);
+            AddDummyEvent(eventType, aggregateId.ToString(), 0);
+            var events = await _eventStore.LoadAsync(aggregateId, "Order", 0, 1);
 
             Assert.IsType(eventType, events.Single());
         }

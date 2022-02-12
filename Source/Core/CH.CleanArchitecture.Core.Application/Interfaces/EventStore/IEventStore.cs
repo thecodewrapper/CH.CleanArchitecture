@@ -38,6 +38,6 @@ namespace CH.CleanArchitecture.Core.Application
         /// <param name="fromVersion">The from version</param>
         /// <param name="toVersion">The to version</param>
         /// <returns></returns>
-        Task<IReadOnlyCollection<IDomainEvent<TAggregateId>>> LoadAsync<TAggregateId>(string aggregateRootId, string aggregateName, int fromVersion, int toVersion);
+        Task<IReadOnlyCollection<IDomainEvent<TAggregateId>>> LoadAsync<TAggregateId>(TAggregateId aggregateRootId, string aggregateName, int fromVersion, int toVersion);
     }
 }

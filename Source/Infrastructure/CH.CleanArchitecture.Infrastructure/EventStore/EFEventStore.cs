@@ -39,13 +39,13 @@ namespace CH.CleanArchitecture.Infrastructure
 
         /// <inheritdoc cref="IEventStore.LoadAsync{TAggregateId}(string, string, int, int)"/>
         /// <exception cref="ArgumentException"></exception>
-        public async Task<IReadOnlyCollection<IDomainEvent<TAggregateId>>> LoadAsync<TAggregateId>(string aggregateRootId, string aggregateName, int fromVersion, int toVersion) {
+        public async Task<IReadOnlyCollection<IDomainEvent<TAggregateId>>> LoadAsync<TAggregateId>(TAggregateId aggregateRootId, string aggregateName, int fromVersion, int toVersion) {
             Guard.Against.Negative(fromVersion, nameof(fromVersion));
             Guard.Against.Negative(toVersion, nameof(toVersion));
             if (fromVersion > toVersion) {
                 throw new ArgumentException($"{nameof(fromVersion)} cannot be grated than {nameof(toVersion)}");
             }
-            IQueryable<EventEntity> events = _events.Where(e => e.AggregateId == aggregateRootId && e.AggregateName == aggregateName && e.Version >= fromVersion && e.Version <= toVersion).OrderBy(de => de.Version);
+            IQueryable<EventEntity> events = _events.Where(e => e.AggregateId == aggregateRootId.ToString() && e.AggregateName == aggregateName && e.Version >= fromVersion && e.Version <= toVersion).OrderBy(de => de.Version);
             var domainEvents = new List<IDomainEvent<TAggregateId>>();
             //get events
             foreach (var @event in events) {
