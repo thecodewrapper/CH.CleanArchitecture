@@ -10,8 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.1" />
     <PackageReference Include="MudBlazor" Version="6.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\CH.CleanArchitecture.Core.Application\CH.CleanArchitecture.Core.Application.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\CH.CleanArchitecture.Infrastructure\CH.CleanArchitecture.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

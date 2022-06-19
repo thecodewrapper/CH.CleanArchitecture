@@ -2,14 +2,14 @@
 
 <PageTitle>Weather forecast</PageTitle>
 
-@using CH.CleanArchitecture.Presentation.EventStoreWeb.Data
-@inject WeatherForecastService ForecastService
+@using CH.CleanArchitecture.Presentation.EventStoreWeb.Services
+@inject EventStoreService _eventStoreService
 
 <h1>Weather forecast</h1>
 
 <p>This component demonstrates fetching data from a service.</p>
 
-@if (forecasts == null)
+@if (_events == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -18,20 +18,20 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Aggregate Name</th>
+                <th>Created On</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
+            @foreach (var singleEvent in _events)
             {
                 <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
+                    <td>@singleEvent.Name</td>
+                    <td>@singleEvent.AssemblyTypeName</td>
+                    <td>@singleEvent.AggregateName</td>
+                    <td>@singleEvent.CreatedAt.ToShortDateString()</td>
                 </tr>
             }
         </tbody>
@@ -39,10 +39,10 @@ else
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private List<EventModel> _events;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        _events = _eventStoreService.GetEvents();
     }
 }

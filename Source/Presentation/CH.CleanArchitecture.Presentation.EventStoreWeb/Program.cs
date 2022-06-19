@@ -1,4 +1,6 @@
-using CH.CleanArchitecture.Presentation.EventStoreWeb.Data;
+using CH.CleanArchitecture.Core.Application;
+using CH.CleanArchitecture.Presentation.EventStoreWeb.Services;
+using CH.CleanArchitecture.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor.Services;
@@ -15,7 +17,8 @@ namespace Company.WebApplication1
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
             builder.Services.AddMudServices();
-            builder.Services.AddSingleton<WeatherForecastService>();
+            builder.Services.AddSingleton<EventStoreService>();
+            builder.Services.AddScoped(typeof(IEntityRepository<,>), typeof(DataEntityRepository<,>));
 
             var app = builder.Build();
 

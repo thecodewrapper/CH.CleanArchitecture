@@ -29,10 +29,7 @@
             set => _pageNo = value;
         }
 
-        public int Skip
-        {
-            get; set;
-        }
+        public int Skip { get; set; }
 
         public string SearchTerm { get; set; }
 

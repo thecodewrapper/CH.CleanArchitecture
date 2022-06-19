@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace CH.CleanArchitecture.Infrastructure.Models
+namespace CH.CleanArchitecture.Presentation.EventStoreWeb.Models
 {
-    public class EventEntity : EventEntityBase
+    public class EventModel : EventModelBase
     {
+        /// <summary>
+        /// Unique identifier of the event
+        /// </summary>
+        public Guid Id { get; set; }
+        
         /// <summary>
         /// Name of the aggregate. This is basically the class name or entity name
         /// </summary>
@@ -32,6 +34,9 @@ namespace CH.CleanArchitecture.Infrastructure.Models
         /// </summary>
         public int Version { get; set; }
 
-        public virtual ICollection<BranchPointEntity> BranchPoints { get; set; }
+        /// <summary>
+        /// The event's branch points, if any
+        /// </summary>
+        public List<BranchPointModel> BranchPoints { get; set; } = new List<BranchPointModel>();
     }
 }
