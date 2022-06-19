@@ -1,13 +1,11 @@
 ﻿@page "/fetchdata"
 
-<PageTitle>Weather forecast</PageTitle>
+<PageTitle>Event Store</PageTitle>
 
 @using CH.CleanArchitecture.Presentation.EventStoreWeb.Services
 @inject EventStoreService _eventStoreService
 
-<h1>Weather forecast</h1>
-
-<p>This component demonstrates fetching data from a service.</p>
+<h1>Events</h1>
 
 @if (_events == null)
 {
@@ -21,6 +19,7 @@ else
                 <th>Name</th>
                 <th>Type</th>
                 <th>Aggregate Name</th>
+                <th>Data</th>
                 <th>Created On</th>
             </tr>
         </thead>
@@ -31,6 +30,7 @@ else
                     <td>@singleEvent.Name</td>
                     <td>@singleEvent.AssemblyTypeName</td>
                     <td>@singleEvent.AggregateName</td>
+                    <td>@singleEvent.Data</td>
                     <td>@singleEvent.CreatedAt.ToShortDateString()</td>
                 </tr>
             }

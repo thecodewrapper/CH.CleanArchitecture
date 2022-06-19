@@ -23,6 +23,7 @@ namespace CH.CleanArchitecture.Core.Application.Commands
             Order order = new Order(command.TrackingNumber);
             await _orderRepository.AddAsync(order);
             await _orderRepository.UnitOfWork.SaveChangesAsync();
+            await _orderRepository.SaveToEventStoreAsync(order); //saving also to event store
             return new Result().Successful();
         }
     }

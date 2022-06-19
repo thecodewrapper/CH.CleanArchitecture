@@ -1,26 +1,28 @@
+using CH.CleanArchitecture.Core.Application;
+using CH.CleanArchitecture.Infrastructure.DbContexts;
 using CH.CleanArchitecture.Infrastructure.Models;
-using CH.CleanArchitecture.Infrastructure.Repositories;
+using CH.CleanArchitecture.Presentation.EventStoreWeb.Enumerations;
 using CH.CleanArchitecture.Presentation.EventStoreWeb.Models;
 
 namespace CH.CleanArchitecture.Presentation.EventStoreWeb.Services
 {
     public class EventStoreService
     {
-        private readonly DataEntityRepository<EventEntity, Guid> _eventRepository;
+        private readonly EventStoreDbContext _eventStoreDbContext;
 
-        public EventStoreService(DataEntityRepository<EventEntity, Guid> eventRepository)
+        public EventStoreService(EventStoreDbContext eventStoreDbContext)
         {
-            _eventRepository = eventRepository;
+            _eventStoreDbContext = eventStoreDbContext;
         }
 
         public List<EventModel> GetEvents()
         {
-            return _eventRepository.GetAll().Select(ToModel).ToList();
+            return _eventStoreDbContext.Events.Select(ToModel).ToList();
         }
 
         private EventModel ToModel(EventEntity eventEntity)
         {
-            return new EventModel()
+            var eventModel = new EventModel()
             {
                 AggregateId = eventEntity.AggregateId,
                 AggregateName = eventEntity.AggregateName,
@@ -29,19 +31,30 @@ namespace CH.CleanArchitecture.Presentation.EventStoreWeb.Services
                 CreatedAt = eventEntity.CreatedAt,
                 Id = eventEntity.Id,
                 Name = eventEntity.Name,
-                Version = eventEntity.Version,
-                BranchPoints = eventEntity.BranchPoints.Select(ToModel).ToList()
+                Version = eventEntity.Version
             };
+            if (eventEntity.BranchPoints?.Any() ?? false)
+            {
+                eventModel.BranchPoints = eventEntity.BranchPoints.Select(ToModel).ToList();
+            }
+
+            return eventModel;
         }
 
         private BranchPointModel ToModel(BranchPointEntity branchPointEntity)
         {
-            return new BranchPointModel()
+            var branchPointModel = new BranchPointModel()
             {
                 Name = branchPointEntity.Name,
-                //Type = branchPointEntity.Type,
-                RetroactiveEvents = branchPointEntity.RetroactiveEvents.Select(ToModel).ToList()
+                Type = ToBranchPointType(branchPointEntity.Type)
             };
+
+            if (branchPointEntity.RetroactiveEvents?.Any() ?? false)
+            {
+                branchPointModel.RetroactiveEvents = branchPointEntity.RetroactiveEvents.Select(ToModel).ToList();
+            }
+
+            return branchPointModel;
         }
 
         private RetroactiveEventModel ToModel(RetroactiveEventEntity retroactiveEventEntity)
@@ -53,6 +66,17 @@ namespace CH.CleanArchitecture.Presentation.EventStoreWeb.Services
                 IsEnabled = retroactiveEventEntity.IsEnabled,
                 Sequence = retroactiveEventEntity.Sequence
             };
+        }
+
+        private static BranchPointType ToBranchPointType(BranchPointTypeEnum branchPointEnum)
+        {
+            switch (branchPointEnum)
+            {
+                case BranchPointTypeEnum.Incorrect: return BranchPointType.Incorrect;
+                case BranchPointTypeEnum.OutOfOrder: return BranchPointType.OutOfOrder;
+                case BranchPointTypeEnum.Rejected: return BranchPointType.Rejected;
+                default: throw new Exception("Unable to convert branch point type");
+            }
         }
     }
 }

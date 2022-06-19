@@ -17,7 +17,7 @@ namespace CH.CleanArchitecture.Infrastructure.Repositories
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="TId"></typeparam>
-    public class DataEntityRepository<T, TId> : IEntityRepository<T, TId> where T : class, IDataEntity<TId>
+    internal class DataEntityRepository<T, TId> : IEntityRepository<T, TId> where T : class, IDataEntity<TId>
     {
         #region Private Fields
 

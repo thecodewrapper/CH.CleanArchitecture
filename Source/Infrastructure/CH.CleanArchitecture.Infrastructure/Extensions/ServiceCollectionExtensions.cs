@@ -36,6 +36,13 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
             services.AddScoped<IPasswordGeneratorService, PasswordGeneratorIdentityService>();
             services.AddScoped<IApplicationConfigurationService, ApplicationConfigurationService>();
             services.AddScoped<IFileStorageService, FileStorageService>();
+        }        
+
+        public static void AddEventStore(this IServiceCollection services)
+        {
+            services.AddScoped<IEventStore, EFEventStore>();
+            services.AddScoped<IEventStoreSnapshotProvider, EFEventStoreSnapshotProvider>();
+            services.AddScoped<IRetroactiveEventsService, RetroactiveEventsService>();
         }
 
         private static void AddDatabasePersistence(this IServiceCollection services, IConfiguration configuration) {
@@ -88,12 +95,6 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
             });
             services.AddScoped<IUserAuthenticationService, UserAuthenticationService>();
             services.AddScoped<IApplicationUserService, ApplicationUserService>();
-        }
-
-        private static void AddEventStore(this IServiceCollection services) {
-            services.AddScoped<IEventStore, EFEventStore>();
-            services.AddScoped<IEventStoreSnapshotProvider, EFEventStoreSnapshotProvider>();
-            services.AddScoped<IRetroactiveEventsService, RetroactiveEventsService>();
         }
     }
 }
