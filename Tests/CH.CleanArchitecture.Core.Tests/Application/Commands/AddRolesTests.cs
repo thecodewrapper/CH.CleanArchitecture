@@ -19,7 +19,7 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Commands
                     RoleEnum.SuperAdmin.ToString()
                 });
 
-            var result = await ServiceBus.Send(command);
+            var result = await ServiceBus.SendAsync(command);
 
             result.Succeeded.Should().BeTrue();
         }
@@ -31,7 +31,7 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Commands
                     "InvalidRole"
                 });
 
-            var result = await ServiceBus.Send(command);
+            var result = await ServiceBus.SendAsync(command);
 
             result.Succeeded.Should().BeFalse();
             result.Errors.Should().Contain(e => e.Error == $"Role InvalidRole is invalid.");

@@ -87,7 +87,7 @@ namespace CH.CleanArchitecture.Presentation.Framework.Components
             if (showLoader)
                 Loader.Show();
 
-            var result = await ServiceBus.Send(request, cancellationToken);
+            var result = await ServiceBus.SendAsync(request, cancellationToken);
 
             if (showLoader)
                 Loader.Hide();

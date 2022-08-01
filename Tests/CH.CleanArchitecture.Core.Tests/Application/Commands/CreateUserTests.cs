@@ -22,7 +22,7 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Commands
                 null,
                 null);
 
-            Result result = await ServiceBus.Send(command);
+            Result result = await ServiceBus.SendAsync(command);
 
             result.Succeeded.Should().BeFalse();
             result.Exception.Should().BeOfType<ArgumentNullException>();
@@ -37,7 +37,7 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Commands
                 "test test",
                 null);
 
-            Result result = await ServiceBus.Send(command);
+            Result result = await ServiceBus.SendAsync(command);
 
             result.Succeeded.Should().BeTrue();
             result.Exception.Should().BeNull();

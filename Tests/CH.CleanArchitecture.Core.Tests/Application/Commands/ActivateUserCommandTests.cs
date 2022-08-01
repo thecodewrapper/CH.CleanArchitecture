@@ -15,7 +15,7 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Commands
         public async void ActivateUser_WhenUserDoesNotExit_ShouldFailWithMessage() {
             var activateUserCommand = new ActivateUserCommand("unknownUser");
 
-            var result = await ServiceBus.Send(activateUserCommand);
+            var result = await ServiceBus.SendAsync(activateUserCommand);
 
             result.Failed.Should().BeTrue();
             result.Message.Should().Be("User not found.");
@@ -24,7 +24,7 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Commands
         [Fact]
         public async void ActivateUser_WhenUserActive_ShouldFailWithMessage() {
             var activateUserCommand = new ActivateUserCommand("activeUser");
-            var result = await ServiceBus.Send(activateUserCommand);
+            var result = await ServiceBus.SendAsync(activateUserCommand);
 
             result.Failed.Should().BeTrue();
             result.Message.Should().Be("User is already active.");
@@ -33,7 +33,7 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Commands
         [Fact]
         public async void ActivateUser_WhenUserInactive_ShouldSucceed() {
             var activateUserCommand = new ActivateUserCommand("inactiveUser");
-            var result = await ServiceBus.Send(activateUserCommand);
+            var result = await ServiceBus.SendAsync(activateUserCommand);
 
             result.Succeeded.Should().BeTrue();
         }
@@ -42,7 +42,7 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Commands
         public async void ActivateUser_WhenServiceThrowsException_ShouldFail() {
 
             var activateUserCommand = new ActivateUserCommand("throwsException");
-            var result = await ServiceBus.Send(activateUserCommand);
+            var result = await ServiceBus.SendAsync(activateUserCommand);
 
             result.Succeeded.Should().BeFalse();
             result.Message.Should().Be("Error while trying to activate user.");

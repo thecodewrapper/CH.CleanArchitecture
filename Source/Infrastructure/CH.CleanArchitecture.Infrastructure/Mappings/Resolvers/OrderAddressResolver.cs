@@ -10,11 +10,11 @@ namespace CH.CleanArchitecture.Infrastructure.Mappings
         public Address Resolve(OrderEntity source, Order destination, Address destMember, ResolutionContext context) {
             return new Address()
             {
-                City = source.AddressCity,
-                Country = source.AddressCountry,
-                Postcode = source.AddressPostcode,
-                Line1 = source.AddressLine1,
-                Line2 = source.AddressLine2
+                City = source?.AddressCity,
+                Country = source?.AddressCountry,
+                Postcode = source?.AddressPostcode,
+                Line1 = source?.AddressLine1,
+                Line2 = source?.AddressLine2
             };
         }
     }

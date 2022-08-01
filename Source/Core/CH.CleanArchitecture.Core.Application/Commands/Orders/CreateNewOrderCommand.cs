@@ -21,6 +21,7 @@ namespace CH.CleanArchitecture.Core.Application.Commands
 
         public override async Task<Result> HandleAsync(CreateNewOrderCommand command) {
             Order order = new Order(command.TrackingNumber);
+            order.AddOrderItem("Some product name", 10, 1);
             await _orderRepository.AddAsync(order);
             await _orderRepository.UnitOfWork.SaveChangesAsync();
             await _orderRepository.SaveToEventStoreAsync(order); //saving also to event store

@@ -110,7 +110,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
         public async Task<IActionResult> ChangePassword(ChangePasswordModel model) {
             var changePasswordCommand = new ChangeUserPasswordCommand(_userService.Username, model.NewPassword);
 
-            var result = await _serviceBus.Send(changePasswordCommand);
+            var result = await _serviceBus.SendAsync(changePasswordCommand);
 
             if (result.Failed) {
                 _notificationService.ErrorNotification(result.Message);

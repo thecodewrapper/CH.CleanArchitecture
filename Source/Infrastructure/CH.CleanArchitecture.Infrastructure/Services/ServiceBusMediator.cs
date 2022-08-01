@@ -17,7 +17,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             _mediator = mediator;
         }
 
-        public async Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default) where TResponse : class {
+        public async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default) where TResponse : class {
             var client = _mediator.CreateRequestClient<IRequest<TResponse>>();
             cancellationToken.ThrowIfCancellationRequested();
             var response = await client.GetResponse<TResponse>(request, cancellationToken);

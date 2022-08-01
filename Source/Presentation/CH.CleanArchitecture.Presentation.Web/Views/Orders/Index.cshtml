@@ -1,0 +1,18 @@
+﻿@using CH.CleanArchitecture.Presentation.Web.ViewModels.Orders
+@model IndexViewModel
+
+<h1>Orders</h1>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Tracking Number</th>
+        <th>Total Amount</th>
+    </tr>
+    @foreach (var order in Model.Orders){
+    <tr>
+        <td>@order.Id</td>
+        <td>@order.TrackingNumber</td>
+        <td>@order.TotalAmount</td>
+    </tr>
+}
+</table>

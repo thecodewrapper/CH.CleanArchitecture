@@ -18,7 +18,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
 
         [Route("CreateUser")]
         public async Task<IActionResult> CreateUser() {
-            Result result = await _serviceBus.Send(
+            Result result = await _serviceBus.SendAsync(
                 new CreateUserCommand("dev", "Developer User", "dev@dev.dev", "12345678!!", new List<string>() { "SuperAdmin", "Admin" }));
 
             if (result.Succeeded) {
@@ -31,7 +31,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
 
         [Route("CreateOrder")]
         public async Task<IActionResult> CreateOrder() {
-            Result result = await _serviceBus.Send(new CreateNewOrderCommand("TRACKING NUMBER HERE"));
+            Result result = await _serviceBus.SendAsync(new CreateNewOrderCommand("TRACKING NUMBER HERE"));
             if (result.Succeeded) {
                 return RedirectToAction("Index", "Home");
             }

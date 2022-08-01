@@ -2,6 +2,7 @@
 using CH.CleanArchitecture.Core.Application.Commands;
 using CH.CleanArchitecture.Core.Application.Mappings;
 using CH.CleanArchitecture.Core.Application.Queries;
+using CH.CleanArchitecture.Core.Application.Queries.Orders;
 using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,6 +45,8 @@ namespace CH.CleanArchitecture.Core.Application.Extensions
 
                 x.AddConsumer<GetAllUsersQueryHandler>();
                 x.AddConsumer<GetUserQueryHandler>();
+                x.AddConsumer<GetAllOrdersQueryHandler>();
+                x.AddConsumer<GetOrderByIdQueryHandler>();
 
                 #endregion
             });
