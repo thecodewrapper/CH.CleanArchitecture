@@ -21,7 +21,7 @@ namespace CH.CleanArchitecture.Infrastructure.Mappings
                 .ForMember(target => target.AddressPostcode, opt => opt.MapFrom(source => source.Address.Postcode));
 
             CreateMap<OrderEntity, Order>()
-                .ForMember(target => target.Address, opt => opt.MapFrom<OrderAddressResolver>());
+                .ForMember(target => target.Address, opt => opt.MapFrom(source => new Address() { City = source.AddressCity, Country = source.AddressCountry, Line1 = source.AddressLine1, Line2 = source.AddressLine2, Postcode = source.AddressPostcode }));
         }
     }
 }
