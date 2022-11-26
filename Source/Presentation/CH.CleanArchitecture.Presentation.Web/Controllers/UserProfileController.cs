@@ -4,6 +4,7 @@ using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Core.Application.Commands;
 using CH.CleanArchitecture.Infrastructure.Resources;
 using CH.CleanArchitecture.Presentation.Web.ViewModels;
+using CH.Messaging.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;

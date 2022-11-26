@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using CH.CleanArchitecture.Common;
 using CH.CleanArchitecture.Core.Application.DTOs;
+using CH.Messaging.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Application.Commands
 {

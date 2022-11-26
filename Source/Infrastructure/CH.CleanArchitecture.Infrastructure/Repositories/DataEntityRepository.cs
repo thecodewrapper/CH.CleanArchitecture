@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Infrastructure.DbContexts;
+using CH.Data.Abstractions;
 using Microsoft.EntityFrameworkCore;
 
 namespace CH.CleanArchitecture.Infrastructure.Repositories

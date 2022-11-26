@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using CH.CleanArchitecture.Infrastructure.DbContexts;
 using CH.CleanArchitecture.Infrastructure.Models;
+using CH.EventStore.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 
 namespace CH.CleanArchitecture.Infrastructure.Services

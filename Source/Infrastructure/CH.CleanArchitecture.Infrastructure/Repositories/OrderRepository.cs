@@ -4,6 +4,7 @@ using AutoMapper;
 using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Core.Domain.Entities.OrderAggregate;
 using CH.CleanArchitecture.Infrastructure.Models;
+using CH.Data.Abstractions;
 
 namespace CH.CleanArchitecture.Infrastructure
 {

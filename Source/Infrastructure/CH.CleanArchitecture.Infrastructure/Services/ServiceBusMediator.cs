@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using CH.CleanArchitecture.Core.Application;
+using CH.Messaging.Abstractions;
 using MassTransit.Mediator;
 
 namespace CH.CleanArchitecture.Infrastructure.Services

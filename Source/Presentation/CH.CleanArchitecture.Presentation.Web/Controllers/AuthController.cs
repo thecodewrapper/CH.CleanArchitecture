@@ -6,6 +6,7 @@ using CH.CleanArchitecture.Core.Application.Commands;
 using CH.CleanArchitecture.Core.Application.DTOs;
 using CH.CleanArchitecture.Infrastructure.Resources;
 using CH.CleanArchitecture.Presentation.Web.ViewModels;
+using CH.Messaging.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

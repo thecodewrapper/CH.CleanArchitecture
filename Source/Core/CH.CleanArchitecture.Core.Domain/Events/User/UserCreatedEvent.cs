@@ -1,4 +1,6 @@
-﻿namespace CH.CleanArchitecture.Core.Domain
+﻿using CH.Domain.Abstractions;
+
+namespace CH.CleanArchitecture.Core.Domain
 {
     /// <summary>
     /// User Created domain event

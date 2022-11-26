@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CH.Data.Abstractions;
 
 namespace CH.CleanArchitecture.Infrastructure.Models
 {

@@ -7,6 +7,7 @@ using CH.CleanArchitecture.Common;
 using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Core.Application.DTOs;
 using CH.CleanArchitecture.Infrastructure.Models;
+using CH.Data.Abstractions;
 using Microsoft.Extensions.Logging;
 
 namespace CH.CleanArchitecture.Infrastructure.Services

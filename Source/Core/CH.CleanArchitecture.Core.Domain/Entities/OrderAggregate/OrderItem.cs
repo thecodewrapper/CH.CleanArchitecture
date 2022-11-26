@@ -1,4 +1,5 @@
 ﻿using System;
+using CH.Domain.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Domain.Entities.OrderAggregate
 {

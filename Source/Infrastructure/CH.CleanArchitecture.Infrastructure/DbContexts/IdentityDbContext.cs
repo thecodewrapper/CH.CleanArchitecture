@@ -2,6 +2,7 @@
 using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Infrastructure.Identity;
 using CH.CleanArchitecture.Infrastructure.Models;
+using CH.Data.Abstractions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

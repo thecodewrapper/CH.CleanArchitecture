@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using CH.Messaging.Abstractions;
 using MassTransit;
 
 namespace CH.CleanArchitecture.Core.Application

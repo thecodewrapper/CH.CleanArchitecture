@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Core.Application.Queries.Orders;
 using CH.CleanArchitecture.Presentation.Web.ViewModels.Orders;
+using CH.Messaging.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,8 +1,8 @@
-using CH.CleanArchitecture.Core.Application;
-using CH.CleanArchitecture.Infrastructure.DbContexts;
-using CH.CleanArchitecture.Infrastructure.Models;
 using CH.CleanArchitecture.Presentation.EventStoreWeb.Enumerations;
 using CH.CleanArchitecture.Presentation.EventStoreWeb.Models;
+using CH.EventStore.Abstractions;
+using CH.EventStore.EntityFramework;
+using CH.EventStore.EntityFramework.Entities;
 
 namespace CH.CleanArchitecture.Presentation.EventStoreWeb.Services
 {

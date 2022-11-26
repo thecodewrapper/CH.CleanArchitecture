@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using CH.CleanArchitecture.Infrastructure.DbContexts;
+﻿using CH.CleanArchitecture.Infrastructure.DbContexts;
 using CH.CleanArchitecture.Infrastructure.Models;
+using CH.EventStore.EntityFramework;
 
 namespace CH.CleanArchitecture.Tests
 {

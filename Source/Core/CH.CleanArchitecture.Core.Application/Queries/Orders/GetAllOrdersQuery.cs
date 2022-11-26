@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CH.CleanArchitecture.Common;
 using CH.CleanArchitecture.Core.Application.ReadModels.Orders;
+using CH.Messaging.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Application.Queries.Orders
 {

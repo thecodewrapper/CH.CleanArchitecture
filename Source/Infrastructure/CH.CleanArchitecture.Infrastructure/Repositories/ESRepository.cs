@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using CH.CleanArchitecture.Core.Application;
-using CH.CleanArchitecture.Core.Application.Exceptions;
-using CH.CleanArchitecture.Core.Domain;
+using CH.Data.Abstractions;
+using CH.Domain.Abstractions;
+using CH.EventStore.Abstractions;
 using Microsoft.Extensions.Logging;
 
 namespace CH.CleanArchitecture.Infrastructure

@@ -5,9 +5,8 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using AutoMapper;
-using CH.CleanArchitecture.Core.Application;
-using CH.CleanArchitecture.Core.Domain;
-using CH.CleanArchitecture.Infrastructure.Models;
+using CH.Data.Abstractions;
+using CH.Domain.Abstractions;
 
 namespace CH.CleanArchitecture.Infrastructure
 {

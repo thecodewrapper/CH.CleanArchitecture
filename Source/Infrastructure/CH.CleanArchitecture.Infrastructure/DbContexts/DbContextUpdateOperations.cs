@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CH.CleanArchitecture.Infrastructure.Models;
+using CH.Data.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 

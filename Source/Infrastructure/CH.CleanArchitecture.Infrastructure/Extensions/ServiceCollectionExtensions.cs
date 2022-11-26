@@ -10,6 +10,9 @@ using Microsoft.EntityFrameworkCore;
 using CH.CleanArchitecture.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity;
 using CH.CleanArchitecture.Infrastructure.Identity.Factories;
+using CH.EventStore.EntityFramework.Extensions;
+using CH.Messaging.Abstractions;
+using CH.Data.Abstractions;
 
 namespace CH.CleanArchitecture.Infrastructure.Extensions
 {
@@ -19,7 +22,7 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
             services.AddDatabasePersistence(configuration);
             services.AddRepositories();
             services.AddIdentity();
-            services.AddEventStore();
+            services.AddEventStoreEFCore(configuration);
             services.AddScoped<OrderAddressResolver>();
             services.AddAutoMapper(config =>
             {
@@ -36,13 +39,6 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
             services.AddScoped<IPasswordGeneratorService, PasswordGeneratorIdentityService>();
             services.AddScoped<IApplicationConfigurationService, ApplicationConfigurationService>();
             services.AddScoped<IFileStorageService, FileStorageService>();
-        }        
-
-        public static void AddEventStore(this IServiceCollection services)
-        {
-            services.AddScoped<IEventStore, EFEventStore>();
-            services.AddScoped<IEventStoreSnapshotProvider, EFEventStoreSnapshotProvider>();
-            services.AddScoped<IRetroactiveEventsService, RetroactiveEventsService>();
         }
 
         private static void AddDatabasePersistence(this IServiceCollection services, IConfiguration configuration) {
@@ -51,13 +47,10 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
                     options.UseInMemoryDatabase("IdentityDb"));
                 services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseInMemoryDatabase("ApplicationDb"));
-                services.AddDbContext<EventStoreDbContext>(options =>
-                    options.UseInMemoryDatabase("EventStoreDb"));
             }
             else {
                 services.AddDbContext<IdentityDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("IdentityConnection")));
                 services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ApplicationConnection")));
-                services.AddDbContext<EventStoreDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ApplicationConnection")));
             }
             services.AddScoped<IDbInitializerService, DbInitializerService>();
         }

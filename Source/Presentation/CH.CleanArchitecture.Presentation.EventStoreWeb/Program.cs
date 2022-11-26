@@ -7,6 +7,7 @@ using MudBlazor.Services;
 using CH.CleanArchitecture.Infrastructure.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using CH.CleanArchitecture.Infrastructure.Extensions;
+using CH.EventStore.EntityFramework;
 
 namespace Company.WebApplication1
 {

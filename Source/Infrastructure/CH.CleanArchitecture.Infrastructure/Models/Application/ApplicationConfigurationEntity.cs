@@ -1,4 +1,6 @@
-﻿namespace CH.CleanArchitecture.Infrastructure.Models
+﻿using CH.Data.Abstractions;
+
+namespace CH.CleanArchitecture.Infrastructure.Models
 {
     /// <summary>
     /// Data entity for application-specific configurations

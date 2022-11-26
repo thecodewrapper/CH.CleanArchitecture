@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using CH.CleanArchitecture.Common;
-using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Core.Application.Commands;
+using CH.Messaging.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CH.CleanArchitecture.Presentation.Web.Controllers

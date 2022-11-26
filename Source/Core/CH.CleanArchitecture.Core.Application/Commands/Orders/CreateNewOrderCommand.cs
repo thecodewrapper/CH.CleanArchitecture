@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using CH.CleanArchitecture.Common;
 using CH.CleanArchitecture.Core.Domain.Entities.OrderAggregate;
+using CH.Messaging.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Application.Commands
 {

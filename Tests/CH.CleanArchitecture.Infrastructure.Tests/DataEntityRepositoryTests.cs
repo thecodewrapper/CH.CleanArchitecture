@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Infrastructure.Models;
 using CH.CleanArchitecture.Tests;
+using CH.Data.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;

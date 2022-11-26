@@ -7,6 +7,7 @@ using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Core.Domain;
 using CH.CleanArchitecture.Core.Domain.Entities.OrderAggregate;
 using CH.CleanArchitecture.Tests;
+using CH.EventStore.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 

@@ -5,6 +5,7 @@ using AutoMapper;
 using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Presentation.Framework.Interfaces;
 using CH.CleanArchitecture.Presentation.Framework.Services;
+using CH.Messaging.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Components;

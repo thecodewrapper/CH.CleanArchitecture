@@ -98,7 +98,7 @@ namespace CH.CleanArchitecture.Presentation.Web
 
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseMustChangePassword();
+            //app.UseMustChangePassword();
 
             var supportedCultures = new[] { "el", "en" };
             var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])

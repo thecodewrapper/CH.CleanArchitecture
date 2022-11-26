@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Core.Domain;
-using CH.CleanArchitecture.Infrastructure.Models;
 using CH.CleanArchitecture.Tests;
+using CH.EventStore.Abstractions;
+using CH.EventStore.EntityFramework.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 

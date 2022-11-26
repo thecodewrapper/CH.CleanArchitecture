@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Infrastructure.Auditing;
 using CH.CleanArchitecture.Infrastructure.Models;
+using CH.Data.Abstractions;
 using Microsoft.EntityFrameworkCore;
 
 [assembly: InternalsVisibleTo("CH.CleanArchitecture.Tests")]

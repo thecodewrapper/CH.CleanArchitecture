@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Ardalis.GuardClauses;
+using CH.Domain.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Domain.Entities.UserAggregate
 {

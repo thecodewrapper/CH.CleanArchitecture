@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CH.Domain.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Domain
 {

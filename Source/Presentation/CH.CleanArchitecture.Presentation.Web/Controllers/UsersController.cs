@@ -12,6 +12,7 @@ using CH.CleanArchitecture.Core.Application.ReadModels;
 using CH.CleanArchitecture.Infrastructure.Resources;
 using CH.CleanArchitecture.Presentation.Framework;
 using CH.CleanArchitecture.Presentation.Web.ViewModels;
+using CH.Messaging.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
