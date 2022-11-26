@@ -22,7 +22,11 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
             services.AddDatabasePersistence(configuration);
             services.AddRepositories();
             services.AddIdentity();
-            services.AddEventStoreEFCore(configuration);
+            services.AddEventStoreEFCore((o) =>
+            {
+                o.UseInMemoryDatabase = configuration.GetValue<bool>("UseInMemoryDatabase");
+                o.ConnectionStringSQL = configuration.GetConnectionString("ApplicationConnection");
+            });
             services.AddScoped<OrderAddressResolver>();
             services.AddAutoMapper(config =>
             {
