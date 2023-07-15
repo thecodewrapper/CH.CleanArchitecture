@@ -57,6 +57,26 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                     IsEncrypted = false,
                     CreatedBy = USER
                 });
+
+                //add crypto-related config
+                appConfigurations.Add(new ApplicationConfigurationEntity()
+                {
+                    Id = "Crypto_JWT_SymmetricKey",
+                    IsEncrypted = false,
+                    Value = "ENTER SYMMETRIC KEY HERE"
+                });
+                appConfigurations.Add(new ApplicationConfigurationEntity()
+                {
+                    Id = "Crypto_JWT_Issuer",
+                    IsEncrypted = false,
+                    Value = "CH.CleanArchitecture"
+                });
+                appConfigurations.Add(new ApplicationConfigurationEntity()
+                {
+                    Id = "Crypto_JWT_Authority",
+                    IsEncrypted = false,
+                    Value = "CH.CleanArchitecture"
+                });
             }
 
             _identityContext.SaveChanges();
