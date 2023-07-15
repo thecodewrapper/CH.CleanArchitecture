@@ -1,18 +1,18 @@
 ﻿using AutoMapper.Extensions.ExpressionMapping;
 using CH.CleanArchitecture.Core.Application;
+using CH.CleanArchitecture.Infrastructure.DbContexts;
+using CH.CleanArchitecture.Infrastructure.Identity.Factories;
 using CH.CleanArchitecture.Infrastructure.Mappings;
+using CH.CleanArchitecture.Infrastructure.Models;
 using CH.CleanArchitecture.Infrastructure.Repositories;
 using CH.CleanArchitecture.Infrastructure.Services;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using CH.CleanArchitecture.Infrastructure.DbContexts;
-using Microsoft.EntityFrameworkCore;
-using CH.CleanArchitecture.Infrastructure.Models;
-using Microsoft.AspNetCore.Identity;
-using CH.CleanArchitecture.Infrastructure.Identity.Factories;
+using CH.Data.Abstractions;
 using CH.EventStore.EntityFramework.Extensions;
 using CH.Messaging.Abstractions;
-using CH.Data.Abstractions;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CH.CleanArchitecture.Infrastructure.Extensions
 {
@@ -35,14 +35,37 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
                 config.AddProfile<EventProfile>();
                 config.AddProfile<UserProfile>();
             });
-            
+
+            services.AddSharedServices();
+            services.AddStorageServices();
+            services.AddCommunicationServices();
+            services.AddCryptoServices();
+            services.AddAuthServices();
+
             services.AddScoped<IServiceBus, ServiceBusMediator>();
         }
+        private static void AddAuthServices(this IServiceCollection services) {
+            services.AddScoped<IUserAuthenticationService, UserAuthenticationService>();
+            services.AddScoped<IApplicationUserService, ApplicationUserService>();
+        }
 
-        public static void AddSharedServices(this IServiceCollection services) {
-            services.AddScoped<IPasswordGeneratorService, PasswordGeneratorIdentityService>();
+        private static void AddSharedServices(this IServiceCollection services) {
+
             services.AddScoped<IApplicationConfigurationService, ApplicationConfigurationService>();
+        }
+
+        private static void AddStorageServices(this IServiceCollection services) {
             services.AddScoped<IFileStorageService, FileStorageService>();
+        }
+
+        private static void AddCommunicationServices(this IServiceCollection services) {
+            services.AddScoped<IEmailService, EmailSMTPService>();
+        }
+
+        private static void AddCryptoServices(this IServiceCollection services) {
+            services.AddScoped<IJWTService, JWTService>();
+            services.AddScoped<IUrlTokenService, UrlTokenService>();
+            services.AddScoped<IPasswordGeneratorService, PasswordGeneratorIdentityService>();
         }
 
         private static void AddDatabasePersistence(this IServiceCollection services, IConfiguration configuration) {
@@ -90,8 +113,6 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
                 options.Password = passwordOptions;
 
             });
-            services.AddScoped<IUserAuthenticationService, UserAuthenticationService>();
-            services.AddScoped<IApplicationUserService, ApplicationUserService>();
         }
     }
 }

@@ -2,19 +2,13 @@
 using AutoMapper.Extensions.ExpressionMapping;
 using CH.CleanArchitecture.Common;
 using CH.CleanArchitecture.Core.Application;
-using CH.CleanArchitecture.Infrastructure.DbContexts;
 using CH.CleanArchitecture.Infrastructure.Extensions;
-using CH.CleanArchitecture.Infrastructure.Identity.Factories;
-using CH.CleanArchitecture.Infrastructure.Models;
 using CH.CleanArchitecture.Infrastructure.Resources;
-using CH.CleanArchitecture.Infrastructure.Shared.Extensions;
 using CH.CleanArchitecture.Presentation.Framework.Services;
 using CH.CleanArchitecture.Presentation.Web.Mappings;
 using CH.CleanArchitecture.Presentation.Web.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,7 +18,6 @@ namespace CH.CleanArchitecture.Presentation.Web.Extensions
     {
         public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration) {
             services.AddInfrastructureLayer(configuration);
-            services.AddSharedServices();
             services.AddApplicationCookie();
 
             services.AddScoped<LocalizedRolesResolver>();

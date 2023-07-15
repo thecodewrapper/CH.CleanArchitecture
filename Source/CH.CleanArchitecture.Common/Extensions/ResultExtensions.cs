@@ -84,5 +84,13 @@ namespace CH.CleanArchitecture.Common
             result.Exception = exception;
             return result;
         }
+
+        public static T Unwrap<T>(this Result<T> result) {
+            if (result == null) {
+                return default;
+            }
+
+            return result.Data;
+        }
     }
 }
