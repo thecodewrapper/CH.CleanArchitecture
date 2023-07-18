@@ -16,11 +16,11 @@ namespace CH.CleanArchitecture.Infrastructure.Auditing
         public static void EnsureAuditHistory(this DbContext context, string username) {
             var entries = context.ChangeTracker.Entries().Where(e => !AuditUtilities.IsAuditDisabled(e.Entity.GetType()) && (e.State == EntityState.Added || e.State == EntityState.Modified || e.State == EntityState.Deleted)).ToArray();
             foreach (var entry in entries) {
-                context.Add(entry.AutoHistory(username));
+                context.Add(entry.CreateAuditHistory(username));
             }
         }
 
-        private static AuditHistory AutoHistory(this EntityEntry entry, string username) {
+        private static AuditHistory CreateAuditHistory(this EntityEntry entry, string username) {
             var history = new AuditHistory
             {
                 TableName = entry.Metadata.GetTableName(),
