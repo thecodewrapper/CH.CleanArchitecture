@@ -16,34 +16,34 @@ namespace CH.CleanArchitecture.Core.Application
         /// <param name="roles"></param>
         /// <param name="isActive"></param>
         /// <returns></returns>
-        Task<Result> CreateUser(User user, string password, List<string> roles, bool isActive);
+        Task<Result> CreateUserAsync(User user, string password, List<string> roles, bool isActive);
 
         /// <summary>
         /// Activates the application user with username <paramref name="username"/>
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        Task<Result> ActivateUser(string username);
+        Task<Result> ActivateUserAsync(string username);
 
         /// <summary>
         /// Deactivates the application user with username <paramref name="username"/>
         /// </summary>
         /// <returns></returns>
-        Task<Result> DeactivateUser(string username);
+        Task<Result> DeactivateUserAsync(string username);
 
         /// <summary>
         /// Adds a role to a user
         /// </summary>
         /// <param name="request">the role assignment request</param>
         /// <returns></returns>
-        Task<Result> AddRoles(RoleAssignmentRequestDTO request);
+        Task<Result> AddRolesAsync(RoleAssignmentRequestDTO request);
 
         /// <summary>
         /// Removes a role from a user
         /// </summary>
         /// <param name="request">the role assignment request</param>
         /// <returns></returns>
-        Task<Result> RemoveRoles(RoleAssignmentRequestDTO request);
+        Task<Result> RemoveRolesAsync(RoleAssignmentRequestDTO request);
 
         /// <summary>
         /// Updates a user's roles
@@ -51,20 +51,34 @@ namespace CH.CleanArchitecture.Core.Application
         /// <param name="username">the username</param>
         /// <param name="roles">the list of new roles</param>
         /// <returns></returns>
-        Task<Result> UpdateRoles(string username, List<string> roles);
+        Task<Result> UpdateRolesAsync(string username, List<string> roles);
 
         /// <summary>
         /// Retrieves all users
         /// </summary>
         /// <returns>list of <see cref="User"/></returns>
-        Task<Result<IList<User>>> GetAllUsers(QueryOptions options);
+        Task<Result<IList<User>>> GetAllUsersAsync(QueryOptions options);
 
         /// <summary>
-        /// Get user
+        /// Get user by id
         /// </summary>
         /// <param name="id">the user ID</param>
         /// <returns> a <see cref="User"/></returns>
-        Task<Result<User>> GetUser(string id);
+        Task<Result<User>> GetUserByIdAsync(string id);
+
+        /// <summary>
+        /// Get user by <paramref name="email"/>
+        /// </summary>
+        /// <param name="email">the user email</param>
+        /// <returns> a <see cref="User"/></returns>
+        Task<Result<User>> GetUserByEmailAsync(string email);
+
+        /// <summary>
+        /// Get user by <paramref name="username"/>
+        /// </summary>
+        /// <param name="id">the user email</param>
+        /// <returns> a <see cref="User"/></returns>
+        Task<Result<User>> GetUserByNameAsync(string username);
 
         /// <summary>
         /// Changes a user's password
@@ -72,8 +86,66 @@ namespace CH.CleanArchitecture.Core.Application
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        Task<Result> ChangePassword(string username, string password);
+        Task<Result> ChangePasswordAsync(string username, string oldPassword, string newPassword);
 
-        Task<Result> UpdateUserDetails(UpdateUserDetailsDTO request);
+        /// <summary>
+        /// Resets a user's password
+        /// </summary>
+        /// <param name="username">The username</param>
+        /// <param name="token">The password reset token</param>
+        /// <param name="password">The new password</param>
+        /// <returns></returns>
+        Task<Result> ResetPasswordAsync(string username, string token, string password);
+
+        /// <summary>
+        /// Updates the user details
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        Task<Result> UpdateUserDetailsAsync(UpdateUserDetailsDTO request);
+
+        /// <summary>
+        /// Generates an email confirmation token for the specified <paramref name="user"/>
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        Task<Result<string>> GenerateEmailConfirmationTokenAsync(User user);
+
+        /// <summary>
+        /// Generates a password reset token for the specified <paramref name="userEmail"/>
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        Task<Result<string>> GeneratePasswordResetTokenAsync(string userEmail);
+
+        /// <summary>
+        /// Validates that the email confirmation token mathces the user specified by user Id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        Task<Result> ConfirmUserEmailAsync(string userId, string code);
+
+        /// <summary>
+        /// Return true/false on whether 2FA is enabled for the user specified by <paramref name="username"/>
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        Task<Result<bool>> GetTwoFactorEnabledAsync(string username);
+
+        /// <summary>
+        /// Enables/disables 2FA for the user specified by <paramref name="username"/>
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="enabled"></param>
+        /// <returns></returns>
+        Task<Result> SetTwoFactorEnabledAsync(string username, bool enabled);
+
+        /// <summary>
+        /// Retrieves a <see cref="Dictionary{TKey, TValue}"/> of the user's personal data
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        Task<Result<Dictionary<string, string>>> GetUserPersonalDataAsync(string username);
     }
 }

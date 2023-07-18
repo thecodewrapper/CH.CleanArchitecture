@@ -1,4 +1,5 @@
 ﻿using System;
+using CH.Data.Abstractions;
 using Microsoft.EntityFrameworkCore;
 
 namespace CH.CleanArchitecture.Infrastructure.Auditing
@@ -7,7 +8,7 @@ namespace CH.CleanArchitecture.Infrastructure.Auditing
     /// DB Entity of audit
     /// </summary>
     [NotAuditable]
-    public class AuditHistory
+    public class AuditHistory : IDataEntity<int>
     {
         /// <summary>
         /// Gets or sets the primary key.

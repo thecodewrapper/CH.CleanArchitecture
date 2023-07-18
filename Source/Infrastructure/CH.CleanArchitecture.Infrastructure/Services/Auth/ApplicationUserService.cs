@@ -11,7 +11,6 @@ using CH.CleanArchitecture.Core.Application.DTOs;
 using CH.CleanArchitecture.Core.Domain;
 using CH.CleanArchitecture.Core.Domain.Entities.UserAggregate;
 using CH.CleanArchitecture.Infrastructure.Models;
-using CH.CleanArchitecture.Infrastructure.Resources;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -35,7 +34,38 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             _localizer = localizer;
         }
 
-        public async Task<Result> ActivateUser(string username) {
+        public async Task<Result> CreateUserAsync(User user, string password, List<string> roles, bool isActive) {
+            var serviceResult = new Result().Successful();
+            try {
+                var applicationUser = _mapper.Map<ApplicationUser>(user);
+                applicationUser.Id = Guid.NewGuid().ToString();
+                applicationUser.IsActive = isActive;
+                applicationUser.MustChangePassword = false;
+                var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+                using (transaction) {
+                    var identityResult = await _userManager.CreateAsync(applicationUser, password);
+
+                    if (!identityResult.Succeeded) {
+                        serviceResult.Failed().WithErrors(_mapper.Map<List<ResultError>>(identityResult.Errors));
+                    }
+                    else if (roles?.Any() ?? false) {
+                        var rolesResult = await _userManager.AddToRolesAsync(applicationUser, roles.Select(nr => nr.ToUpper()));
+                        if (!rolesResult.Succeeded)
+                            serviceResult.Failed().WithErrors(_mapper.Map<List<ResultError>>(identityResult.Errors));
+                    }
+                    else
+                        serviceResult.Successful();
+
+                    transaction.Complete();
+                }
+            }
+            catch (Exception ex) {
+                ServicesHelper.HandleServiceError(ref serviceResult, _logger, ex, "Error while trying to create user.");
+            }
+            return serviceResult;
+        }
+
+        public async Task<Result> ActivateUserAsync(string username) {
             var serviceResult = new Result();
             try {
                 var applicationUser = await _userManager.FindByNameAsync(username);
@@ -58,7 +88,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             return serviceResult;
         }
 
-        public async Task<Result> DeactivateUser(string username) {
+        public async Task<Result> DeactivateUserAsync(string username) {
             var serviceResult = new Result();
             try {
                 var applicationUser = await _userManager.FindByNameAsync(username);
@@ -84,7 +114,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             return serviceResult;
         }
 
-        public async Task<Result> AddRoles(RoleAssignmentRequestDTO request) {
+        public async Task<Result> AddRolesAsync(RoleAssignmentRequestDTO request) {
             var serviceResult = new Result().Successful();
             try {
                 var applicationUser = await _userManager.FindByNameAsync(request.Username);
@@ -110,7 +140,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             return serviceResult;
         }
 
-        public async Task<Result> RemoveRoles(RoleAssignmentRequestDTO request) {
+        public async Task<Result> RemoveRolesAsync(RoleAssignmentRequestDTO request) {
             var serviceResult = new Result();
             try {
                 var applicationUser = await _userManager.FindByNameAsync(request.Username);
@@ -135,40 +165,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             return serviceResult;
         }
 
-        public async Task<Result> CreateUser(User user, string password, List<string> roles, bool isActive) {
-            var serviceResult = new Result().Successful();
-            try {
-                var applicationUser = _mapper.Map<ApplicationUser>(user);
-                applicationUser.Id = Guid.NewGuid().ToString();
-                applicationUser.IsActive = isActive;
-                applicationUser.MustChangePassword = true;
-                var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
-                using (transaction) {
-                    var identityResult = await _userManager.CreateAsync(applicationUser, password);
-
-                    if (!identityResult.Succeeded) {
-                        serviceResult.Failed().WithErrors(_mapper.Map<List<ResultError>>(identityResult.Errors));
-                    }
-                    else if (roles?.Any() ?? false) {
-                        var rolesResult =
-                            await _userManager.AddToRolesAsync(applicationUser, roles.Select(nr => nr.ToUpper()));
-                        if (!rolesResult.Succeeded)
-                            serviceResult.Failed().WithErrors(_mapper.Map<List<ResultError>>(identityResult.Errors));
-                    }
-                    else
-                        serviceResult.Successful();
-
-                    transaction.Complete();
-                }
-            }
-            catch (Exception ex) {
-                ServicesHelper.HandleServiceError(ref serviceResult, _logger, ex, "Error while trying to create user.");
-            }
-            return serviceResult;
-        }
-
-        public async Task<Result> ChangePassword(string username, string password) {
-            var passwordHasher = new PasswordHasher<ApplicationUser>();
+        public async Task<Result> ChangePasswordAsync(string username, string oldPassword, string newPassword) {
             var serviceResult = new Result();
             try {
                 var applicationUser = await _userManager.FindByNameAsync(username);
@@ -176,27 +173,17 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                     return serviceResult.Failed().WithMessage("User not found.");
                 }
 
-                var hashResult = passwordHasher.VerifyHashedPassword(applicationUser, applicationUser.PasswordHash, password);
-                if (hashResult == PasswordVerificationResult.Success) {
-                    return serviceResult.Failed().WithMessage(_localizer[ResourceKeys.Validations_UseDifferentPassword]);
-                }
-
-                var token = await _userManager.GeneratePasswordResetTokenAsync(applicationUser);
-                var result = await _userManager.ResetPasswordAsync(applicationUser, token, password);
-
-                if (result.Succeeded) {
-                    if (applicationUser.MustChangePassword) {
-                        applicationUser.MustChangePassword = false;
-                        await _userManager.UpdateAsync(applicationUser);
-
-                        await _signInManager.SignOutAsync();
-                        await _signInManager.PasswordSignInAsync(applicationUser, password, false, false);
+                var changePasswordResult = await _userManager.ChangePasswordAsync(applicationUser, oldPassword, newPassword);
+                if (!changePasswordResult.Succeeded) {
+                    serviceResult.Failed();
+                    foreach (var error in changePasswordResult.Errors) {
+                        serviceResult.AddError(error.Description, error.Code);
                     }
-                    serviceResult.Successful();
+                    return serviceResult.WithMessage("Unable to change user password");
                 }
-                else {
-                    serviceResult.Failed().WithMessage($"Unable to change user password.");
-                }
+
+                await _signInManager.RefreshSignInAsync(applicationUser);
+                serviceResult.Successful();
             }
             catch (Exception ex) {
                 ServicesHelper.HandleServiceError(ref serviceResult, _logger, ex, "Error while trying to change user password.");
@@ -205,7 +192,33 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             return serviceResult;
         }
 
-        public async Task<Result<IList<User>>> GetAllUsers(QueryOptions options = null) {
+        public async Task<Result> ResetPasswordAsync(string username, string token, string password) {
+            var serviceResult = new Result();
+            try {
+                var applicationUser = await _userManager.FindByNameAsync(username);
+                if (applicationUser == null) {
+                    return serviceResult.Failed().WithMessage("User not found.");
+                }
+
+                var resetPasswordResult = await _userManager.ResetPasswordAsync(applicationUser, token, password);
+                if (!resetPasswordResult.Succeeded) {
+                    serviceResult.Failed();
+                    foreach (var error in resetPasswordResult.Errors) {
+                        serviceResult.AddError(error.Description, error.Code);
+                    }
+                    return serviceResult.WithMessage("Unable to reset user password");
+                }
+
+                serviceResult.Successful();
+            }
+            catch (Exception ex) {
+                ServicesHelper.HandleServiceError(ref serviceResult, _logger, ex, "Error while trying to reset user password.");
+            }
+
+            return serviceResult;
+        }
+
+        public async Task<Result<IList<User>>> GetAllUsersAsync(QueryOptions options = null) {
             var serviceResult = new Result<IList<User>>();
             try {
                 var query = _userManager.Users.AsNoTracking().Include(u => u.Roles).ThenInclude(ur => ur.Role).AsQueryable();
@@ -232,20 +245,59 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             return serviceResult;
         }
 
-        public async Task<Result<User>> GetUser(string id) {
+        public async Task<Result<User>> GetUserByIdAsync(string id) {
             var serviceResult = new Result<User>();
             try {
-                serviceResult.Data = await _mapper.ProjectTo<User>(GetUsersWithRoles()).FirstOrDefaultAsync(u => u.Id == id);
+                var userWithRoles = await _userManager.Users.AsNoTracking().Include(u => u.Roles).ThenInclude(ur => ur.Role).FirstOrDefaultAsync(u => u.Id == id);
+                if (userWithRoles == null) {
+                    serviceResult.Failed().WithError($"Unable to load user with ID '{id}'.");
+                    return serviceResult;
+                }
+                serviceResult.Data = _mapper.Map<User>(userWithRoles);
                 serviceResult.Successful();
             }
             catch (Exception ex) {
-                ServicesHelper.HandleServiceError(ref serviceResult, _logger, ex, "Error while trying to get the user.");
+                ServicesHelper.HandleServiceError(ref serviceResult, _logger, ex, "Error while trying to get the user by id.");
             }
 
             return serviceResult;
         }
 
-        public async Task<Result> UpdateRoles(string username, List<string> roles) {
+        public async Task<Result<User>> GetUserByEmailAsync(string email) {
+            var serviceResult = new Result<User>();
+            try {
+                ApplicationUser user = await _userManager.FindByEmailAsync(email);
+                if (user != null) {
+                    serviceResult.Data = _mapper.Map<User>(user);
+                }
+
+                serviceResult.Successful();
+            }
+            catch (Exception ex) {
+                ServicesHelper.HandleServiceError(ref serviceResult, _logger, ex, "Error while trying to get the user by email.");
+            }
+
+            return serviceResult;
+        }
+
+        public async Task<Result<User>> GetUserByNameAsync(string username) {
+            var serviceResult = new Result<User>();
+            try {
+                ApplicationUser user = await _userManager.FindByNameAsync(username);
+                if (user != null) {
+                    serviceResult.Data = _mapper.Map<User>(user);
+                }
+
+                serviceResult.Successful();
+            }
+            catch (Exception ex) {
+                ServicesHelper.HandleServiceError(ref serviceResult, _logger, ex, "Error while trying to get the user by email.");
+            }
+
+            return serviceResult;
+        }
+
+        public async Task<Result> UpdateRolesAsync(string username, List<string> roles) {
             var serviceResult = new Result();
             try {
                 var applicationUser = await _userManager.FindByNameAsync(username);
@@ -272,7 +324,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             return serviceResult;
         }
 
-        public async Task<Result> UpdateUserDetails(UpdateUserDetailsDTO request) {
+        public async Task<Result> UpdateUserDetailsAsync(UpdateUserDetailsDTO request) {
             var serviceResult = new Result();
             try {
                 var applicationUser = await _userManager.FindByIdAsync(request.Id);
@@ -286,11 +338,11 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                 if (!string.IsNullOrWhiteSpace(request.Name) && applicationUser.Name != request.Name)
                     applicationUser.Name = request.Name;
 
-                if (!string.IsNullOrWhiteSpace(request.PrimaryPhoneNumber) && applicationUser.PhoneNumber != request.PrimaryPhoneNumber)
-                    applicationUser.PhoneNumber = request.PrimaryPhoneNumber;
+                if (!string.IsNullOrWhiteSpace(request.PrimaryPhone) && applicationUser.PhoneNumber != request.PrimaryPhone)
+                    applicationUser.PhoneNumber = request.PrimaryPhone;
 
-                if (!string.IsNullOrWhiteSpace(request.SecondaryPhoneNumber) && applicationUser.SecondaryPhoneNumber != request.SecondaryPhoneNumber)
-                    applicationUser.SecondaryPhoneNumber = request.SecondaryPhoneNumber;
+                if (!string.IsNullOrWhiteSpace(request.SecondaryPhone) && applicationUser.SecondaryPhoneNumber != request.SecondaryPhone)
+                    applicationUser.SecondaryPhoneNumber = request.SecondaryPhone;
 
                 var result = await _userManager.UpdateAsync(applicationUser);
 
@@ -306,8 +358,114 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             return serviceResult;
         }
 
-        private IQueryable<ApplicationUser> GetUsersWithRoles() {
-            return _userManager.Users.AsNoTracking().Include(u => u.Roles).ThenInclude(ur => ur.Role);
+        public async Task<Result<string>> GenerateEmailConfirmationTokenAsync(User user) {
+            var serviceResult = new Result<string>();
+            try {
+                ApplicationUser appUser = _mapper.Map<ApplicationUser>(user);
+                string token = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
+
+                serviceResult.Successful().WithData(token);
+            }
+            catch (Exception ex) {
+                ServicesHelper.HandleServiceError(ref serviceResult, _logger, ex, "Error while trying to generate email confiration token.");
+            }
+            return serviceResult;
+        }
+
+        public async Task<Result> ConfirmUserEmailAsync(string userId, string code) {
+            Result serviceResult = new Result();
+            try {
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user == null) {
+                    return serviceResult.Failed().WithError($"Unable to load user with ID '{userId}'.");
+                }
+
+                var confirmationResult = await _userManager.ConfirmEmailAsync(user, code);
+                if (confirmationResult.Succeeded) {
+                    serviceResult.Successful();
+                }
+                else {
+                    serviceResult.Failed();
+                }
+            }
+            catch (Exception ex) {
+                ServicesHelper.HandleServiceError(ref serviceResult, _logger, ex, "Error while trying to confirm user email.");
+            }
+
+            return serviceResult;
+        }
+
+        public async Task<Result<string>> GeneratePasswordResetTokenAsync(string userEmail) {
+            Result<string> serviceResult = new Result<string>();
+            try {
+                var user = await _userManager.FindByEmailAsync(userEmail);
+                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user))) {
+                    return serviceResult.Failed();
+                }
+
+                string code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                serviceResult.Successful().WithData(code);
+            }
+            catch (Exception ex) {
+                ServicesHelper.HandleServiceError(ref serviceResult, _logger, ex, "Error while trying to generate password reset token.");
+            }
+            return serviceResult;
+        }
+
+        public async Task<Result<bool>> GetTwoFactorEnabledAsync(string username) {
+            Result<bool> serviceResult = new Result<bool>();
+            try {
+                var user = await _userManager.FindByNameAsync(username);
+                bool twoFactorIsEnabled = await _userManager.GetTwoFactorEnabledAsync(user);
+                serviceResult.Successful().WithData(twoFactorIsEnabled);
+            }
+            catch (Exception ex) {
+                ServicesHelper.HandleServiceError(ref serviceResult, _logger, ex, "Error while trying to get two-factor authentication for user.");
+            }
+            return serviceResult;
+        }
+
+        public async Task<Result> SetTwoFactorEnabledAsync(string username, bool enabled) {
+            Result serviceResult = new Result();
+            try {
+                var user = await _userManager.FindByNameAsync(username);
+                var twoFactorResult = await _userManager.SetTwoFactorEnabledAsync(user, enabled);
+                if (!twoFactorResult.Succeeded) {
+                    serviceResult.Failed().WithError($"Cannot enable 2FA for user as it's not currently enabled.");
+                }
+
+                serviceResult.Successful();
+            }
+            catch (Exception ex) {
+                ServicesHelper.HandleServiceError(ref serviceResult, _logger, ex, "Error while trying to set two-factor authentication for user.");
+            }
+            return serviceResult;
+        }
+
+        public async Task<Result<Dictionary<string, string>>> GetUserPersonalDataAsync(string username) {
+            Result<Dictionary<string, string>> serviceResult = new Result<Dictionary<string, string>>();
+            try {
+                var user = await _userManager.FindByNameAsync(username);
+                var personalData = new Dictionary<string, string>();
+                var personalDataProps = typeof(ApplicationUser).GetProperties().Where(
+                                prop => Attribute.IsDefined(prop, typeof(PersonalDataAttribute)));
+                foreach (var p in personalDataProps) {
+                    personalData.Add(p.Name, p.GetValue(user)?.ToString() ?? "null");
+                }
+
+                var logins = await _userManager.GetLoginsAsync(user);
+                foreach (var l in logins) {
+                    personalData.Add($"{l.LoginProvider} external login provider key", l.ProviderKey);
+                }
+
+                personalData.Add($"Authenticator Key", await _userManager.GetAuthenticatorKeyAsync(user));
+
+                serviceResult.Successful().WithData(personalData);
+            }
+            catch (Exception ex) {
+                ServicesHelper.HandleServiceError(ref serviceResult, _logger, ex, "Error while trying to set two-factor authentication for user.");
+            }
+            return serviceResult;
         }
 
         private Result<string> ValidateUserForActivation(ApplicationUser applicationUser) {

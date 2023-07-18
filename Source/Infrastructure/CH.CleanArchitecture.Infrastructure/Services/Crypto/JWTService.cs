@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using CH.CleanArchitecture.Common;
+using CH.CleanArchitecture.Common.Constants;
 using CH.CleanArchitecture.Core.Application;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -23,9 +24,9 @@ namespace CH.CleanArchitecture.Infrastructure.Services
         public JWTService(ILogger<JWTService> logger, IApplicationConfigurationService applicationConfigurationService) {
             _logger = logger;
             _applicationConfigurationService = applicationConfigurationService;
-            _symmetricKey = _applicationConfigurationService.GetValue("Crypto_JWT_SymmetricKey").Unwrap();
-            _issuer = _applicationConfigurationService.GetValue("Crypto_JWT_Issuer").Unwrap();
-            _authority = _applicationConfigurationService.GetValue("Crypto_JWT_Authority").Unwrap();
+            _symmetricKey = _applicationConfigurationService.GetValue(AppConfigKeys.CRYPTO.JWT_SYMMETRIC_KEY).Unwrap();
+            _issuer = _applicationConfigurationService.GetValue(AppConfigKeys.CRYPTO.JWT_ISSUER).Unwrap();
+            _authority = _applicationConfigurationService.GetValue(AppConfigKeys.CRYPTO.JWT_AUTHORITY).Unwrap();
         }
 
         /// <summary>

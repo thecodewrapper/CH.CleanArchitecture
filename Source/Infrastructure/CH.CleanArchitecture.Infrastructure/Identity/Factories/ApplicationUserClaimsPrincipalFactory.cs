@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
+using CH.CleanArchitecture.Common.Constants;
 using CH.CleanArchitecture.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -15,17 +16,18 @@ namespace CH.CleanArchitecture.Infrastructure.Identity.Factories
         protected override async Task<ClaimsIdentity> GenerateClaimsAsync(ApplicationUser user) {
             var identity = await base.GenerateClaimsAsync(user);
 
-            identity.AddClaim(new Claim(ApplicationUser.FullNameClaimType, user.Name));
-            identity.AddClaim(new Claim(ApplicationUser.CultureClaimType, user.Culture));
-            identity.AddClaim(new Claim(ApplicationUser.UiCultureClaimType, user.UICulture));
-            identity.AddClaim(new Claim(ApplicationUser.ThemeClaimType, user.Theme.ToString()));
+            identity.AddClaim(new Claim(ApplicationClaimTypes.User.Id, user.Id));
+            identity.AddClaim(new Claim(ApplicationClaimTypes.User.Username, user.Name));
+            identity.AddClaim(new Claim(ApplicationClaimTypes.User.Culture, user.Culture));
+            identity.AddClaim(new Claim(ApplicationClaimTypes.User.UiCulture, user.UICulture));
+            identity.AddClaim(new Claim(ApplicationClaimTypes.User.Theme, user.Theme.ToString()));
 
             if (user.ProfilePictureResourceId.HasValue) {
-                identity.AddClaim(new Claim(ApplicationUser.ProfilePictureClaimType, user.ProfilePictureResourceId.Value.ToString()));
+                identity.AddClaim(new Claim(ApplicationClaimTypes.User.ProfilePicture, user.ProfilePictureResourceId.Value.ToString()));
             }
 
             if (user.MustChangePassword)
-                identity.AddClaim(new Claim(ApplicationUser.MustChangePasswordClaimType, string.Empty));
+                identity.AddClaim(new Claim(ApplicationClaimTypes.User.MustChangePassword, string.Empty));
 
             var roles = await UserManager.GetRolesAsync(user);
             foreach (var role in roles)

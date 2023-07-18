@@ -52,6 +52,7 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
         private static void AddSharedServices(this IServiceCollection services) {
 
             services.AddScoped<IApplicationConfigurationService, ApplicationConfigurationService>();
+            services.AddScoped<IAuditHistoryService, AuditHistoryService>();
         }
 
         private static void AddStorageServices(this IServiceCollection services) {

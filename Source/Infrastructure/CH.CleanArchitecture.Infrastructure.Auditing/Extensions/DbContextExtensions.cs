@@ -23,7 +23,7 @@ namespace CH.CleanArchitecture.Infrastructure.Auditing
         private static AuditHistory CreateAuditHistory(this EntityEntry entry, string username) {
             var history = new AuditHistory
             {
-                TableName = entry.Metadata.GetTableName(),
+                TableName = entry.Metadata.Name,
                 Username = username
             };
 

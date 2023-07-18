@@ -8,7 +8,7 @@
         public string Id { get; set; }
         public string Email { get; set; }
         public string Name { get; set; }
-        public string PrimaryPhoneNumber { get; set; }
-        public string SecondaryPhoneNumber { get; set; }
+        public string PrimaryPhone { get; set; }
+        public string SecondaryPhone { get; set; }
     }
 }
