@@ -12,6 +12,12 @@ namespace CH.CleanArchitecture.Presentation.Web.ViewModels
         [MinLength(10, ErrorMessage = ResourceKeys.Validations_FieldLength)]
         [DataType(DataType.Password)]
         [Display(Name = ResourceKeys.Labels_Password)]
+        public string OldPassword { get; set; }
+
+        [Required]
+        [MinLength(10, ErrorMessage = ResourceKeys.Validations_FieldLength)]
+        [DataType(DataType.Password)]
+        [Display(Name = ResourceKeys.Labels_Password)]
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]

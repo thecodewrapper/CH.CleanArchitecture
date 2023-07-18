@@ -179,12 +179,6 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
                     if (updateResult.Failed)
                         throw new Exception(updateResult.MessageWithErrors);
 
-                    if (!string.IsNullOrWhiteSpace(model.Password)) {
-                        var changePasswordResult = await _serviceBus.SendAsync(new ChangeUserPasswordCommand(user.Username, model.Password));
-                        if (changePasswordResult.Failed)
-                            throw new Exception(changePasswordResult.MessageWithErrors);
-                    }
-
                     if (user.IsActive != model.IsActive) {
                         var updateStatusResult = model.IsActive
                                 ? await _serviceBus.SendAsync(new ActivateUserCommand(model.Username))

@@ -28,7 +28,7 @@ namespace CH.CleanArchitecture.Core.Application.Commands
                 Roles = command.Roles
             };
 
-            return await _applicationUserService.AddRoles(request);
+            return await _applicationUserService.AddRolesAsync(request);
         }
     }
 }

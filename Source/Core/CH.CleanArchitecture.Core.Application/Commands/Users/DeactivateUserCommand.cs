@@ -20,7 +20,7 @@ namespace CH.CleanArchitecture.Core.Application.Commands
         }
 
         public override async Task<Result> HandleAsync(DeactivateUserCommand command) {
-            return await _applicationUserService.DeactivateUser(command.Username);
+            return await _applicationUserService.DeactivateUserAsync(command.Username);
         }
     }
 }

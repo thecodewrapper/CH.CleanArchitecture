@@ -109,7 +109,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> ChangePassword(ChangePasswordModel model) {
-            var changePasswordCommand = new ChangeUserPasswordCommand(_userService.Username, model.NewPassword);
+            var changePasswordCommand = new ChangeUserPasswordCommand(_userService.Username, model.OldPassword, model.NewPassword);
 
             var result = await _serviceBus.SendAsync(changePasswordCommand);
 

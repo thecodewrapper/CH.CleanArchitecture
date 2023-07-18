@@ -23,7 +23,7 @@ namespace CH.CleanArchitecture.Core.Application.Commands
 
         public async override Task<Result> HandleAsync(CreateUserCommand command) {
             var user = new User(command.Username, command.Email, command.Name);
-            return await _applicationUserService.CreateUser(user, command.Password, command.Roles, true);
+            return await _applicationUserService.CreateUserAsync(user, command.Password, command.Roles, true);
         }
     }
 }

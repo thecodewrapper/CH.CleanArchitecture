@@ -7,8 +7,7 @@ namespace CH.CleanArchitecture.Core.Application.Commands
 {
     public class UpdateUserRolesCommand : IRequest<Result>
     {
-        public UpdateUserRolesCommand()
-        {
+        public UpdateUserRolesCommand() {
 
         }
 
@@ -28,7 +27,7 @@ namespace CH.CleanArchitecture.Core.Application.Commands
         }
 
         public override async Task<Result> HandleAsync(UpdateUserRolesCommand command) {
-            return await _applicationUserService.UpdateRoles(command.Username, command.Roles);
+            return await _applicationUserService.UpdateRolesAsync(command.Username, command.Roles);
         }
     }
 }

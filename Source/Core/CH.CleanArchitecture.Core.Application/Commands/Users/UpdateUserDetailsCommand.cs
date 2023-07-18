@@ -8,8 +8,7 @@ namespace CH.CleanArchitecture.Core.Application.Commands
 {
     public class UpdateUserDetailsCommand : IRequest<Result>
     {
-        public UpdateUserDetailsCommand()
-        {
+        public UpdateUserDetailsCommand() {
 
         }
 
@@ -35,7 +34,7 @@ namespace CH.CleanArchitecture.Core.Application.Commands
         }
 
         public override async Task<Result> HandleAsync(UpdateUserDetailsCommand command) {
-            return await _applicationUserService.UpdateUserDetails(_mapper.Map<UpdateUserDetailsDTO>(command));
+            return await _applicationUserService.UpdateUserDetailsAsync(_mapper.Map<UpdateUserDetailsDTO>(command));
         }
     }
 }

@@ -20,7 +20,7 @@ namespace CH.CleanArchitecture.Core.Application.Commands
         }
 
         public override async Task<Result> HandleAsync(ActivateUserCommand command) {
-            return await _applicationUserService.ActivateUser(command.Username);
+            return await _applicationUserService.ActivateUserAsync(command.Username);
         }
     }
 }

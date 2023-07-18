@@ -23,7 +23,7 @@ namespace CH.CleanArchitecture.Core.Application.Queries
 
         public override async Task<Result<UserReadModel>> HandleAsync(GetUserQuery query) {
             var result = new Result<UserReadModel>();
-            var userResult = await _applicationUserService.GetUser(query.Id);
+            var userResult = await _applicationUserService.GetUserByIdAsync(query.Id);
 
             if (userResult.Failed)
                 result.Failed();

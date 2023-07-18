@@ -29,7 +29,7 @@ namespace CH.CleanArchitecture.Core.Application.Queries
         public override async Task<Result<IEnumerable<UserReadModel>>> HandleAsync(GetAllUsersQuery query) {
             var result = new Result<IEnumerable<UserReadModel>>();
 
-            var getUsersResult = await _applicationUserService.GetAllUsers(query.Options);
+            var getUsersResult = await _applicationUserService.GetAllUsersAsync(query.Options);
 
             if (getUsersResult.Failed)
                 result.Failed();
