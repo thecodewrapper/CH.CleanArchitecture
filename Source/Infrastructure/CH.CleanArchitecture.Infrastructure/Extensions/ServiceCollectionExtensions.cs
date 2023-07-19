@@ -9,6 +9,7 @@ using CH.CleanArchitecture.Infrastructure.Services;
 using CH.Data.Abstractions;
 using CH.EventStore.EntityFramework.Extensions;
 using CH.Messaging.Abstractions;
+using Hangfire;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -41,9 +42,17 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
             services.AddCommunicationServices();
             services.AddCryptoServices();
             services.AddAuthServices();
+            services.AddScheduledJobs(configuration);
 
             services.AddScoped<IServiceBus, ServiceBusMediator>();
         }
+
+        private static void AddScheduledJobs(this IServiceCollection services, IConfiguration configuration) {
+            services.AddHangfire(x => x.UseSqlServerStorage(configuration.GetConnectionString("ApplicationConnection")));
+            services.AddHangfireServer();
+            services.AddScoped<IScheduledJobService, ScheduledJobService>();
+        }
+
         private static void AddAuthServices(this IServiceCollection services) {
             services.AddScoped<IUserAuthenticationService, UserAuthenticationService>();
             services.AddScoped<IApplicationUserService, ApplicationUserService>();

@@ -50,8 +50,8 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             var appConfigs = _applicationContext.ApplicationConfigurations;
             if (!_applicationContext.ApplicationConfigurations.Any()) {
                 var applicationConfigurations = new ApplicationConfigurationEntity[] {
-                    new ApplicationConfigurationEntity { Id = AppConfigKeys.AUDIT.PURGE_HISTORYTABLE_INTERVAL, Value = "0", Description = "Declares how many days the system keeps the audit history. Set it to 0 if you wish to leave the audit history for ever." },
-                    new ApplicationConfigurationEntity { Id = AppConfigKeys.AUDIT.PURGE_SERVICE_INTERVAL_HOURS, Value = "24", Description = "The interval in hours that the purging of Audit History will get place. Set it to 0 if you actually want to disable the service. Please keep in mind that you must manually restart the maintenance windows service and update the Hangfire job in order for your change to take place." },
+                    new ApplicationConfigurationEntity { Id = AppConfigKeys.AUDIT.PURGE_HISTORYTABLE_INTERVAL_DAYS, Value = "60", Description = "Declares how many days the system keeps the audit history. Set it to 0 if you wish to leave the audit history for ever." },
+                    new ApplicationConfigurationEntity { Id = AppConfigKeys.AUDIT.PURGE_SERVICE_INTERVAL_HOURS, Value = "23", Description = "The interval in hours that the purging of Audit History will get place. Set it to 0 if you actually want to disable the service. Please keep in mind that you must manually restart the maintenance windows service and update the Hangfire job in order for your change to take place." },
                     new ApplicationConfigurationEntity { Id = AppConfigKeys.EMAIL.SMTP_SETTINGS, Value = "smtp.test.com|587|true|false|username|Password", Description = "SMTP settings used to send emails. Please use this format for the configuration value : '{SMTP host Address}|{SMTP host port}|{Enable SSL}|{Use Default Credentials}|Username|Password'." },
                     new ApplicationConfigurationEntity { Id = AppConfigKeys.EMAIL.FROM_ADDRESS, Value = "test@test.com", Description = "The 'From' email address for all emails send through the system" },
                     new ApplicationConfigurationEntity { Id = AppConfigKeys.CRYPTO.JWT_SYMMETRIC_KEY, IsEncrypted = false, Value = "ENTER SYMMETRIC KEY HERE", Description = "The symmetric key to use for JWT signing" },
@@ -59,6 +59,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                     new ApplicationConfigurationEntity { Id = AppConfigKeys.CRYPTO.JWT_AUTHORITY, IsEncrypted = false, Value = "ENTER AUTHORITY HERE", Description = "The issuer for the generated JWT tokens" },
                     new ApplicationConfigurationEntity { Id = AppConfigKeys.SECURITY.GOOGLE_RECAPTCHA_CLIENTKEY, Value = @"{clientKey}", Description = "Use this in the HTML code your site serves to users"},
                     new ApplicationConfigurationEntity { Id = AppConfigKeys.SECURITY.GOOGLE_RECAPTCHA_SECRETKEY, Value = @"{secretKey}", Description = "Use this for communication between the site and Google"},
+                    new ApplicationConfigurationEntity { Id = AppConfigKeys.EVENTSTORE.SNAPSHOT_FREQUENCY, IsEncrypted = false, Value = "50", Description = "The number of events after which a snapshot in the event store will be taken"}
                 };
                 appConfigs.AddRange(applicationConfigurations);
             }

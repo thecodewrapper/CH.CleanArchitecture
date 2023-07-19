@@ -91,7 +91,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
         public async Task<Result<bool>> PurgeHistoryAsync(CancellationToken cancellationToken = default) {
             var serviceResult = new Result<bool>();
             try {
-                int auditPurgeHistoryTableInterval = _appConfigService.GetValueInt(AppConfigKeys.AUDIT.PURGE_HISTORYTABLE_INTERVAL).Unwrap();
+                int auditPurgeHistoryTableInterval = _appConfigService.GetValueInt(AppConfigKeys.AUDIT.PURGE_HISTORYTABLE_INTERVAL_DAYS).Unwrap();
                 if (auditPurgeHistoryTableInterval > 0) {
                     var limitDate = DateTime.Today.AddDays(-auditPurgeHistoryTableInterval);
 

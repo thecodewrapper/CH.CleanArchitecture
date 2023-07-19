@@ -1,4 +1,5 @@
-﻿using CH.CleanArchitecture.Core.Application.Authorization;
+﻿using System;
+using CH.CleanArchitecture.Core.Application.Authorization;
 using CH.CleanArchitecture.Core.Application.Commands;
 using CH.CleanArchitecture.Core.Application.Mappings;
 using CH.CleanArchitecture.Core.Application.Queries;
@@ -50,9 +51,18 @@ namespace CH.CleanArchitecture.Core.Application.Extensions
 
                 #endregion
             });
+        }
 
-            services.AddAuthorizationCore();
+        public static IServiceCollection AddApplicationAuthorization(this IServiceCollection services, Action<AuthorizationOptions> configure = default) {
+            if (configure == null) {
+                services.AddAuthorizationCore();
+            }
+            else {
+                services.AddAuthorizationCore(configure);
+            }
             services.AddAuthorizationPolicies();
+
+            return services;
         }
 
         private static void AddAuthorizationPolicies(this IServiceCollection services) {

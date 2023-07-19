@@ -3,6 +3,7 @@ using Blazored.Modal;
 using Blazored.Toast;
 using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Core.Application.Extensions;
+using CH.CleanArchitecture.Core.Domain;
 using CH.CleanArchitecture.Infrastructure.Resources;
 using CH.CleanArchitecture.Infrastructure.Shared.Culture;
 using CH.CleanArchitecture.Presentation.Framework;
@@ -11,8 +12,9 @@ using CH.CleanArchitecture.Presentation.Framework.Services;
 using CH.CleanArchitecture.Presentation.Web.Extensions;
 using CH.CleanArchitecture.Presentation.Web.Helpers;
 using CH.CleanArchitecture.Presentation.Web.Mappings;
-using CH.CleanArchitecture.Presentation.Web.Middleware;
 using CH.CleanArchitecture.Presentation.Web.Services;
+using Hangfire;
+using Hangfire.Dashboard;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -77,6 +79,15 @@ namespace CH.CleanArchitecture.Presentation.Web
             services.AddScoped<ILocalizationKeyProvider, LocalizationKeyProvider>();
             services.AddScoped<UserHelper>();
             services.AddApplicationLayer();
+
+            //Configure Hangfire dashboard authorization
+            services.AddApplicationAuthorization((options) => options.AddPolicy("HangfireDashboardPolicy", policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.RequireRole(RoleEnum.SuperAdmin.ToString());
+            }));
+
+            services.AddHangfireDashboardAuthorizationFilter();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration) {
@@ -100,6 +111,11 @@ namespace CH.CleanArchitecture.Presentation.Web
             app.UseAuthorization();
             //app.UseMustChangePassword();
 
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                Authorization = new[] { app.ApplicationServices.GetService<IDashboardAuthorizationFilter>() }
+            });
+
             var supportedCultures = new[] { "el", "en" };
             var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])
                 .AddSupportedCultures(supportedCultures)
@@ -115,8 +131,6 @@ namespace CH.CleanArchitecture.Presentation.Web
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapBlazorHub();
             });
-
-
         }
     }
 }

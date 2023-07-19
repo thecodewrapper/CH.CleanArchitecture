@@ -4,7 +4,7 @@
     {
         public static class AUDIT
         {
-            public const string PURGE_HISTORYTABLE_INTERVAL = "AuditPurgeHistoryTableInterval";
+            public const string PURGE_HISTORYTABLE_INTERVAL_DAYS = "AuditPurgeHistoryTableIntervalDays";
             public const string PURGE_SERVICE_INTERVAL_HOURS = "AuditPurgeServiceIntervalHours";
         }
 
@@ -27,6 +27,11 @@
             public const string JWT_SYMMETRIC_KEY = "CryptoJWTSymmetricKey";
             public const string JWT_ISSUER = "CryptoJWTIssuer";
             public const string JWT_AUTHORITY = "CryptoJWTAuthority";
+        }
+
+        public static class EVENTSTORE
+        {
+            public const string SNAPSHOT_FREQUENCY = "EventStoreSnapshotFrequency";
         }
     }
 }

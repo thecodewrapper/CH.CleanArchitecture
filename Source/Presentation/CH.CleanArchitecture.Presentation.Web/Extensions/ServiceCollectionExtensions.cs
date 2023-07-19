@@ -4,11 +4,15 @@ using CH.CleanArchitecture.Common;
 using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Infrastructure.Extensions;
 using CH.CleanArchitecture.Infrastructure.Resources;
+using CH.CleanArchitecture.Presentation.Framework;
 using CH.CleanArchitecture.Presentation.Framework.Services;
 using CH.CleanArchitecture.Presentation.Web.Mappings;
 using CH.CleanArchitecture.Presentation.Web.Services;
 using FluentValidation;
+using Hangfire.Dashboard;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -50,6 +54,16 @@ namespace CH.CleanArchitecture.Presentation.Web.Extensions
 
         private static void AddStorageOptions(this IServiceCollection services, IConfiguration configuration) {
             services.Configure<FileStorageOptions>(x => configuration.GetSection("Storage").Bind(x));
+        }
+
+        internal static void AddHangfireDashboardAuthorizationFilter(this IServiceCollection services) {
+            // Register the HangfireDashboardAuthorizationFilter using a factory method
+            services.AddTransient<IDashboardAuthorizationFilter>(serviceProvider =>
+            {
+                var authorizationService = serviceProvider.GetRequiredService<IAuthorizationService>();
+                var httpContextAccessor = serviceProvider.GetRequiredService<IHttpContextAccessor>();
+                return new HangfireDashboardAuthorizationFilter(authorizationService, httpContextAccessor);
+            });
         }
     }
 }
