@@ -1,18 +1,7 @@
 using System.Reflection;
-using Blazored.Modal;
-using Blazored.Toast;
-using CH.CleanArchitecture.Core.Application;
-using CH.CleanArchitecture.Core.Application.Extensions;
-using CH.CleanArchitecture.Core.Domain;
 using CH.CleanArchitecture.Infrastructure.Resources;
 using CH.CleanArchitecture.Infrastructure.Shared.Culture;
-using CH.CleanArchitecture.Presentation.Framework;
-using CH.CleanArchitecture.Presentation.Framework.Interfaces;
-using CH.CleanArchitecture.Presentation.Framework.Services;
 using CH.CleanArchitecture.Presentation.Web.Extensions;
-using CH.CleanArchitecture.Presentation.Web.Helpers;
-using CH.CleanArchitecture.Presentation.Web.Mappings;
-using CH.CleanArchitecture.Presentation.Web.Services;
 using Hangfire;
 using Hangfire.Dashboard;
 using Microsoft.AspNetCore.Builder;
@@ -52,12 +41,6 @@ namespace CH.CleanArchitecture.Presentation.Web
                 options.DetailedErrors = true;
             });
 
-            services.AddBlazoredToast();
-            services.AddBlazoredModal();
-            services.AddScoped<IModalService, ModalService>();
-            services.AddScoped<IToastService, ToastService>();
-            services.AddScoped<IAuthorizationStateProvider, AuthorizationStateProvider>();
-
             //MVC
             var mvcBuilder = services.AddMvc(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
             mvcBuilder.AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix);
@@ -75,19 +58,7 @@ namespace CH.CleanArchitecture.Presentation.Web
 
             services.AddInfrastructure(Configuration);
 
-            services.AddScoped(typeof(RolesToMultiSelectResolver<>));
-            services.AddScoped<ILocalizationKeyProvider, LocalizationKeyProvider>();
-            services.AddScoped<UserHelper>();
-            services.AddApplicationLayer();
-
-            //Configure Hangfire dashboard authorization
-            services.AddApplicationAuthorization((options) => options.AddPolicy("HangfireDashboardPolicy", policy =>
-            {
-                policy.RequireAuthenticatedUser();
-                policy.RequireRole(RoleEnum.SuperAdmin.ToString());
-            }));
-
-            services.AddHangfireDashboardAuthorizationFilter();
+            services.AddApplication();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration) {

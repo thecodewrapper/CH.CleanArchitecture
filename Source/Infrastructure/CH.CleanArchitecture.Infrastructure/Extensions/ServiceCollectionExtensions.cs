@@ -1,4 +1,5 @@
 ﻿using AutoMapper.Extensions.ExpressionMapping;
+using CH.CleanArchitecture.Common;
 using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Infrastructure.DbContexts;
 using CH.CleanArchitecture.Infrastructure.Identity.Factories;
@@ -38,7 +39,7 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
             });
 
             services.AddSharedServices();
-            services.AddStorageServices();
+            services.AddStorageServices(configuration);
             services.AddCommunicationServices();
             services.AddCryptoServices();
             services.AddAuthServices();
@@ -64,7 +65,8 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
             services.AddScoped<IAuditHistoryService, AuditHistoryService>();
         }
 
-        private static void AddStorageServices(this IServiceCollection services) {
+        private static void AddStorageServices(this IServiceCollection services, IConfiguration configuration) {
+            services.AddStorageOptions(configuration);
             services.AddScoped<IFileStorageService, FileStorageService>();
         }
 
@@ -123,6 +125,10 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
                 options.Password = passwordOptions;
 
             });
+        }
+
+        private static void AddStorageOptions(this IServiceCollection services, IConfiguration configuration) {
+            services.Configure<FileStorageOptions>(x => configuration.GetSection("Storage").Bind(x));
         }
     }
 }

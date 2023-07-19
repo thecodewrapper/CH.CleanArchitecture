@@ -20,7 +20,7 @@ namespace CH.CleanArchitecture.Presentation.Framework
 
             var authorized = _authorizationService.AuthorizeAsync(
                 httpContext.User,
-                "HangfireDashboardPolicy").ConfigureAwait(false).GetAwaiter().GetResult();
+                WebFrameworkConstants.HANGFIRE_DASHBOARD_POLICY_NAME).ConfigureAwait(false).GetAwaiter().GetResult();
 
             return authorized.Succeeded;
         }
