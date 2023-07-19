@@ -22,18 +22,16 @@ namespace CH.CleanArchitecture.Infrastructure.Services
         private readonly IEntityRepository<AuditHistory, int> _auditHistoryRepo;
         private readonly ILogger<AuditHistoryService> _logger;
         private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
 
         #endregion Private Fields
 
         #region Public Constructors
 
-        public AuditHistoryService(IMapper mapper, ILogger<AuditHistoryService> logger, IUnitOfWork unitOfWork, IApplicationConfigurationService appConfigService, IEntityRepository<AuditHistory, int> auditHistoryRepo) {
+        public AuditHistoryService(IMapper mapper, ILogger<AuditHistoryService> logger, IApplicationConfigurationService appConfigService, IEntityRepository<AuditHistory, int> auditHistoryRepo) {
             _mapper = mapper;
             _logger = logger;
             _appConfigService = appConfigService;
             _auditHistoryRepo = auditHistoryRepo;
-            _unitOfWork = unitOfWork;
         }
 
         #endregion Public Constructors
@@ -103,7 +101,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
 
                     _auditHistoryRepo.DeleteRange(entitiesToDelete);
                     if (!cancellationToken.IsCancellationRequested)
-                        await _unitOfWork.SaveChangesAsync(cancellationToken);
+                        await _auditHistoryRepo.UnitOfWork.SaveChangesAsync(cancellationToken);
 
                     serviceResult.Data = true;
                 }
