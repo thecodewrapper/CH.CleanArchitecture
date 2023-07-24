@@ -534,7 +534,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                 //Check for valid 2FA token
                 bool is2faTokenValid = await _userManager.VerifyTwoFactorTokenAsync(user, _userManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode);
                 if (!is2faTokenValid) {
-                    return serviceResult.Fail().WithError("Verification code is invalid.", "Input.Code");
+                    return serviceResult.Fail().WithError("Verification code is invalid.");
                 }
 
                 await _userManager.SetTwoFactorEnabledAsync(user, true);
