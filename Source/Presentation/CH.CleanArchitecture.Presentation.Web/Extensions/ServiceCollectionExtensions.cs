@@ -38,6 +38,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Extensions
             services.AddScoped<INotificationService, NotificationService>();
 
             services.AddScoped<UserHelper>();
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<IUrlHelper>(x =>
             {
                 var actionContext = x.GetRequiredService<IActionContextAccessor>().ActionContext;

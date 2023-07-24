@@ -26,7 +26,7 @@ namespace CH.CleanArchitecture.Core.Application.Commands
             await _orderRepository.AddAsync(order);
             await _orderRepository.UnitOfWork.SaveChangesAsync();
             await _orderRepository.SaveToEventStoreAsync(order); //saving also to event store
-            return new Result().Successful();
+            return new Result().Succeed();
         }
     }
 }

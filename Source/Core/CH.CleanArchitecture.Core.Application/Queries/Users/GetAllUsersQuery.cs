@@ -31,8 +31,8 @@ namespace CH.CleanArchitecture.Core.Application.Queries
 
             var getUsersResult = await _applicationUserService.GetAllUsersAsync(query.Options);
 
-            if (getUsersResult.Failed)
-                result.Failed();
+            if (getUsersResult.IsFailed)
+                result.Fail();
             else {
                 var data = _mapper.Map<IEnumerable<UserReadModel>>(getUsersResult.Data);
 
@@ -41,7 +41,7 @@ namespace CH.CleanArchitecture.Core.Application.Queries
                     data = data.Where(u => u.Roles.Max() <= currentUserHighestRole);
                 }
 
-                result.Successful().WithData(data);
+                result.Succeed().WithData(data);
                 result.AddMetadata("RecordCount", data.Count());
             }
 

@@ -12,7 +12,7 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Commands
             var deactivateUserCommand = new DeactivateUserCommand("unknownUser");
             var result = await ServiceBus.SendAsync(deactivateUserCommand);
 
-            result.Failed.Should().BeTrue();
+            result.IsFailed.Should().BeTrue();
             result.Message.Should().Be("User not found.");
         }
 
@@ -21,7 +21,7 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Commands
             var deactivateUserCommand = new DeactivateUserCommand("inactiveUser");
             var result = await ServiceBus.SendAsync(deactivateUserCommand);
 
-            result.Failed.Should().BeTrue();
+            result.IsFailed.Should().BeTrue();
             result.Message.Should().Be("User is not active.");
         }
 
@@ -30,7 +30,7 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Commands
             var deactivateUserCommand = new DeactivateUserCommand("activeUser");
             var result = await ServiceBus.SendAsync(deactivateUserCommand);
 
-            result.Succeeded.Should().BeTrue();
+            result.IsSuccessful.Should().BeTrue();
         }
 
         [Fact]
@@ -39,7 +39,7 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Commands
             var deactivateUserCommand = new DeactivateUserCommand("throwsException");
             var result = await ServiceBus.SendAsync(deactivateUserCommand);
 
-            result.Succeeded.Should().BeFalse();
+            result.IsSuccessful.Should().BeFalse();
             result.Message.Should().Be("Error while trying to deactivate user.");
             result.Exception.Should().NotBeNull();
         }

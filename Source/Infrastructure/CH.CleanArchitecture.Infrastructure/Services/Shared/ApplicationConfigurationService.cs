@@ -38,7 +38,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
 
                 await _appConfigRepository.AddAsync(_mapper.Map<ApplicationConfigurationEntity>(dto));
                 await _appConfigRepository.UnitOfWork.SaveChangesAsync();
-                serviceResult.Successful();
+                serviceResult.Succeed();
             }
             catch (Exception ex) {
                 ServicesHelper.HandleServiceError(ref serviceResult, _logger, ex, "Error while trying to create application configuration");
@@ -63,7 +63,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                     entity.Value = StringCipherHelper.DecryptWithRandomSalt(entity.Value);
 
                 serviceResult.Data = _mapper.Map<ApplicationConfigurationDTO>(entity);
-                serviceResult.Successful();
+                serviceResult.Succeed();
             }
             catch (Exception ex) {
                 ServicesHelper.HandleServiceError(ref serviceResult, _logger, ex, "Error while trying to retrieve application configuration");
@@ -93,7 +93,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                 //reset the appconfigs in order to refresh on next request
                 _appConfigs = null;
                 _logger.LogDebug($"Application configuration '{dto.Id}' edited succesfully");
-                serviceResult.Successful();
+                serviceResult.Succeed();
             }
             catch (Exception ex) {
                 ServicesHelper.HandleServiceError(ref serviceResult, _logger, ex, "Error while trying to edit application configuration");
@@ -207,8 +207,8 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             var serviceResult = new Result<string[]>();
             try {
                 var valueResult = GetValue(key);
-                if (!valueResult.Succeeded) {
-                    return serviceResult.Failed().WithMessage("Unable to fetch multiple keys from");
+                if (!valueResult.IsSuccessful) {
+                    return serviceResult.Fail().WithMessage("Unable to fetch multiple keys from");
                 }
                 serviceResult.Data = valueResult.Data.Split(delimiter);
             }

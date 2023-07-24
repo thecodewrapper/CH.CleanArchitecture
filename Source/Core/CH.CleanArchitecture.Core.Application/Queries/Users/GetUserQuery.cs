@@ -25,10 +25,10 @@ namespace CH.CleanArchitecture.Core.Application.Queries
             var result = new Result<UserReadModel>();
             var userResult = await _applicationUserService.GetUserByIdAsync(query.Id);
 
-            if (userResult.Failed)
-                result.Failed();
+            if (userResult.IsFailed)
+                result.Fail();
             else
-                result.Successful().WithData(_mapper.Map<UserReadModel>(userResult.Data));
+                result.Succeed().WithData(_mapper.Map<UserReadModel>(userResult.Data));
 
             return result;
         }

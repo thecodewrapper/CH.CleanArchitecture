@@ -63,9 +63,9 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            Result<string> result = await _userAuthenticationService.Login(_mapper.Map<LoginRequestDTO>(loginModel));
+            Result<LoginResponseDTO> result = await _userAuthenticationService.Login(_mapper.Map<LoginRequestDTO>(loginModel));
 
-            if (result.Succeeded) {
+            if (result.IsSuccessful) {
                 var returnUrl = _contextAccessor.HttpContext.Request.Query["ReturnUrl"];
                 if (!string.IsNullOrWhiteSpace(returnUrl))
                     return Redirect(returnUrl);
@@ -113,7 +113,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
 
             var result = await _serviceBus.SendAsync(changePasswordCommand);
 
-            if (result.Failed) {
+            if (result.IsFailed) {
                 _notificationService.ErrorNotification(result.Message);
                 model.Username = _userService.Username;
                 return View(model);

@@ -55,7 +55,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
 
             var result = await _serviceBus.SendAsync(changePasswordCommand);
 
-            if (result.Failed) {
+            if (result.IsFailed) {
                 _notificationService.ErrorNotification(result.Message);
                 return RedirectToAction(nameof(Index), new { t = "changepassword" });
             }

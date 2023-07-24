@@ -54,7 +54,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
             var queryOptions = parameters.ToQueryOptions();
             var usersQuery = await _serviceBus.SendAsync(new GetAllUsersQuery { Options = queryOptions });
 
-            if (usersQuery.Failed) return null;
+            if (usersQuery.IsFailed) return null;
 
             var recordCount = usersQuery.GetMetadata<int>("RecordCount");
             //Returning Json Data  
@@ -85,7 +85,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
 
             var user = await _serviceBus.SendAsync(new GetUserQuery { Id = id.ToString() ?? _userService.UserId });
 
-            if (user.Succeeded)
+            if (user.IsSuccessful)
                 return View(_mapper.Map<UserDetailsModel>(user.Data));
             else {
                 _notificationService.ErrorNotification("Unable to retrieve user.  Please try again");
@@ -117,7 +117,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
 
             Result result = await _serviceBus.SendAsync(_mapper.Map<CreateUserCommand>(createUserModel));
 
-            if (result.Succeeded) {
+            if (result.IsSuccessful) {
                 var returnUrl = _contextAccessor.HttpContext.Request.Query["ReturnUrl"];
                 if (!string.IsNullOrWhiteSpace(returnUrl))
                     return Redirect(returnUrl);
@@ -143,7 +143,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
 
             var user = await _serviceBus.SendAsync(new GetUserQuery { Id = id });
 
-            if (user.Failed || user.Data == null)
+            if (user.IsFailed || user.Data == null)
                 return NotFound();
 
             var userEditModel = _mapper.Map<EditUserViewModel>(user.Data);
@@ -161,7 +161,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
 
             var user = await _serviceBus.SendAsync(new GetUserQuery { Id = id });
 
-            if (user.Failed)
+            if (user.IsFailed)
                 return BadRequest();
 
             if (await HandleUserUpdate(model, user.Data) == false)
@@ -176,20 +176,20 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
                 using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled)) {
                     var updateUserDetailsCommand = _mapper.Map<UpdateUserDetailsCommand>(model);
                     var updateResult = await _serviceBus.SendAsync(updateUserDetailsCommand);
-                    if (updateResult.Failed)
+                    if (updateResult.IsFailed)
                         throw new Exception(updateResult.MessageWithErrors);
 
                     if (user.IsActive != model.IsActive) {
                         var updateStatusResult = model.IsActive
                                 ? await _serviceBus.SendAsync(new ActivateUserCommand(model.Username))
                                 : await _serviceBus.SendAsync(new DeactivateUserCommand(model.Username));
-                        if (updateStatusResult.Failed)
+                        if (updateStatusResult.IsFailed)
                             throw new Exception(updateResult.MessageWithErrors);
                     }
 
                     if (!user.Roles.All(model.Roles.Contains) || user.Roles.Count() != model.Roles.Count()) {
                         var updateRolesResult = await _serviceBus.SendAsync(_mapper.Map<UpdateUserRolesCommand>(model));
-                        if (updateRolesResult.Failed)
+                        if (updateRolesResult.IsFailed)
                             throw new Exception(updateRolesResult.MessageWithErrors);
                     }
 

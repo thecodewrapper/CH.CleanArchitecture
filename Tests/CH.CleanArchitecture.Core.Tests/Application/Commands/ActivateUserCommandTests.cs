@@ -17,7 +17,7 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Commands
 
             var result = await ServiceBus.SendAsync(activateUserCommand);
 
-            result.Failed.Should().BeTrue();
+            result.IsFailed.Should().BeTrue();
             result.Message.Should().Be("User not found.");
         }
 
@@ -26,7 +26,7 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Commands
             var activateUserCommand = new ActivateUserCommand("activeUser");
             var result = await ServiceBus.SendAsync(activateUserCommand);
 
-            result.Failed.Should().BeTrue();
+            result.IsFailed.Should().BeTrue();
             result.Message.Should().Be("User is already active.");
         }
 
@@ -35,7 +35,7 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Commands
             var activateUserCommand = new ActivateUserCommand("inactiveUser");
             var result = await ServiceBus.SendAsync(activateUserCommand);
 
-            result.Succeeded.Should().BeTrue();
+            result.IsSuccessful.Should().BeTrue();
         }
 
         [Fact]
@@ -44,7 +44,7 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Commands
             var activateUserCommand = new ActivateUserCommand("throwsException");
             var result = await ServiceBus.SendAsync(activateUserCommand);
 
-            result.Succeeded.Should().BeFalse();
+            result.IsSuccessful.Should().BeFalse();
             result.Message.Should().Be("Error while trying to activate user.");
             result.Exception.Should().NotBeNull();
         }

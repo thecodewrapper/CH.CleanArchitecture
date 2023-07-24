@@ -30,13 +30,23 @@ namespace CH.CleanArchitecture.Common
             return result;
         }
 
-        public static Result Failed(this Result result) {
-            result.Succeeded = false;
+        /// <summary>
+        /// Marks the <paramref name="result"/> as failed
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public static Result Fail(this Result result) {
+            result.IsSuccessful = false;
             return result;
         }
 
-        public static Result Successful(this Result result) {
-            result.Succeeded = true;
+        /// <summary>
+        /// Marks the <paramref name="result"/> as successful
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public static Result Succeed(this Result result) {
+            result.IsSuccessful = true;
             return result;
         }
 
@@ -70,13 +80,25 @@ namespace CH.CleanArchitecture.Common
             return result;
         }
 
-        public static Result<T> Failed<T>(this Result<T> result) {
-            result.Succeeded = false;
+        /// <summary>
+        /// Marks the <paramref name="result"/> as failed
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public static Result<T> Fail<T>(this Result<T> result) {
+            result.IsSuccessful = false;
             return result;
         }
 
-        public static Result<T> Successful<T>(this Result<T> result) {
-            result.Succeeded = true;
+        /// <summary>
+        /// Marks the <paramref name="result"/> as successful
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public static Result<T> Succeed<T>(this Result<T> result) {
+            result.IsSuccessful = true;
             return result;
         }
 

@@ -33,7 +33,7 @@ namespace CH.CleanArchitecture.Presentation.Web.RazorComponents
 
             var result = await SendRequestAsync(query, ShowLoader);
 
-            if (result.Failed) {
+            if (result.IsFailed) {
                 return;
             }
 

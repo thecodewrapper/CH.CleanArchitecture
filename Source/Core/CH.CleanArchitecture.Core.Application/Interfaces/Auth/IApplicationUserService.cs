@@ -127,25 +127,53 @@ namespace CH.CleanArchitecture.Core.Application
         Task<Result> ConfirmUserEmailAsync(string userId, string code);
 
         /// <summary>
-        /// Return true/false on whether 2FA is enabled for the user specified by <paramref name="username"/>
+        /// Return true/false on whether 2FA is enabled for the user specified by <paramref name="userId"/>
         /// </summary>
-        /// <param name="username"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        Task<Result<bool>> GetTwoFactorEnabledAsync(string username);
+        Task<Result<bool>> GetTwoFactorAuthenticationStatusAsync(string userId);
 
         /// <summary>
-        /// Enables/disables 2FA for the user specified by <paramref name="username"/>
+        /// Enables/disables 2FA for the user specified by <paramref name="userId"/>
         /// </summary>
-        /// <param name="username"></param>
-        /// <param name="enabled"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        Task<Result> SetTwoFactorEnabledAsync(string username, bool enabled);
+        Task<Result> DisableTwoFactorAuthenticationAsync(string userId);
 
         /// <summary>
         /// Retrieves a <see cref="Dictionary{TKey, TValue}"/> of the user's personal data
         /// </summary>
-        /// <param name="username"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        Task<Result<Dictionary<string, string>>> GetUserPersonalDataAsync(string username);
+        Task<Result<Dictionary<string, string>>> GetUserPersonalDataAsync(string userId);
+
+        /// <summary>
+        /// Enables authenticator for the given <paramref name="userId"/>
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<Result> EnableAuthenticatorAsync(string userId, string verificationCode);
+
+        /// <summary>
+        /// Resets the authenticator for the given <paramref name="userId"/>
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<Result> ResetAuthenticatorAsync(string userId);
+
+        /// <summary>
+        /// Returns the authenticator shared key and QR code URI for the given <paramref name="userId"/>
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<Result<(string SharedKey, string AuthenticatorUri)>> GetAuthenticatorSharedKeyAndQrCodeUriAsync(string userId);
+
+        /// <summary>
+        /// Generates <paramref name="numberOfCodesToGenerate"/> 2FA recovery codes for the specified <paramref name="username"/>
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="numberOfCodesToGenerate"></param>
+        /// <returns></returns>
+        Task<Result<IEnumerable<string>>> GenerateTwoFactorRecoveryCodesAsync(string username, int numberOfCodesToGenerate);
     }
 }

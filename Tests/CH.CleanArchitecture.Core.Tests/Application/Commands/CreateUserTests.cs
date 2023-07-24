@@ -24,7 +24,7 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Commands
 
             Result result = await ServiceBus.SendAsync(command);
 
-            result.Succeeded.Should().BeFalse();
+            result.IsSuccessful.Should().BeFalse();
             result.Exception.Should().BeOfType<ArgumentNullException>();
         }
 
@@ -39,7 +39,7 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Commands
 
             Result result = await ServiceBus.SendAsync(command);
 
-            result.Succeeded.Should().BeTrue();
+            result.IsSuccessful.Should().BeTrue();
             result.Exception.Should().BeNull();
         }
     }

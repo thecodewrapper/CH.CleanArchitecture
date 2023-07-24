@@ -21,7 +21,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
             Result result = await _serviceBus.SendAsync(
                 new CreateUserCommand("dev", "Developer User", "dev@dev.dev", "12345678!!", new List<string>() { "SuperAdmin", "Admin" }));
 
-            if (result.Succeeded) {
+            if (result.IsSuccessful) {
                 return RedirectToAction("Index", "Home");
             }
             else {
@@ -32,7 +32,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
         [Route("CreateOrder")]
         public async Task<IActionResult> CreateOrder() {
             Result result = await _serviceBus.SendAsync(new CreateNewOrderCommand("TRACKING NUMBER HERE"));
-            if (result.Succeeded) {
+            if (result.IsSuccessful) {
                 return RedirectToAction("Index", "Home");
             }
             else {
