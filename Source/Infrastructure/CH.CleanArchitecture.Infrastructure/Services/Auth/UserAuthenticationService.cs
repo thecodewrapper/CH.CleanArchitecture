@@ -113,36 +113,24 @@ namespace CH.CleanArchitecture.Infrastructure.Services
         private async Task<Result<LoginResponseDTO>> SignInUser(ApplicationUser applicationUser, LoginRequestDTO loginRequest) {
             var serviceResult = new Result<LoginResponseDTO>();
             var loginResult = await _signInManager.PasswordSignInAsync(applicationUser, loginRequest.Password, loginRequest.RememberMe, false);
-            if (loginResult.Succeeded)
-                serviceResult.Succeed();
-            else
-                serviceResult.Fail();
 
-            serviceResult.WithData(ConstructLoginResponseDTO(applicationUser, loginResult));
+            serviceResult.Succeed().WithData(ConstructLoginResponseDTO(applicationUser, loginResult));
             return serviceResult;
         }
 
         private async Task<Result<LoginResponseDTO>> SignInUser2fa(ApplicationUser applicationUser, Login2FARequest login2faRequest) {
             var serviceResult = new Result<LoginResponseDTO>();
             var loginResult = await _signInManager.TwoFactorAuthenticatorSignInAsync(login2faRequest.Code, login2faRequest.IsPersisted, login2faRequest.RememberClient);
-            if (loginResult.Succeeded)
-                serviceResult.Succeed();
-            else
-                serviceResult.Fail();
 
-            serviceResult.WithData(ConstructLoginResponseDTO(applicationUser, loginResult));
+            serviceResult.Succeed().WithData(ConstructLoginResponseDTO(applicationUser, loginResult));
             return serviceResult;
         }
 
         private async Task<Result<LoginResponseDTO>> SignInUserRecoveryCode(ApplicationUser applicationUser, Login2FARequest login2faRequest) {
             var serviceResult = new Result<LoginResponseDTO>();
             var loginResult = await _signInManager.TwoFactorRecoveryCodeSignInAsync(login2faRequest.Code);
-            if (loginResult.Succeeded)
-                serviceResult.Succeed();
-            else
-                serviceResult.Fail();
 
-            serviceResult.WithData(ConstructLoginResponseDTO(applicationUser, loginResult));
+            serviceResult.Succeed().WithData(ConstructLoginResponseDTO(applicationUser, loginResult));
             return serviceResult;
         }
 
