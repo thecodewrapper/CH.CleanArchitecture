@@ -10,6 +10,8 @@ namespace CH.CleanArchitecture.Infrastructure.EntityTypeConfigurations
         public void Configure(EntityTypeBuilder<OrderEntity> builder) {
             builder.ToTable("Orders", ApplicationDbContext.DOMAIN_SCHEMA);
             builder.Property(o => o.TotalAmount).IsRequired();
+            builder.HasOne(o => o.BillingAddress);
+            builder.HasOne(o => o.ShippingAddress);
             builder.HasMany(o => o.OrderItems).WithOne(oi => oi.Order).HasForeignKey(o => o.OrderId).OnDelete(DeleteBehavior.Cascade);
         }
     }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
 {
     [DbContext(typeof(IdentityDbContext))]
-    [Migration("20230725113317_InitialMigration")]
+    [Migration("20230725115250_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -62,7 +62,7 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
 
                     b.HasKey("Id");
 
-                    b.ToTable("Addresses", "Identity");
+                    b.ToTable("UserAddresses", "Identity");
                 });
 
             modelBuilder.Entity("CH.CleanArchitecture.Infrastructure.Models.ApplicationRole", b =>

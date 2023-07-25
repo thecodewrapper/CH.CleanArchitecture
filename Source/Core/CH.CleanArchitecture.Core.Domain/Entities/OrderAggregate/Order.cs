@@ -13,7 +13,9 @@ namespace CH.CleanArchitecture.Core.Domain.Entities.OrderAggregate
     {
         private List<OrderItem> _orderItems = new List<OrderItem>();
 
-        public Address Address { get; private set; }
+        public Address BillingAddress { get; private set; }
+        public Address ShippingAddress { get; private set; }
+
         public IReadOnlyCollection<OrderItem> OrderItems { get { return _orderItems.AsReadOnly(); } private set { _orderItems = value.ToList(); } }
         public decimal TotalAmount => _orderItems.Sum(oi => oi.ProductPrice * oi.Quantity);
         public string TrackingNumber { get; private set; }

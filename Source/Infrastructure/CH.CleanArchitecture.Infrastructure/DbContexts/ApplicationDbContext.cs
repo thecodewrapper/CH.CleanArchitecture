@@ -45,7 +45,7 @@ namespace CH.CleanArchitecture.Infrastructure.DbContexts
             builder.ApplyConfiguration(new OrderItemEntityConfiguration());
 
             //Addresses
-            builder.ApplyConfiguration(new AddressEntityConfiguration(DOMAIN_SCHEMA));
+            builder.ApplyConfiguration(new AddressEntityConfiguration("Addresses", DOMAIN_SCHEMA));
         }
 
         /// <summary>

@@ -87,7 +87,8 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Application
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TrackingNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    AddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    BillingAddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ShippingAddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateModified = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -97,8 +98,14 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Application
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Orders_Addresses_AddressId",
-                        column: x => x.AddressId,
+                        name: "FK_Orders_Addresses_BillingAddressId",
+                        column: x => x.BillingAddressId,
+                        principalSchema: "Domain",
+                        principalTable: "Addresses",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Orders_Addresses_ShippingAddressId",
+                        column: x => x.ShippingAddressId,
                         principalSchema: "Domain",
                         principalTable: "Addresses",
                         principalColumn: "Id");
@@ -138,10 +145,16 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Application
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_AddressId",
+                name: "IX_Orders_BillingAddressId",
                 schema: "Domain",
                 table: "Orders",
-                column: "AddressId");
+                column: "BillingAddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_ShippingAddressId",
+                schema: "Domain",
+                table: "Orders",
+                column: "ShippingAddressId");
         }
 
         /// <inheritdoc />

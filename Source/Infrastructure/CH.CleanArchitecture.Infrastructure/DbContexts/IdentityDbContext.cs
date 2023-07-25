@@ -13,12 +13,14 @@ namespace CH.CleanArchitecture.Infrastructure.DbContexts
         ApplicationUserRole, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>,
         IUnitOfWork
     {
+        private const string SCHEMA = "Identity";
+
         public IdentityDbContext(DbContextOptions<IdentityDbContext> options) : base(options) {
         }
 
         protected override void OnModelCreating(ModelBuilder builder) {
             base.OnModelCreating(builder);
-            builder.HasDefaultSchema("Identity");
+            builder.HasDefaultSchema(SCHEMA);
             builder.ApplyConfiguration(new ApplicationUserConfiguration());
             builder.ApplyConfiguration(new ApplicationRoleConfiguration());
             builder.ApplyConfiguration(new ApplicationUserRoleConfiguration());
@@ -26,7 +28,7 @@ namespace CH.CleanArchitecture.Infrastructure.DbContexts
             builder.ApplyConfiguration(new RoleClaimsConfiguration());
             builder.ApplyConfiguration(new UserLoginsConfiguration());
             builder.ApplyConfiguration(new UserTokensConfiguration());
-            builder.ApplyConfiguration(new AddressEntityConfiguration("Identity"));
+            builder.ApplyConfiguration(new AddressEntityConfiguration("UserAddresses", SCHEMA));
         }
     }
 }

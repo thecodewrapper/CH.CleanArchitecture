@@ -59,7 +59,7 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
 
                     b.HasKey("Id");
 
-                    b.ToTable("Addresses", "Identity");
+                    b.ToTable("UserAddresses", "Identity");
                 });
 
             modelBuilder.Entity("CH.CleanArchitecture.Infrastructure.Models.ApplicationRole", b =>

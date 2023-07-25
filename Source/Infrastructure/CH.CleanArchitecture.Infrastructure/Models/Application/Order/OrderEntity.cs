@@ -19,7 +19,8 @@ namespace CH.CleanArchitecture.Infrastructure.Models
         /// </summary>
         public decimal TotalAmount { get; set; }
 
-        public AddressEntity Address { get; set; }
+        public AddressEntity BillingAddress { get; set; }
+        public AddressEntity ShippingAddress { get; set; }
 
         /// <summary>
         /// Navigation property for the order's item

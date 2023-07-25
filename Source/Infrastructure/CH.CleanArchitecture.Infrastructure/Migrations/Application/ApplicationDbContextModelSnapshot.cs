@@ -138,7 +138,7 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Application
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AddressId")
+                    b.Property<Guid?>("BillingAddressId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CreatedBy")
@@ -153,6 +153,9 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Application
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("ShippingAddressId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(18,2)");
 
@@ -161,7 +164,9 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Application
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
+                    b.HasIndex("BillingAddressId");
+
+                    b.HasIndex("ShippingAddressId");
 
                     b.ToTable("Orders", "Domain");
                 });
@@ -206,11 +211,17 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Application
 
             modelBuilder.Entity("CH.CleanArchitecture.Infrastructure.Models.OrderEntity", b =>
                 {
-                    b.HasOne("CH.CleanArchitecture.Infrastructure.Models.AddressEntity", "Address")
+                    b.HasOne("CH.CleanArchitecture.Infrastructure.Models.AddressEntity", "BillingAddress")
                         .WithMany()
-                        .HasForeignKey("AddressId");
+                        .HasForeignKey("BillingAddressId");
 
-                    b.Navigation("Address");
+                    b.HasOne("CH.CleanArchitecture.Infrastructure.Models.AddressEntity", "ShippingAddress")
+                        .WithMany()
+                        .HasForeignKey("ShippingAddressId");
+
+                    b.Navigation("BillingAddress");
+
+                    b.Navigation("ShippingAddress");
                 });
 
             modelBuilder.Entity("CH.CleanArchitecture.Infrastructure.Models.OrderItemEntity", b =>
