@@ -43,6 +43,7 @@
 
   <ItemGroup>
     <Folder Include="Migrations\Application\" />
+    <Folder Include="Migrations\Identity\" />
   </ItemGroup>
 
 </Project>

@@ -12,17 +12,18 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CH.CleanArchitecture.Infrastructure.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220619220722_AddedOrderEntities")]
-    partial class AddedOrderEntities
+    [Migration("20230725102303_InitialMigration")]
+    partial class InitialMigration
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.6")
+                .HasAnnotation("ProductVersion", "7.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("CH.CleanArchitecture.Infrastructure.Auditing.AuditHistory", b =>
                 {
@@ -30,7 +31,7 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Application
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Changed")
                         .HasColumnType("nvarchar(max)");
@@ -58,6 +59,45 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Application
                     b.HasKey("Id");
 
                     b.ToTable("AuditHistory", "Audit");
+                });
+
+            modelBuilder.Entity("CH.CleanArchitecture.Infrastructure.Models.AddressEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("newsequentialid()");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Line1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Line2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Postcode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Addresses", "Domain");
                 });
 
             modelBuilder.Entity("CH.CleanArchitecture.Infrastructure.Models.ApplicationConfigurationEntity", b =>
@@ -101,20 +141,8 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Application
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("AddressCity")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AddressCountry")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AddressLine1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AddressLine2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AddressPostcode")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("AddressId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -135,6 +163,8 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Application
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
 
                     b.ToTable("Orders", "Domain");
                 });
@@ -175,6 +205,15 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Application
                     b.HasIndex("OrderId");
 
                     b.ToTable("OrderItems", "Domain");
+                });
+
+            modelBuilder.Entity("CH.CleanArchitecture.Infrastructure.Models.OrderEntity", b =>
+                {
+                    b.HasOne("CH.CleanArchitecture.Infrastructure.Models.AddressEntity", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
+                    b.Navigation("Address");
                 });
 
             modelBuilder.Entity("CH.CleanArchitecture.Infrastructure.Models.OrderItemEntity", b =>

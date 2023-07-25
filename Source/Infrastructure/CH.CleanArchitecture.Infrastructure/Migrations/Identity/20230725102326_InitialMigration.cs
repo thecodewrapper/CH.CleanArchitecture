@@ -5,11 +5,35 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
 {
-    public partial class InitialMigration_Identity : Migration
+    /// <inheritdoc />
+    public partial class InitialMigration : Migration
     {
-        protected override void Up(MigrationBuilder migrationBuilder) {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
             migrationBuilder.EnsureSchema(
                 name: "Identity");
+
+            migrationBuilder.CreateTable(
+                name: "AddressEntity",
+                schema: "Identity",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Line1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Line2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Postcode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateModified = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AddressEntity", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Roles",
@@ -33,6 +57,7 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SecondaryPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProfilePictureResourceId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
@@ -40,6 +65,7 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
                     Theme = table.Column<byte>(type: "tinyint", nullable: false),
                     Culture = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UICulture = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -58,6 +84,12 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_AddressEntity_AddressId",
+                        column: x => x.AddressId,
+                        principalSchema: "Identity",
+                        principalTable: "AddressEntity",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -216,6 +248,12 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Users_AddressId",
+                schema: "Identity",
+                table: "Users",
+                column: "AddressId");
+
+            migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
                 schema: "Identity",
                 table: "Users",
@@ -224,7 +262,9 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
                 filter: "[NormalizedUserName] IS NOT NULL");
         }
 
-        protected override void Down(MigrationBuilder migrationBuilder) {
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
             migrationBuilder.DropTable(
                 name: "RoleClaims",
                 schema: "Identity");
@@ -251,6 +291,10 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
 
             migrationBuilder.DropTable(
                 name: "Users",
+                schema: "Identity");
+
+            migrationBuilder.DropTable(
+                name: "AddressEntity",
                 schema: "Identity");
         }
     }

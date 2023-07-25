@@ -19,30 +19,7 @@ namespace CH.CleanArchitecture.Infrastructure.Models
         /// </summary>
         public decimal TotalAmount { get; set; }
 
-        /// <summary>
-        /// Address line 1
-        /// </summary>
-        public string AddressLine1 { get; set; }
-
-        /// <summary>
-        /// Address line 2
-        /// </summary>
-        public string AddressLine2 { get; set; }
-
-        /// <summary>
-        /// Address City
-        /// </summary>
-        public string AddressCity { get; set; }
-
-        /// <summary>
-        /// Address post code
-        /// </summary>
-        public string AddressPostcode { get; set; }
-
-        /// <summary>
-        /// Address country
-        /// </summary>
-        public string AddressCountry { get; set; }
+        public AddressEntity Address { get; set; }
 
         /// <summary>
         /// Navigation property for the order's item

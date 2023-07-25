@@ -19,7 +19,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
         [Route("CreateUser")]
         public async Task<IActionResult> CreateUser() {
             Result result = await _serviceBus.SendAsync(
-                new CreateUserCommand("dev", "Developer User", "dev@dev.dev", "12345678!!", new List<string>() { "SuperAdmin", "Admin" }));
+                new CreateUserCommand("dev", "Developer User", "surname", "dev@dev.dev", "12345678!!", new List<string>() { "SuperAdmin", "Admin" }));
 
             if (result.IsSuccessful) {
                 return RedirectToAction("Index", "Home");

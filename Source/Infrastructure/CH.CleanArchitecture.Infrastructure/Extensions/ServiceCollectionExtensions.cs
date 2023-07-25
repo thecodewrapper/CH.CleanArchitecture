@@ -29,7 +29,6 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
                 o.UseInMemoryDatabase = configuration.GetValue<bool>("UseInMemoryDatabase");
                 o.ConnectionStringSQL = configuration.GetConnectionString("ApplicationConnection");
             });
-            services.AddScoped<OrderAddressResolver>();
             services.AddAutoMapper(config =>
             {
                 config.AddExpressionMapping();

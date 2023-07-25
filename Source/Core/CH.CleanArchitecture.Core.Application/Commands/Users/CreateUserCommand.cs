@@ -6,7 +6,7 @@ using CH.Messaging.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Application.Commands
 {
-    public record CreateUserCommand(string Username, string Name, string Email, string Password, List<string> Roles) : IRequest<Result>
+    public record CreateUserCommand(string Username, string Name, string Surname, string Email, string Password, List<string> Roles) : IRequest<Result>
     {
     }
 
@@ -22,7 +22,7 @@ namespace CH.CleanArchitecture.Core.Application.Commands
         }
 
         public async override Task<Result> HandleAsync(CreateUserCommand command) {
-            var user = new User(command.Username, command.Email, command.Name);
+            var user = new User(command.Username, command.Email, command.Name, command.Surname);
             return await _applicationUserService.CreateUserAsync(user, command.Password, command.Roles, true);
         }
     }

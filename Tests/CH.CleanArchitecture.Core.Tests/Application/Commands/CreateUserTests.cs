@@ -18,6 +18,7 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Commands
             var command = new CreateUserCommand(
                 "testUser",
                 "testName",
+                "testSurname",
                 "test@test.com",
                 null,
                 null);
@@ -32,6 +33,7 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Commands
         public async Task CreateUser_WhenRequestIsValid_ShouldSucceed() {
             var command = new CreateUserCommand(
                 "testUser",
+                Guid.NewGuid().ToString("N"),
                 Guid.NewGuid().ToString("N"),
                  "test@test.com",
                 "test test",

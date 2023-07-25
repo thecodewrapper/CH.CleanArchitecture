@@ -67,7 +67,7 @@ namespace CH.CleanArchitecture.Core.Application.Extensions
 
         private static void AddAuthorizationPolicies(this IServiceCollection services) {
             services.AddSingleton<IAuthorizationPolicyProvider, CustomAuthorizationPolicyProvider>();
-            services.AddScoped<IAuthorizationHandler, UserOperationAuthorizationHandler>();
+            services.AddTransient<IAuthorizationHandler, UserOperationAuthorizationHandler>();
         }
     }
 }
