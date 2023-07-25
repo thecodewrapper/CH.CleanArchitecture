@@ -67,6 +67,8 @@ namespace CH.CleanArchitecture.Core.Application.Extensions
 
         private static void AddAuthorizationPolicies(this IServiceCollection services) {
             services.AddSingleton<IAuthorizationPolicyProvider, CustomAuthorizationPolicyProvider>();
+
+            //Known issue in .NET7 prevents IAuthorizationHandler from being registered as scoped
             services.AddTransient<IAuthorizationHandler, UserOperationAuthorizationHandler>();
         }
     }
