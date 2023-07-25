@@ -1,6 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using CH.CleanArchitecture.Core.Application;
-using CH.CleanArchitecture.Infrastructure.Identity;
+using CH.CleanArchitecture.Infrastructure.EntityTypeConfigurations;
 using CH.CleanArchitecture.Infrastructure.Models;
 using CH.Data.Abstractions;
 using Microsoft.AspNetCore.Identity;
@@ -27,6 +26,7 @@ namespace CH.CleanArchitecture.Infrastructure.DbContexts
             builder.ApplyConfiguration(new RoleClaimsConfiguration());
             builder.ApplyConfiguration(new UserLoginsConfiguration());
             builder.ApplyConfiguration(new UserTokensConfiguration());
+            builder.ApplyConfiguration(new AddressEntityConfiguration("Identity"));
         }
     }
 }

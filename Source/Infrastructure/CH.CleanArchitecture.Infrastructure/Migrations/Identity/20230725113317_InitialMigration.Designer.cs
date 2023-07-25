@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
 {
     [DbContext(typeof(IdentityDbContext))]
-    [Migration("20230725102326_InitialMigration")]
+    [Migration("20230725113317_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -30,7 +30,8 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("newsequentialid()");
 
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
@@ -61,7 +62,7 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
 
                     b.HasKey("Id");
 
-                    b.ToTable("AddressEntity", "Identity");
+                    b.ToTable("Addresses", "Identity");
                 });
 
             modelBuilder.Entity("CH.CleanArchitecture.Infrastructure.Models.ApplicationRole", b =>

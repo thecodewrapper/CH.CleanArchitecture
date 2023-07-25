@@ -15,11 +15,11 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
                 name: "Identity");
 
             migrationBuilder.CreateTable(
-                name: "AddressEntity",
+                name: "Addresses",
                 schema: "Identity",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "newsequentialid()"),
                     Line1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Line2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -32,7 +32,7 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AddressEntity", x => x.Id);
+                    table.PrimaryKey("PK_Addresses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -85,10 +85,10 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_AddressEntity_AddressId",
+                        name: "FK_Users_Addresses_AddressId",
                         column: x => x.AddressId,
                         principalSchema: "Identity",
-                        principalTable: "AddressEntity",
+                        principalTable: "Addresses",
                         principalColumn: "Id");
                 });
 
@@ -294,7 +294,7 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
                 schema: "Identity");
 
             migrationBuilder.DropTable(
-                name: "AddressEntity",
+                name: "Addresses",
                 schema: "Identity");
         }
     }

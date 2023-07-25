@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CH.CleanArchitecture.Infrastructure.Identity
+namespace CH.CleanArchitecture.Infrastructure.EntityTypeConfigurations
 {
     internal class ApplicationUserRoleConfiguration : IEntityTypeConfiguration<ApplicationUserRole>
     {

@@ -2,7 +2,7 @@
 using CH.CleanArchitecture.Common;
 using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Infrastructure.DbContexts;
-using CH.CleanArchitecture.Infrastructure.Identity.Factories;
+using CH.CleanArchitecture.Infrastructure.Factories;
 using CH.CleanArchitecture.Infrastructure.Mappings;
 using CH.CleanArchitecture.Infrastructure.Models;
 using CH.CleanArchitecture.Infrastructure.Repositories;

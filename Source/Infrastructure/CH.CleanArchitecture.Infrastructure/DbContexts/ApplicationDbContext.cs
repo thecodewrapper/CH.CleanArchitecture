@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Infrastructure.Auditing;
+using CH.CleanArchitecture.Infrastructure.EntityTypeConfigurations;
 using CH.CleanArchitecture.Infrastructure.Models;
 using CH.Data.Abstractions;
 using Microsoft.EntityFrameworkCore;
@@ -14,8 +15,8 @@ namespace CH.CleanArchitecture.Infrastructure.DbContexts
     public class ApplicationDbContext : DbContext, IUnitOfWork
     {
         private readonly IAuthenticatedUserService _authenticatedUser;
-        private const string CONFIG_SCHEMA = "Config";
-        private const string DOMAIN_SCHEMA = "Domain";
+        public const string CONFIG_SCHEMA = "Config";
+        public const string DOMAIN_SCHEMA = "Domain";
         public DbSet<ApplicationConfigurationEntity> ApplicationConfigurations { get; set; }
 
         public DbSet<OrderEntity> Orders { get; set; }
@@ -35,35 +36,16 @@ namespace CH.CleanArchitecture.Infrastructure.DbContexts
             builder.EnableAuditHistory();
 
             //Application Configurations
-            builder.Entity<ApplicationConfigurationEntity>().ToTable("ApplicationConfigurations", CONFIG_SCHEMA);
-            builder.Entity<ApplicationConfigurationEntity>(ac =>
-            {
-                ac.Property(e => e.Id).HasMaxLength(256);
-                ac.Property(e => e.Value).IsRequired().HasMaxLength(512);
-                ac.Property(e => e.Description).HasMaxLength(1024);
-            });
+            builder.ApplyConfiguration(new ApplicationConfigurationEntityConfiguration());
 
             //Orders
-            builder.Entity<OrderEntity>().ToTable("Orders", DOMAIN_SCHEMA);
-            builder.Entity<OrderEntity>(o =>
-            {
-                o.Property(o => o.TotalAmount).IsRequired();
-                o.HasMany(o => o.OrderItems).WithOne(oi => oi.Order).HasForeignKey(o => o.OrderId).OnDelete(DeleteBehavior.Cascade);
-            });
+            builder.ApplyConfiguration(new OrderEntityConfiguration());
 
             //Order items
-            builder.Entity<OrderItemEntity>().ToTable("OrderItems", DOMAIN_SCHEMA);
-            builder.Entity<OrderItemEntity>(oi =>
-            {
-                oi.Property(oi => oi.Quantity).IsRequired();
-                oi.Property(oi => oi.ProductName).IsRequired();
-                oi.Property(oi => oi.ProductPrice).IsRequired();
-            });
+            builder.ApplyConfiguration(new OrderItemEntityConfiguration());
 
             //Addresses
-            var addresses = builder.Entity<AddressEntity>();
-            addresses.ToTable("Addresses", DOMAIN_SCHEMA);
-            addresses.Property(a => a.Id).HasDefaultValueSql("newsequentialid()");
+            builder.ApplyConfiguration(new AddressEntityConfiguration(DOMAIN_SCHEMA));
         }
 
         /// <summary>
