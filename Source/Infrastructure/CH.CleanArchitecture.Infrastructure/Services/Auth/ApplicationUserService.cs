@@ -288,7 +288,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
         public async Task<Result<User>> GetUserByEmailAsync(string email) {
             var serviceResult = new Result<User>();
             try {
-                ApplicationUser user = await _userManager.FindByEmailAsync(email);
+                ApplicationUser user = await _userManager.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email == email);
                 if (user != null) {
                     serviceResult.Data = _mapper.Map<User>(user);
                 }
@@ -305,7 +305,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
         public async Task<Result<User>> GetUserByNameAsync(string username) {
             var serviceResult = new Result<User>();
             try {
-                ApplicationUser user = await _userManager.FindByNameAsync(username);
+                ApplicationUser user = await _userManager.Users.AsNoTracking().FirstOrDefaultAsync(u => u.UserName == username);
                 if (user != null) {
                     serviceResult.Data = _mapper.Map<User>(user);
                 }
