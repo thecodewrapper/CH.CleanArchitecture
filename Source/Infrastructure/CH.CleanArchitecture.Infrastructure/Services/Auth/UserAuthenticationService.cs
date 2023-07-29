@@ -135,13 +135,17 @@ namespace CH.CleanArchitecture.Infrastructure.Services
         }
 
         private LoginResponseDTO ConstructLoginResponseDTO(ApplicationUser user, SignInResult signInResult) {
-            return new LoginResponseDTO()
+            var response = new LoginResponseDTO()
             {
                 User = user.UserName,
                 Success = signInResult.Succeeded,
                 IsLockedOut = signInResult.IsLockedOut,
-                Requires2FA = signInResult.RequiresTwoFactor
+                Requires2FA = signInResult.RequiresTwoFactor,
+                IsNotAllowed = signInResult.IsNotAllowed
             };
+
+            _logger.LogDebug($"Returning {nameof(LoginResponseDTO)}. {response}");
+            return response;
         }
     }
 }
