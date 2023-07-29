@@ -83,19 +83,20 @@ namespace CH.CleanArchitecture.Core.Application
         /// <summary>
         /// Changes a user's password
         /// </summary>
-        /// <param name="username"></param>
-        /// <param name="password"></param>
+        /// <param name="userId"></param>
+        /// <param name="oldPassword"></param>
+        /// <param name="newPassword"></param>
         /// <returns></returns>
-        Task<Result> ChangePasswordAsync(string username, string oldPassword, string newPassword);
+        Task<Result> ChangePasswordAsync(string userId, string oldPassword, string newPassword);
 
         /// <summary>
         /// Resets a user's password
         /// </summary>
-        /// <param name="username">The username</param>
+        /// <param name="userId">The username</param>
         /// <param name="token">The password reset token</param>
         /// <param name="password">The new password</param>
         /// <returns></returns>
-        Task<Result> ResetPasswordAsync(string username, string token, string password);
+        Task<Result> ResetPasswordAsync(string userId, string token, string password);
 
         /// <summary>
         /// Updates the user details

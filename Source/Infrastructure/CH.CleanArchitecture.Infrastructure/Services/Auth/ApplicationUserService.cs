@@ -25,13 +25,11 @@ namespace CH.CleanArchitecture.Infrastructure.Services
     {
         private readonly ILogger<ApplicationUserService> _logger;
         private readonly IMapper _mapper;
-        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly UrlEncoder _urlEncoder;
         private const string AUTHENTICATOR_URI_FORMAT = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
 
-        public ApplicationUserService(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ILogger<ApplicationUserService> logger, IMapper mapper, UrlEncoder urlEncoder) {
-            _signInManager = signInManager;
+        public ApplicationUserService(UserManager<ApplicationUser> userManager, ILogger<ApplicationUserService> logger, IMapper mapper, UrlEncoder urlEncoder) {
             _userManager = userManager;
             _logger = logger;
             _mapper = mapper;
@@ -179,12 +177,12 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             return serviceResult;
         }
 
-        public async Task<Result> ChangePasswordAsync(string username, string oldPassword, string newPassword) {
+        public async Task<Result> ChangePasswordAsync(string userId, string oldPassword, string newPassword) {
             var serviceResult = new Result();
             try {
-                _logger.LogInformation($"Changing password for user '{username}'");
+                _logger.LogInformation($"Changing password for user '{userId}'");
 
-                var applicationUser = await _userManager.FindByNameAsync(username);
+                var applicationUser = await _userManager.FindByIdAsync(userId);
                 if (applicationUser == null) {
                     return serviceResult.Fail().WithMessage("User not found.");
                 }
@@ -195,13 +193,12 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                     foreach (var error in changePasswordResult.Errors) {
                         serviceResult.AddError(error.Description, error.Code);
                     }
-                    _logger.LogWarning($"Unable to change password for user '{username}'");
+                    _logger.LogWarning($"Unable to change password for user '{userId}'");
                     return serviceResult.WithMessage("Unable to change user password");
                 }
 
-                await _signInManager.RefreshSignInAsync(applicationUser);
                 serviceResult.Succeed();
-                _logger.LogInformation($"Password changed succesfully for user '{username}'");
+                _logger.LogInformation($"Password changed succesfully for user '{userId}'");
             }
             catch (Exception ex) {
                 ServicesHelper.HandleServiceError(ref serviceResult, _logger, ex, "Error while trying to change user password.");
@@ -210,12 +207,12 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             return serviceResult;
         }
 
-        public async Task<Result> ResetPasswordAsync(string username, string token, string password) {
+        public async Task<Result> ResetPasswordAsync(string userId, string token, string password) {
             var serviceResult = new Result();
             try {
-                _logger.LogInformation($"Reseting password for user '{username}'");
+                _logger.LogInformation($"Reseting password for user '{userId}'");
 
-                var applicationUser = await _userManager.FindByNameAsync(username);
+                var applicationUser = await _userManager.FindByIdAsync(userId);
                 if (applicationUser == null) {
                     return serviceResult.Fail().WithMessage("User not found.");
                 }
@@ -226,12 +223,12 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                     foreach (var error in resetPasswordResult.Errors) {
                         serviceResult.AddError(error.Description, error.Code);
                     }
-                    _logger.LogWarning($"Unable to reset password for user '{username}'");
+                    _logger.LogWarning($"Unable to reset password for user '{userId}'");
                     return serviceResult.WithMessage("Unable to reset user password");
                 }
 
                 serviceResult.Succeed();
-                _logger.LogInformation($"Password reset succesfully for user '{username}'");
+                _logger.LogInformation($"Password reset succesfully for user '{userId}'");
             }
             catch (Exception ex) {
                 ServicesHelper.HandleServiceError(ref serviceResult, _logger, ex, "Error while trying to reset user password.");
@@ -554,8 +551,6 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                 var user = await _userManager.FindByIdAsync(userId);
                 await _userManager.SetTwoFactorEnabledAsync(user, false);
                 await _userManager.ResetAuthenticatorKeyAsync(user);
-
-                await _signInManager.RefreshSignInAsync(user);
 
                 return serviceResult.Succeed();
             }
