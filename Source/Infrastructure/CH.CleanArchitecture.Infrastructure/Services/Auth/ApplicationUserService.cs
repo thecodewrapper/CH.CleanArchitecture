@@ -560,6 +560,24 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             return serviceResult;
         }
 
+        public async Task<Result<string>> GetAuthenticatorKeyAsync(string userId) {
+            Result<string> serviceResult = new();
+            try {
+                _logger.LogInformation($"Retrieving authenticator key for user '{userId}'");
+
+                var user = await _userManager.FindByIdAsync(userId);
+                // Load the authenticator key & QR code URI to display on the form
+                string authKey = await _userManager.GetAuthenticatorKeyAsync(user);
+                serviceResult.Succeed().WithData(authKey);
+
+                _logger.LogInformation($"Returning authenticator key  for user '{userId}'");
+            }
+            catch (Exception ex) {
+                ServicesHelper.HandleServiceError(ref serviceResult, _logger, ex, "Error while trying to get authenticator key for user.");
+            }
+            return serviceResult;
+        }
+
         public async Task<Result<(string SharedKey, string AuthenticatorUri)>> GetAuthenticatorSharedKeyAndQrCodeUriAsync(string userId) {
             Result<(string SharedKey, string AuthenticatorUri)> serviceResult = new();
             try {

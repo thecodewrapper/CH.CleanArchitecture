@@ -163,6 +163,13 @@ namespace CH.CleanArchitecture.Core.Application
         Task<Result> ResetAuthenticatorAsync(string userId);
 
         /// <summary>
+        /// Returns the authenticator key for the given <paramref name="userId"/>
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<Result<string>> GetAuthenticatorKeyAsync(string userId);
+
+        /// <summary>
         /// Returns the authenticator shared key and QR code URI for the given <paramref name="userId"/>
         /// </summary>
         /// <param name="userId"></param>
