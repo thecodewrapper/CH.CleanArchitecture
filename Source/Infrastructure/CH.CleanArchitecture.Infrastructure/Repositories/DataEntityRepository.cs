@@ -99,7 +99,7 @@ namespace CH.CleanArchitecture.Infrastructure.Repositories
 
         public void Update(T entity) {
             Guard.Against.Null(entity, nameof(entity));
-            _entities.Update(entity);
+            _context.Entry(entity).CurrentValues.SetValues(entity);
         }
 
         public void UpdateRange(IEnumerable<T> entities) {

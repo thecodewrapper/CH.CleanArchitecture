@@ -48,8 +48,11 @@ namespace CH.CleanArchitecture.Infrastructure.Auditing
                     case EntityState.Modified:
                         history.RowId = entry.PrimaryKey();
                         history.Kind = EntityState.Modified;
-                        history.AutoHistoryDetails.OldValues.Add(propertyName, prop.OriginalValue);
-                        history.AutoHistoryDetails.NewValues.Add(propertyName, prop.CurrentValue);
+                        if (prop.IsModified) {
+                            history.AutoHistoryDetails.OldValues.Add(propertyName, prop.OriginalValue);
+                            history.AutoHistoryDetails.NewValues.Add(propertyName, prop.CurrentValue);
+                        }
+
                         break;
 
                     case EntityState.Deleted:
