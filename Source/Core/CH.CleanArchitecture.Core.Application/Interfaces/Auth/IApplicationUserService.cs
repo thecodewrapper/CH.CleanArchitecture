@@ -177,11 +177,11 @@ namespace CH.CleanArchitecture.Core.Application
         Task<Result<(string SharedKey, string AuthenticatorUri)>> GetAuthenticatorSharedKeyAndQrCodeUriAsync(string userId);
 
         /// <summary>
-        /// Generates <paramref name="numberOfCodesToGenerate"/> 2FA recovery codes for the specified <paramref name="username"/>
+        /// Generates <paramref name="numberOfCodesToGenerate"/> 2FA recovery codes for the specified <paramref name="userId"/>
         /// </summary>
-        /// <param name="username"></param>
+        /// <param name="userId"></param>
         /// <param name="numberOfCodesToGenerate"></param>
         /// <returns></returns>
-        Task<Result<IEnumerable<string>>> GenerateTwoFactorRecoveryCodesAsync(string username, int numberOfCodesToGenerate);
+        Task<Result<IEnumerable<string>>> GenerateTwoFactorRecoveryCodesAsync(string userId, int numberOfCodesToGenerate);
     }
 }
