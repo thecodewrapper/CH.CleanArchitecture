@@ -12,6 +12,7 @@ namespace CH.CleanArchitecture.Infrastructure.Mappings
     {
         public AppProfile() {
             CreateMap<AuditHistory, AuditHistoryDTO>();
+            CreateMap<AuditHistoryDetails, AuditHistoryDetailsDTO>();
 
             CreateMap<string, PhoneNumber>().ConvertUsing<StringToPhoneNumberConverter>();
             CreateMap<PhoneNumber, string>().ConvertUsing<PhoneNumberToStringConverter>();

@@ -13,7 +13,7 @@ namespace CH.CleanArchitecture.Infrastructure.Auditing
         /// <param name="modelBuilder">The <see cref="ModelBuilder"/> to enable auto history functionality.</param>
         /// <returns>The <see cref="ModelBuilder"/> to enable auto history functionality.</returns>
         public static ModelBuilder EnableAuditHistory(this ModelBuilder modelBuilder) {
-            modelBuilder.Entity<AuditHistory>().ToTable("AuditHistory", "Audit").Ignore(t => t.AutoHistoryDetails);
+            modelBuilder.Entity<AuditHistory>().ToTable("AuditHistory", "Audit").Ignore(t => t.AuditHistoryDetails);
             modelBuilder.Entity<AuditHistory>(b =>
             {
                 b.Property(c => c.Id).UseIdentityColumn(); //TODO: Possibly change this to avoid integer overflow, or cleanup every once in a while

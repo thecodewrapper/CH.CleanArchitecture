@@ -56,7 +56,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                     throw new Exception("Page not found");
                 }
 
-                entity.AutoHistoryDetails = JsonConvert.DeserializeObject<AuditHistoryDetails>(entity.Changed);
+                entity.AuditHistoryDetails = JsonConvert.DeserializeObject<AuditHistoryDetails>(entity.Changed);
                 serviceResult.Data = _mapper.Map<AuditHistoryDTO>(entity);
 
                 return serviceResult;

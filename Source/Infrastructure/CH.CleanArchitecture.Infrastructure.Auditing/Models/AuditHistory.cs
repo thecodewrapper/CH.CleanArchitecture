@@ -54,6 +54,6 @@ namespace CH.CleanArchitecture.Infrastructure.Auditing
         /// <summary>
         /// The structured values contained on the property <see cref="Changed"/>.
         /// </summary>
-        public AuditHistoryDetails AutoHistoryDetails { get; set; } = new AuditHistoryDetails();
+        public AuditHistoryDetails AuditHistoryDetails { get; set; } = new AuditHistoryDetails();
     }
 }

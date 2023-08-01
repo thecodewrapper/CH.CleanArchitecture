@@ -34,7 +34,7 @@ namespace CH.CleanArchitecture.Infrastructure.Auditing
             foreach (var prop in properties) {
                 string propertyName = prop.Metadata.Name;
                 if (prop.Metadata.IsPrimaryKey()) {
-                    history.AutoHistoryDetails.NewValues[propertyName] = prop.CurrentValue;
+                    history.AuditHistoryDetails.NewValues[propertyName] = prop.CurrentValue;
                     continue;
                 }
 
@@ -42,15 +42,15 @@ namespace CH.CleanArchitecture.Infrastructure.Auditing
                     case EntityState.Added:
                         history.RowId = "0";
                         history.Kind = EntityState.Added;
-                        history.AutoHistoryDetails.NewValues.Add(propertyName, prop.CurrentValue);
+                        history.AuditHistoryDetails.NewValues.Add(propertyName, prop.CurrentValue);
                         break;
 
                     case EntityState.Modified:
                         history.RowId = entry.PrimaryKey();
                         history.Kind = EntityState.Modified;
                         if (prop.IsModified) {
-                            history.AutoHistoryDetails.OldValues.Add(propertyName, prop.OriginalValue);
-                            history.AutoHistoryDetails.NewValues.Add(propertyName, prop.CurrentValue);
+                            history.AuditHistoryDetails.OldValues.Add(propertyName, prop.OriginalValue);
+                            history.AuditHistoryDetails.NewValues.Add(propertyName, prop.CurrentValue);
                         }
 
                         break;
@@ -58,12 +58,12 @@ namespace CH.CleanArchitecture.Infrastructure.Auditing
                     case EntityState.Deleted:
                         history.RowId = entry.PrimaryKey();
                         history.Kind = EntityState.Deleted;
-                        history.AutoHistoryDetails.OldValues.Add(propertyName, prop.OriginalValue);
+                        history.AuditHistoryDetails.OldValues.Add(propertyName, prop.OriginalValue);
                         break;
                 }
             }
 
-            history.Changed = JsonSerializer.Serialize(history.AutoHistoryDetails);
+            history.Changed = JsonSerializer.Serialize(history.AuditHistoryDetails);
 
             return history;
         }
