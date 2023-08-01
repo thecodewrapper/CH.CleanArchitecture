@@ -26,8 +26,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Mappings
             CreateMap<LoginViewModel, LoginRequestDTO>();
             CreateMap<UserReadModel, EditUserViewModel>();
             CreateMap<UserReadModel, UserDetailsModel>();
-            CreateMap<User, UserReadModel>()
-               .ForMember(target => target.LocalizedRoles, source => source.MapFrom<LocalizedRolesResolver>());
+            CreateMap<User, UserReadModel>().ForMember(target => target.LocalizedRoles, source => source.MapFrom<LocalizedRolesResolver>());
 
             #endregion
         }
