@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace CH.CleanArchitecture.Core.Application.DTOs
 {
@@ -30,7 +29,7 @@ namespace CH.CleanArchitecture.Core.Application.DTOs
         /// Gets or sets the create time.
         /// </summary>
         /// <value>The create time.</value>
-        public DateTime Created { get; set; } = DateTime.UtcNow;
+        public DateTime Created { get; set; }
 
         /// <summary>
         /// Username of the user made the action.
@@ -38,15 +37,8 @@ namespace CH.CleanArchitecture.Core.Application.DTOs
         public string Username { get; set; }
 
         /// <summary>
-        /// The values after action.
-        /// Key contains column name and Value the value of the column.
+        /// Contains the old values and new values of the audit history record
         /// </summary>
-        public Dictionary<string, object> NewValues { get; set; } = new Dictionary<string, object>();
-
-        /// <summary>
-        /// The values before the action.
-        /// Key contains column name and Value the value of the column.
-        /// </summary>
-        public Dictionary<string, object> OldValues { get; set; } = new Dictionary<string, object>();
+        public AuditHistoryDetailsDTO AuditHistoryDetails { get; set; }
     }
 }
