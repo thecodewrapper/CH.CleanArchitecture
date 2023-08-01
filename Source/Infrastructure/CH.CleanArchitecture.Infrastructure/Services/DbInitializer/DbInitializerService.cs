@@ -1,9 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using CH.CleanArchitecture.Common.Constants;
 using CH.CleanArchitecture.Infrastructure.DbContexts;
 using CH.CleanArchitecture.Infrastructure.Models;
 using CH.EventStore.EntityFramework;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace CH.CleanArchitecture.Infrastructure.Services
 {
@@ -13,6 +16,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
         private readonly IdentityDbContext _identityContext;
         private readonly ApplicationDbContext _applicationContext;
         private readonly EventStoreDbContext _eventStoreContext;
+        private readonly IConfiguration _configuration;
 
         #endregion Fields
 
@@ -20,10 +24,11 @@ namespace CH.CleanArchitecture.Infrastructure.Services
 
         public DbInitializerService(IdentityDbContext identityContext,
             ApplicationDbContext applicationContext,
-            EventStoreDbContext eventStoreContext) {
+            EventStoreDbContext eventStoreContext, IConfiguration configuration) {
             _identityContext = identityContext;
             _applicationContext = applicationContext;
             _eventStoreContext = eventStoreContext;
+            _configuration = configuration;
         }
 
         #endregion Constructor
@@ -42,9 +47,12 @@ namespace CH.CleanArchitecture.Infrastructure.Services
         public void Seed() {
             var applicationRoles = _identityContext.Roles;
             if (!applicationRoles.Any()) {
-                applicationRoles.Add(new ApplicationRole() { Id = "e5adff57-b654-4f30-b6a7-c818e86cda8e", ConcurrencyStamp = "6a1bfaad-4414-4593-895c-a100aedd1741", Name = "User", NormalizedName = "USER" });
-                applicationRoles.Add(new ApplicationRole() { Id = "40e668a2-8a53-4907-817c-e4f8c8f72fb4", ConcurrencyStamp = "b47ee50f-0b94-42bd-858c-2f4bacd4bb50", Name = "Admin", NormalizedName = "ADMIN" });
-                applicationRoles.Add(new ApplicationRole() { Id = "8fa3842a-98a4-475b-8926-fce6efdc3e6f", ConcurrencyStamp = "b3a92cb9-8d66-47d4-9670-4e110447b887", Name = "SuperAdmin", NormalizedName = "SUPERADMIN" });
+                var userRole = new ApplicationRole() { Id = "e5adff57-b654-4f30-b6a7-c818e86cda8e", ConcurrencyStamp = "6a1bfaad-4414-4593-895c-a100aedd1741", Name = "User", NormalizedName = "USER" });
+                var adminRole = new ApplicationRole() { Id = "40e668a2-8a53-4907-817c-e4f8c8f72fb4", ConcurrencyStamp = "b47ee50f-0b94-42bd-858c-2f4bacd4bb50", Name = "Admin", NormalizedName = "ADMIN" });
+                var superAdminRole = new ApplicationRole() { Id = "8fa3842a-98a4-475b-8926-fce6efdc3e6f", ConcurrencyStamp = "b3a92cb9-8d66-47d4-9670-4e110447b887", Name = "SuperAdmin", NormalizedName = "SUPERADMIN" });
+                applicationRoles.AddRange(userRole, adminRole, superAdminRole);
+
+                CreateSuperAdminUser(userRole.Id, adminRole.Id, superAdminRole.Id);
             }
 
             var appConfigs = _applicationContext.ApplicationConfigurations;
@@ -69,5 +77,38 @@ namespace CH.CleanArchitecture.Infrastructure.Services
         }
 
         #endregion Public Methods
+
+        private void CreateSuperAdminUser(params string[] roleIds) {
+            if (!_identityContext.Users.Any(u => u.UserName == _configuration["Admin:Username"])) {
+                var user = new ApplicationUser()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Email = _configuration["Admin:Email"],
+                    NormalizedEmail = _configuration["Admin:Email"].ToUpper(),
+                    UserName = _configuration["Admin:Username"],
+                    NormalizedUserName = _configuration["Admin:Username"].ToUpper(),
+                    Name = "zeus",
+                    Surname = "zeus",
+                    PhoneNumber = "999999999999",
+                    IsActive = true,
+                    EmailConfirmed = true,
+                    MustChangePassword = true,
+                    PhoneNumberConfirmed = true,
+                    SecurityStamp = Guid.NewGuid().ToString("D")
+                };
+                var password = new PasswordHasher<ApplicationUser>();
+                var hashed = password.HashPassword(user, _configuration["Admin:Password"]);
+                user.PasswordHash = hashed;
+
+                _identityContext.Users.Add(user);
+                foreach (string roleId in roleIds) {
+                    _identityContext.UserRoles.Add(new ApplicationUserRole()
+                    {
+                        RoleId = roleId,
+                        UserId = user.Id
+                    });
+                }
+            }
+        }
     }
 }
