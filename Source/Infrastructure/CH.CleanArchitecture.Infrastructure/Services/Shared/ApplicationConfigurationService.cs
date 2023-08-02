@@ -29,6 +29,18 @@ namespace CH.CleanArchitecture.Infrastructure.Services
 
         #region Public Methods
 
+        public Result<IQueryable<ApplicationConfigurationDTO>> GetAll() {
+            var serviceResult = new Result<IQueryable<ApplicationConfigurationDTO>>();
+            try {
+                serviceResult.Data = _mapper.ProjectTo<ApplicationConfigurationDTO>(_appConfigRepository.GetAll());
+                return serviceResult;
+            }
+            catch (Exception ex) {
+                ServicesHelper.HandleServiceError(ref serviceResult, _logger, ex, "Error while trying to retrieve application configurations from database");
+                return serviceResult;
+            }
+        }
+
         public async Task<Result> Create(ApplicationConfigurationDTO dto) {
             var serviceResult = new Result<ApplicationConfigurationDTO>();
             try {

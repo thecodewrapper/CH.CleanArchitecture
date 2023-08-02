@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using CH.CleanArchitecture.Common;
 using CH.CleanArchitecture.Core.Application.DTOs;
@@ -8,6 +9,11 @@ namespace CH.CleanArchitecture.Core.Application
     public interface IApplicationConfigurationService
     {
         #region Public Methods
+        /// <summary>
+        /// Retrieves all application configurations from DB
+        /// </summary>
+        /// <returns></returns>
+        Result<IQueryable<ApplicationConfigurationDTO>> GetAll();
 
         /// <summary>
         /// Insert a configuration to the database
