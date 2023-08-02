@@ -92,11 +92,11 @@ namespace CH.CleanArchitecture.Core.Application
         /// <summary>
         /// Resets a user's password
         /// </summary>
-        /// <param name="userId">The username</param>
+        /// <param name="email">The email</param>
         /// <param name="token">The password reset token</param>
         /// <param name="password">The new password</param>
         /// <returns></returns>
-        Task<Result> ResetPasswordAsync(string userId, string token, string password);
+        Task<Result> ResetPasswordAsync(string email, string token, string password);
 
         /// <summary>
         /// Updates the user details

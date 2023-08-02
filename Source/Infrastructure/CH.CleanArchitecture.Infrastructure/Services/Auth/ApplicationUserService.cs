@@ -207,12 +207,12 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             return serviceResult;
         }
 
-        public async Task<Result> ResetPasswordAsync(string userId, string token, string password) {
+        public async Task<Result> ResetPasswordAsync(string email, string token, string password) {
             var serviceResult = new Result();
             try {
-                _logger.LogInformation($"Reseting password for user '{userId}'");
+                _logger.LogInformation($"Reseting password for user '{email}'");
 
-                var applicationUser = await _userManager.FindByIdAsync(userId);
+                var applicationUser = await _userManager.FindByEmailAsync(email);
                 if (applicationUser == null) {
                     return serviceResult.Fail().WithMessage("User not found.");
                 }
@@ -223,12 +223,12 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                     foreach (var error in resetPasswordResult.Errors) {
                         serviceResult.AddError(error.Description, error.Code);
                     }
-                    _logger.LogWarning($"Unable to reset password for user '{userId}'");
+                    _logger.LogWarning($"Unable to reset password for user '{email}'");
                     return serviceResult.WithMessage("Unable to reset user password");
                 }
 
                 serviceResult.Succeed();
-                _logger.LogInformation($"Password reset succesfully for user '{userId}'");
+                _logger.LogInformation($"Password reset succesfully for user '{email}'");
             }
             catch (Exception ex) {
                 ServicesHelper.HandleServiceError(ref serviceResult, _logger, ex, "Error while trying to reset user password.");
