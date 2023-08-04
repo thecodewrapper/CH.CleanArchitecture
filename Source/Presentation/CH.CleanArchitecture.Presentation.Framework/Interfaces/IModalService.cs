@@ -1,12 +1,25 @@
-﻿using Blazored.Modal;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
 
 namespace CH.CleanArchitecture.Presentation.Framework.Interfaces
 {
     public interface IModalService
     {
-        IModalReference ShowModal<T>(string title, ModalParameters parameters = null) where T : IComponent;
+        /// <summary>
+        /// Shows the modal and returns an <see cref="object"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="title"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        object ShowModal<T>(string title, Dictionary<string, object> parameters) where T : ComponentBase;
 
-        IModalReference ShowModal<T>(string title) where T : IComponent;
+        /// <summary>
+        /// Shows the modal and returns an <see cref="object"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="title"></param>
+        /// <returns></returns>
+        object ShowModal<T>(string title) where T : ComponentBase;
     }
 }
