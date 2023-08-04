@@ -41,7 +41,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             }
         }
 
-        public async Task<Result> Create(ApplicationConfigurationDTO dto) {
+        public async Task<Result> CreateAsync(ApplicationConfigurationDTO dto) {
             var serviceResult = new Result<ApplicationConfigurationDTO>();
             try {
                 _appConfigs = null;
@@ -58,7 +58,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             return serviceResult;
         }
 
-        public async Task<Result<ApplicationConfigurationDTO>> Details(string id, bool decrypt) {
+        public async Task<Result<ApplicationConfigurationDTO>> DetailsAsync(string id, bool decrypt) {
             var serviceResult = new Result<ApplicationConfigurationDTO>();
             try {
                 if (id == null) {
@@ -83,7 +83,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             return serviceResult;
         }
 
-        public async Task<Result> Edit(ApplicationConfigurationDTO dto) {
+        public async Task<Result> EditAsync(ApplicationConfigurationDTO dto) {
             var serviceResult = new Result();
             try {
                 _logger.LogDebug($"Editing application configuration {nameof(dto.Id)}: {dto.Id}");
@@ -113,7 +113,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             return serviceResult;
         }
 
-        public async Task<Result<bool>> Delete(string id) {
+        public async Task<Result<bool>> DeleteAsync(string id) {
             var serviceResult = new Result<bool>();
             try {
                 var entity = await _appConfigRepository.GetSingleAsync(a => a.Id == id);
