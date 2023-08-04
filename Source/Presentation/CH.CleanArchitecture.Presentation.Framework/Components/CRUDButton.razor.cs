@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using CH.CleanArchitecture.Infrastructure.Resources;
+using CH.CleanArchitecture.Presentation.Framework.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
@@ -7,6 +8,8 @@ namespace CH.CleanArchitecture.Presentation.Framework.Components
 {
     public partial class CRUDButton : BaseComponent
     {
+        [Inject] public ICRUDElementHelper CRUDElementHelper { get; set; }
+
         [Parameter]
         public EventCallback<MouseEventArgs> OnClickAction { get; set; }
 
@@ -24,8 +27,8 @@ namespace CH.CleanArchitecture.Presentation.Framework.Components
 
         protected override async Task OnParametersSetAsync() {
 
-            _icon = CRUDElementsHelper.GetCRUDIconHTML(Type);
-            _btn = CRUDElementsHelper.GetCRUDButtonHtml(Type);
+            _icon = CRUDElementHelper.GetCRUDIconHTML(Type);
+            _btn = CRUDElementHelper.GetCRUDButtonHtml(Type);
 
             Title ??= GetTitle();
 

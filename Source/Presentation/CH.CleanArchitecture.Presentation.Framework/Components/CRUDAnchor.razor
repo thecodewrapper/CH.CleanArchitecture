@@ -1,4 +1,5 @@
-﻿@if (Download)
+﻿@using CH.CleanArchitecture.Presentation.Framework.Interfaces;
+@if (Download)
 {
     <a class="btn btn-md @_btn" href="@Href" data-toggle="tooltip" data-placement="top" title="Title" download>@((MarkupString)_icon)</a>
 }
@@ -9,6 +10,8 @@ else
 
 
 @code {
+    [Inject]
+    public ICRUDElementHelper CRUDElementHelper { get; set; }
     [Parameter]
     public string Href { get; set; }
 
@@ -27,7 +30,7 @@ else
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         await base.SetParametersAsync(parameters);
-        _icon = CRUDElementsHelper.GetCRUDIconHTML(Type);
-        _btn = CRUDElementsHelper.GetCRUDButtonHtml(Type);
+        _icon = CRUDElementHelper.GetCRUDIconHTML(Type);
+        _btn = CRUDElementHelper.GetCRUDButtonHtml(Type);
     }
 }
