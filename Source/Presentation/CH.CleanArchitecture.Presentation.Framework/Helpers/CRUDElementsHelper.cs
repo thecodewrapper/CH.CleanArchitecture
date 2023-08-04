@@ -2,7 +2,7 @@
 
 namespace CH.CleanArchitecture.Presentation.Framework
 {
-    public class CRUDElementsHelper : ICRUDElementHelper
+    public class DefaultCRUDElementsHelper : ICRUDElementHelper
     {
         public string GetCRUDIconHTML(CRUDElementTypeEnum type) {
             switch (type) {

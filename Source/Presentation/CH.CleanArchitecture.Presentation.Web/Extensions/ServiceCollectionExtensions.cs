@@ -48,7 +48,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Extensions
 
             services.AddBlazoredToast();
             services.AddBlazoredModal();
-            services.AddSingleton<ICRUDElementHelper, CRUDElementsHelper>();
+            services.AddSingleton<ICRUDElementHelper, DefaultCRUDElementsHelper>();
             services.AddScoped<IModalService, ModalService>();
             services.AddScoped<IToastService, ToastService>();
             services.AddScoped<IAuthorizationStateProvider, AuthorizationStateProvider>();
