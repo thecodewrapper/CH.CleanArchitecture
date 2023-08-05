@@ -18,7 +18,7 @@ namespace CH.CleanArchitecture.Presentation.Framework.Services
 
         #region Public Methods
 
-        public object ShowModal<T>(string title, Dictionary<string, object> parameters = null) where T : ComponentBase {
+        public IModalReference ShowModal<T>(string title, Dictionary<string, object> parameters = null) where T : ComponentBase {
             ModalParameters modalParams = new ModalParameters();
             foreach (var param in parameters) {
                 modalParams.Add(param.Key, param.Value);
@@ -26,7 +26,7 @@ namespace CH.CleanArchitecture.Presentation.Framework.Services
             return _service.Show<T>(title, modalParams);
         }
 
-        public object ShowModal<T>(string title) where T : ComponentBase {
+        public IModalReference ShowModal<T>(string title) where T : ComponentBase {
             return _service.Show<T>(title);
         }
 
