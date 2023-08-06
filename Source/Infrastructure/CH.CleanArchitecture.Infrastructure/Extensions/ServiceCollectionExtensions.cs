@@ -81,10 +81,8 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
 
         private static void AddDatabasePersistence(this IServiceCollection services, IConfiguration configuration) {
             if (configuration.GetValue<bool>("UseInMemoryDatabase")) {
-                services.AddDbContext<IdentityDbContext>(options =>
-                    options.UseInMemoryDatabase("IdentityDb"));
-                services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseInMemoryDatabase("ApplicationDb"));
+                services.AddDbContext<IdentityDbContext>(options => options.UseInMemoryDatabase("IdentityDb"));
+                services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("ApplicationDb"));
             }
             else {
                 services.AddDbContext<IdentityDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("IdentityConnection")));

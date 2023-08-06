@@ -65,7 +65,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                     throw new Exception("Config not found");
                 }
 
-                var entity = await _appConfigRepository.FindAsync(id);
+                var entity = await _appConfigRepository.GetSingleAsync(ac => ac.Id == id);
 
                 if (entity == null) {
                     throw new Exception("Config not found");
@@ -116,7 +116,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
         public async Task<Result<bool>> DeleteAsync(string id) {
             var serviceResult = new Result<bool>();
             try {
-                var entity = await _appConfigRepository.GetSingleAsync(a => a.Id == id);
+                var entity = await _appConfigRepository.FindAsync(id);
                 if (entity == null) {
                     throw new Exception("Page not found");
                 }
