@@ -9,7 +9,9 @@ namespace CH.CleanArchitecture.Core.Domain.Entities.OrderAggregate
     public class Order : AggregateRootBase<Guid>,
         IDomainEventHandler<OrderCreatedEvent>,
         IDomainEventHandler<OrderItemAddedEvent>,
-        IDomainEventHandler<OrderItemQuantityUpdatedEvent>
+        IDomainEventHandler<OrderItemQuantityUpdatedEvent>,
+        IDomainEventHandler<OrderBillingAddressAddedEvent>,
+        IDomainEventHandler<OrderShippingAddressAddedEvent>
     {
         private List<OrderItem> _orderItems = new List<OrderItem>();
 
@@ -29,12 +31,14 @@ namespace CH.CleanArchitecture.Core.Domain.Entities.OrderAggregate
             RaiseEvent(new OrderItemAddedEvent(productName, productPrice, quantity));
         }
 
-        public void SetBillingAddress(Address address) {
-            BillingAddress = address;
+        public void SetBillingAddress(Address billingAddress) {
+            Guard.Against.Null(billingAddress, nameof(billingAddress));
+            RaiseEvent(new OrderBillingAddressAddedEvent(billingAddress));
         }
 
-        public void SetShippingAddress(Address address) {
-            ShippingAddress = address;
+        public void SetShippingAddress(Address shippingAddress) {
+            Guard.Against.Null(shippingAddress, nameof(shippingAddress));
+            RaiseEvent(new OrderShippingAddressAddedEvent(shippingAddress));
         }
 
         public void UpdateOrderItemQuantity(Guid orderItemId, int quantity) {
@@ -57,6 +61,14 @@ namespace CH.CleanArchitecture.Core.Domain.Entities.OrderAggregate
                 throw new NullReferenceException($"Order item with id {@event.OrderItemId} not found in order {Id}");
             }
             orderItem.UpdateQuantity(@event.Quantity);
+        }
+
+        void IDomainEventHandler<OrderShippingAddressAddedEvent>.Apply(OrderShippingAddressAddedEvent @event) {
+            ShippingAddress = @event.ShippingAddress;
+        }
+
+        void IDomainEventHandler<OrderBillingAddressAddedEvent>.Apply(OrderBillingAddressAddedEvent @event) {
+            BillingAddress = @event.BillingAddress;
         }
     }
 }
