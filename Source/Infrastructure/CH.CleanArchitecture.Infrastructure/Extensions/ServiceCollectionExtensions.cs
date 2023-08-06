@@ -1,8 +1,10 @@
 ﻿using AutoMapper.Extensions.ExpressionMapping;
 using CH.CleanArchitecture.Common;
 using CH.CleanArchitecture.Core.Application;
+using CH.CleanArchitecture.Core.Application.Commands;
 using CH.CleanArchitecture.Infrastructure.DbContexts;
 using CH.CleanArchitecture.Infrastructure.Factories;
+using CH.CleanArchitecture.Infrastructure.Handlers.Queries;
 using CH.CleanArchitecture.Infrastructure.Mappings;
 using CH.CleanArchitecture.Infrastructure.Models;
 using CH.CleanArchitecture.Infrastructure.Repositories;
@@ -11,6 +13,7 @@ using CH.Data.Abstractions;
 using CH.EventStore.EntityFramework.Extensions;
 using CH.Messaging.Abstractions;
 using Hangfire;
+using MassTransit;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -43,6 +46,36 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
             services.AddCryptoServices();
             services.AddAuthServices();
             services.AddScheduledJobs(configuration);
+
+            services.AddMediator(x =>
+            {
+                #region Commands
+
+                #region User
+
+                x.AddConsumer<CreateUserCommandHandler>();
+                x.AddConsumer<ActivateUserCommandHandler>();
+                x.AddConsumer<DeactivateUserCommandHandler>();
+                x.AddConsumer<AddRolesCommandHandler>();
+                x.AddConsumer<RemoveRolesCommandHandler>();
+                x.AddConsumer<ChangeUserPasswordCommandHandler>();
+                x.AddConsumer<UpdateUserRolesCommandHandler>();
+                x.AddConsumer<UpdateUserDetailsCommandHandler>();
+                x.AddConsumer<CreateNewOrderCommandHandler>();
+
+                #endregion User
+
+                #endregion Commands
+
+                #region Queries
+
+                x.AddConsumer<GetAllUsersQueryHandler>();
+                x.AddConsumer<GetUserQueryHandler>();
+                x.AddConsumer<GetAllOrdersQueryHandler>();
+                x.AddConsumer<GetOrderByIdQueryHandler>();
+
+                #endregion
+            });
 
             services.AddScoped<IServiceBus, ServiceBusMediator>();
         }

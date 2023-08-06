@@ -1,4 +1,4 @@
-﻿namespace CH.CleanArchitecture.Core.Application.ReadModels.Orders
+﻿namespace CH.CleanArchitecture.Core.Application.ReadModels
 {
     public class OrderItemReadModel
     {

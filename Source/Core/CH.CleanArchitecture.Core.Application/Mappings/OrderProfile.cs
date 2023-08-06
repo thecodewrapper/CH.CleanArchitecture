@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using CH.CleanArchitecture.Core.Application.ReadModels;
-using CH.CleanArchitecture.Core.Application.ReadModels.Orders;
 using CH.CleanArchitecture.Core.Domain;
 using CH.CleanArchitecture.Core.Domain.Entities.OrderAggregate;
 

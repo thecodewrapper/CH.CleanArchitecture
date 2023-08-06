@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CH.CleanArchitecture.Core.Application.ReadModels.Orders
+namespace CH.CleanArchitecture.Core.Application.ReadModels
 {
     public class OrderReadModel
     {
