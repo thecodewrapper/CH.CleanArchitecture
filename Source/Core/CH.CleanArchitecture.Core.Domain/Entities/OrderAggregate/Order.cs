@@ -29,6 +29,14 @@ namespace CH.CleanArchitecture.Core.Domain.Entities.OrderAggregate
             RaiseEvent(new OrderItemAddedEvent(productName, productPrice, quantity));
         }
 
+        public void SetBillingAddress(Address address) {
+            BillingAddress = address;
+        }
+
+        public void SetShippingAddress(Address address) {
+            ShippingAddress = address;
+        }
+
         public void UpdateOrderItemQuantity(Guid orderItemId, int quantity) {
             Guard.Against.NegativeOrZero(quantity, nameof(quantity), "Order item quantity cannot be 0 or negative");
             RaiseEvent(new OrderItemQuantityUpdatedEvent(orderItemId, quantity));

@@ -14,13 +14,16 @@ namespace CH.CleanArchitecture.Infrastructure.Models
         /// </summary>
         public string TrackingNumber { get; set; }
 
+        public Guid BillingAddressId { get; set; }
+        public Guid ShippingAddressId { get; set; }
+
         /// <summary>
         /// The order's total amount
         /// </summary>
         public decimal TotalAmount { get; set; }
 
-        public AddressEntity BillingAddress { get; set; }
-        public AddressEntity ShippingAddress { get; set; }
+        public virtual AddressEntity BillingAddress { get; set; }
+        public virtual AddressEntity ShippingAddress { get; set; }
 
         /// <summary>
         /// Navigation property for the order's item
