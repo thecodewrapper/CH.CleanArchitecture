@@ -11,7 +11,7 @@ namespace CH.CleanArchitecture.Core.Application
         /// <param name="to"></param>
         /// <param name="body"></param>
         /// <returns></returns>
-        Task<Result<bool>> SendSMSAsync(string to, string body);
+        Task<Result> SendSMSAsync(string to, string body);
 
         /// <summary>
         /// Sends an SMS
@@ -20,6 +20,6 @@ namespace CH.CleanArchitecture.Core.Application
         /// <param name="to"></param>
         /// <param name="body"></param>
         /// <returns></returns>
-        Task<Result<bool>> SendSMSAsync(string from, string to, string body);
+        Task<Result> SendSMSAsync(string from, string to, string body);
     }
 }

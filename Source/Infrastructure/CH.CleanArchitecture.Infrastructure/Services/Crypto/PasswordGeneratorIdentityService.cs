@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 
 namespace CH.CleanArchitecture.Infrastructure.Services
 {
-    public class PasswordGeneratorIdentityService : IPasswordGeneratorService
+    internal class PasswordGeneratorIdentityService : IPasswordGeneratorService
     {
         private readonly IOptions<IdentityOptions> _identityOptions;
 

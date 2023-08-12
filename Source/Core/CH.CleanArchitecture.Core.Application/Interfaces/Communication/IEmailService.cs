@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using CH.CleanArchitecture.Common;
 
 namespace CH.CleanArchitecture.Core.Application
 {
@@ -13,7 +14,7 @@ namespace CH.CleanArchitecture.Core.Application
         /// <param name="subject"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        Task<bool> SendEmailAsync(string from, string to, string subject, string message);
+        Task<Result> SendEmailAsync(string from, string to, string subject, string message);
 
         /// <summary>
         /// Send an email asynchronously from the system's default email address
@@ -22,7 +23,7 @@ namespace CH.CleanArchitecture.Core.Application
         /// <param name="subject"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        Task<bool> SendEmailAsync(string to, string subject, string message);
+        Task<Result> SendEmailAsync(string to, string subject, string message);
 
         /// <summary>
         /// Send an email asynchronously to multiple recipients
@@ -32,7 +33,7 @@ namespace CH.CleanArchitecture.Core.Application
         /// <param name="subject"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        Task<bool> SendEmailAsync(string from, List<string> tos, string subject, string message);
+        Task<Result> SendEmailAsync(string from, List<string> tos, string subject, string message);
 
         /// <summary>
         /// Send an email asynchronously from the system's default email address to multiple recipients
@@ -41,6 +42,6 @@ namespace CH.CleanArchitecture.Core.Application
         /// <param name="subject"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        Task<bool> SendEmailAsync(List<string> tos, string subject, string message);
+        Task<Result> SendEmailAsync(List<string> tos, string subject, string message);
     }
 }

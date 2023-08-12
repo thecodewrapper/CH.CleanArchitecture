@@ -3,6 +3,7 @@ using AutoMapper;
 using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Core.Application.Commands;
 using CH.CleanArchitecture.Infrastructure.Resources;
+using CH.CleanArchitecture.Presentation.Web.Services;
 using CH.CleanArchitecture.Presentation.Web.ViewModels;
 using CH.Messaging.Abstractions;
 using Microsoft.AspNetCore.Authorization;
@@ -17,7 +18,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
     {
         private readonly IServiceBus _serviceBus;
         private readonly ILocalizationService _localizer;
-        private readonly INotificationService _notificationService;
+        private readonly TempNotificationService _notificationService;
         private readonly IAuthenticatedUserService _userService;
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _webHost;
@@ -25,7 +26,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
 
         public UserProfileController(IServiceBus serviceBus,
             ILocalizationService localizer,
-            INotificationService notificationService,
+            TempNotificationService notificationService,
             IAuthenticatedUserService userService,
             IMapper mapper,
             IWebHostEnvironment webHost,

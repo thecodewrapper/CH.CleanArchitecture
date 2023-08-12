@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 
 namespace CH.CleanArchitecture.Infrastructure.Services
 {
-    public class JWTService : IJWTService
+    internal class JWTService : IJWTService
     {
         private readonly ILogger<JWTService> _logger;
         private readonly IApplicationConfigurationService _applicationConfigurationService;

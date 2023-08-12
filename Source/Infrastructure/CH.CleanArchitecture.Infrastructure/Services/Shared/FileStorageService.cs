@@ -11,7 +11,7 @@ using Storage.Net.Blobs;
 
 namespace CH.CleanArchitecture.Infrastructure.Services
 {
-    public class FileStorageService : IFileStorageService
+    internal class FileStorageService : IFileStorageService
     {
         private readonly IBlobStorage _storage;
         private readonly string _basePath;

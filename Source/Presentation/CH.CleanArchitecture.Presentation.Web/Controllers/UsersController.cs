@@ -11,6 +11,7 @@ using CH.CleanArchitecture.Core.Application.Queries;
 using CH.CleanArchitecture.Core.Application.ReadModels;
 using CH.CleanArchitecture.Infrastructure.Resources;
 using CH.CleanArchitecture.Presentation.Framework;
+using CH.CleanArchitecture.Presentation.Web.Services;
 using CH.CleanArchitecture.Presentation.Web.ViewModels;
 using CH.Messaging.Abstractions;
 using Microsoft.AspNetCore.Authorization;
@@ -27,7 +28,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IMapper _mapper;
         private readonly ILocalizationService _localizer;
-        private readonly INotificationService _notificationService;
+        private readonly TempNotificationService _notificationService;
         private readonly IAuthenticatedUserService _userService;
         private readonly IAuthorizationService _authorizationService;
 
@@ -35,7 +36,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
             IHttpContextAccessor contextAccessor,
             IMapper mapper,
             ILocalizationService localizer,
-            INotificationService notificationService,
+            TempNotificationService notificationService,
             IAuthenticatedUserService userService,
             IAuthorizationService authorizationService) {
             _serviceBus = serviceBus;

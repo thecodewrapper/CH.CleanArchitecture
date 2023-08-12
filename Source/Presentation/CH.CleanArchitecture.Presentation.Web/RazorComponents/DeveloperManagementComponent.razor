@@ -54,6 +54,7 @@
                     <TabPage Title="Scheduled Jobs">
                         <div><a href="/hangfire">Open Hangfire Dashboard</a></div>
                         <button @onclick="EnrollAuditPurgeJob">Enroll Audit Purge Job</button>
+                        <button @onclick="EnrollNotificationPurgeJob">Enroll Notifications Purge Job</button>
                     </TabPage>
                 </TabGroup>
             </div>
@@ -68,13 +69,24 @@
     private List<EventEntity> _events = new List<EventEntity>();
 
     protected void EnrollAuditPurgeJob(){
-        bool enrollSuccess = ScheduledJobService.EnrollAuditPurgingJob().Unwrap();
+        bool enrollSuccess = ScheduledJobService.EnrollAuditPurgingJob().IsSuccessful;
 
         if (enrollSuccess) {
             ToastService.ShowSuccess($"Audit Purge job enrolled succesfully.");
         }
         else {
             ToastService.ShowError($"Audit Purge job failed to be enrolled.");
+        }
+    }
+
+    protected void EnrollNotificationPurgeJob() {
+        bool enrollSuccess = ScheduledJobService.EnrollNotificationsPurgingJob().IsSuccessful;
+
+        if (enrollSuccess) {
+            ToastService.ShowSuccess($"Notifications Purge job enrolled succesfully.");
+        }
+        else {
+            ToastService.ShowError($"Notifications Purge job failed to be enrolled.");
         }
     }
 

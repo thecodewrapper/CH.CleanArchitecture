@@ -95,6 +95,7 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
 
             services.AddScoped<IApplicationConfigurationService, ApplicationConfigurationService>();
             services.AddScoped<IAuditHistoryService, AuditHistoryService>();
+            services.AddScoped<INotificationService, NotificationService>();
         }
 
         private static void AddStorageServices(this IServiceCollection services, IConfiguration configuration) {
@@ -104,6 +105,7 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
 
         private static void AddCommunicationServices(this IServiceCollection services) {
             services.AddScoped<IEmailService, EmailSMTPService>();
+            services.AddScoped<ISMSService, SMSService>();
         }
 
         private static void AddCryptoServices(this IServiceCollection services) {

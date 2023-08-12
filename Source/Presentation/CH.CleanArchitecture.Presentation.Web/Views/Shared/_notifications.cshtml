@@ -1,9 +1,11 @@
-﻿@using Newtonsoft.Json
+﻿@using CH.CleanArchitecture.Presentation.Web.Enumerations;
+@using CH.CleanArchitecture.Presentation.Web.Models;
+@using Newtonsoft.Json
 @using CH.CleanArchitecture.Presentation.Web.Constants
 @{
     //Get messages from TempData
     var notes = TempData.ContainsKey(Constants.NotificationListKey)
-        ? JsonConvert.DeserializeObject<IList<NotificationData>>(TempData[Constants.NotificationListKey].ToString())
+        ? JsonConvert.DeserializeObject<IList<TempNotificationData>>(TempData[Constants.NotificationListKey].ToString())
         : null;
     if (notes != null)
     {
@@ -12,13 +14,13 @@
             var cssStyle = "";
             switch (note.Type)
             {
-                case NotificationType.Success:
+                case TempNotificationType.Success:
                     cssStyle = "alert-success";
                     break;
-                case NotificationType.Error:
+                case TempNotificationType.Error:
                     cssStyle = "alert-danger";
                     break;
-                case NotificationType.Warning:
+                case TempNotificationType.Warning:
                     cssStyle = "alert-warning";
                     break;
             }

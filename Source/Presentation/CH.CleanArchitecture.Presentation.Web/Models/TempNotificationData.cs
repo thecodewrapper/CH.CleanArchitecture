@@ -1,14 +1,16 @@
-﻿namespace CH.CleanArchitecture.Common
+﻿using CH.CleanArchitecture.Presentation.Web.Enumerations;
+
+namespace CH.CleanArchitecture.Presentation.Web.Models
 {
     /// <summary>
     /// Message structure
     /// </summary>
-    public struct NotificationData
+    public struct TempNotificationData
     {
         /// <summary>
         /// Message type (success/warning/error)
         /// </summary>
-        public NotificationType Type { get; set; }
+        public TempNotificationType Type { get; set; }
 
         /// <summary>
         /// Message text

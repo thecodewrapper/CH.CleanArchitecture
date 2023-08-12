@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using CH.CleanArchitecture.Common;
 using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Infrastructure.Resources;
+using CH.CleanArchitecture.Presentation.Web.Enumerations;
+using CH.CleanArchitecture.Presentation.Web.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Newtonsoft.Json;
@@ -10,9 +11,9 @@ using Newtonsoft.Json;
 namespace CH.CleanArchitecture.Presentation.Web.Services
 {
     /// <summary>
-    /// Notification service
+    /// Temp Data service
     /// </summary>
-    public class NotificationService : INotificationService
+    public class TempNotificationService
     {
         #region Fields
 
@@ -24,7 +25,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Services
 
         #region Constructor
 
-        public NotificationService(IHttpContextAccessor httpContextAccessor,
+        public TempNotificationService(IHttpContextAccessor httpContextAccessor,
             ITempDataDictionaryFactory tempDataDictionaryFactory,
             ILocalizationService localizationService) {
             _httpContextAccessor = httpContextAccessor;
@@ -42,16 +43,16 @@ namespace CH.CleanArchitecture.Presentation.Web.Services
         /// <param name="type">Notification type</param>
         /// <param name="message">Message</param>
         /// <param name="encode">A value indicating whether the message should not be encoded</param>
-        private void PrepareTempData(NotificationType type, string message, bool encode = true) {
+        private void PrepareTempData(TempNotificationType type, string message, bool encode = true) {
             var context = _httpContextAccessor.HttpContext;
             var tempData = _tempDataDictionaryFactory.GetTempData(context);
 
             //Messages have stored in a serialized list
             var messages = tempData.ContainsKey(Constants.Constants.NotificationListKey)
-                ? JsonConvert.DeserializeObject<IList<NotificationData>>(tempData[Constants.Constants.NotificationListKey].ToString())
-                : new List<NotificationData>();
+                ? JsonConvert.DeserializeObject<IList<TempNotificationData>>(tempData[Constants.Constants.NotificationListKey].ToString())
+                : new List<TempNotificationData>();
 
-            messages.Add(new NotificationData
+            messages.Add(new TempNotificationData
             {
                 Message = message,
                 Type = type,
@@ -71,7 +72,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Services
         /// <param name="type">Notification type</param>
         /// <param name="message">Message</param>
         /// <param name="encode">A value indicating whether the message should not be encoded</param>
-        public virtual void Notification(NotificationType type, string message, bool encode = true) {
+        public virtual void Notification(TempNotificationType type, string message, bool encode = true) {
             PrepareTempData(type, message, encode);
         }
 
@@ -81,7 +82,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Services
         /// <param name="message">Message</param>
         /// <param name="encode">A value indicating whether the message should not be encoded</param>
         public virtual void SuccessNotification(string message, bool encode = true) {
-            PrepareTempData(NotificationType.Success, message, encode);
+            PrepareTempData(TempNotificationType.Success, message, encode);
         }
 
         /// <summary>
@@ -90,7 +91,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Services
         /// <param name="message">Message</param>
         /// <param name="encode">A value indicating whether the message should not be encoded</param>
         public virtual void WarningNotification(string message, bool encode = true) {
-            PrepareTempData(NotificationType.Warning, message, encode);
+            PrepareTempData(TempNotificationType.Warning, message, encode);
         }
 
         /// <summary>
@@ -103,7 +104,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Services
                 message = _localizationService[ResourceKeys.Common_SomethingWentWrong];
             }
 
-            PrepareTempData(NotificationType.Error, message, encode);
+            PrepareTempData(TempNotificationType.Error, message, encode);
         }
 
         /// <summary>

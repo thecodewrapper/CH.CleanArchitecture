@@ -17,8 +17,9 @@ namespace CH.CleanArchitecture.Infrastructure.DbContexts
         private readonly IAuthenticatedUserService _authenticatedUser;
         public const string CONFIG_SCHEMA = "Config";
         public const string DOMAIN_SCHEMA = "Domain";
+        public const string APP_SCHEMA = "App";
         public DbSet<ApplicationConfigurationEntity> ApplicationConfigurations { get; set; }
-
+        public DbSet<NotificationEntity> Notifications { get; set; }
         public DbSet<OrderEntity> Orders { get; set; }
         public DbSet<OrderItemEntity> OrderItems { get; set; }
         public DbSet<AuditHistory> AuditHistory { get; set; }
@@ -37,6 +38,9 @@ namespace CH.CleanArchitecture.Infrastructure.DbContexts
 
             //Application Configurations
             builder.ApplyConfiguration(new ApplicationConfigurationEntityConfiguration());
+
+            //Notifications
+            builder.ApplyConfiguration(new NotificationEntityConfiguration());
 
             //Orders
             builder.ApplyConfiguration(new OrderEntityConfiguration());

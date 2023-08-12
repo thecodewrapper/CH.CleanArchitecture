@@ -35,7 +35,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Extensions
         public static void AddApplication(this IServiceCollection services) {
             services.AddApplicationLayer();
             services.AddScoped(typeof(RolesToMultiSelectResolver<>));
-            services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<TempNotificationService>();
 
             services.AddScoped<UserHelper>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();

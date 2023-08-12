@@ -7,6 +7,12 @@ namespace CH.CleanArchitecture.Infrastructure.Services
         /// <summary>
         /// Enrolls the audit purging job
         /// </summary>
-        Result<bool> EnrollAuditPurgingJob();
+        Result EnrollAuditPurgingJob();
+
+        /// <summary>
+        /// Enrolls the notification purging job
+        /// </summary>
+        /// <returns></returns>
+        Result EnrollNotificationsPurgingJob();
     }
 }

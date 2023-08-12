@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 
 namespace CH.CleanArchitecture.Infrastructure.Services
 {
-    public class AuditHistoryService : IAuditHistoryService
+    internal class AuditHistoryService : IAuditHistoryService
     {
         #region Private Fields
 

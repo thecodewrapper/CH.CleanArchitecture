@@ -33,5 +33,11 @@
         {
             public const string SNAPSHOT_FREQUENCY = "EventStoreSnapshotFrequency";
         }
+
+        public static class NOTIFICATIONS
+        {
+            public const string PURGE_HISTORYTABLE_INTERVAL = "NotificationsPurgeHistoryTableInterval";
+            public const string PURGE_SERVICE_INTERVAL_HOURS = "NotificationsPurgeServiceIntervalHours";
+        }
     }
 }

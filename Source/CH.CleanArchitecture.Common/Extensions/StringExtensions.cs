@@ -82,5 +82,27 @@ namespace CH.CleanArchitecture.Common
             "" => input,
             _ => input.First().ToString().ToUpper() + input.Substring(1)
         };
+
+        /// <summary>
+        /// Trims any leading and trailing whitespace characters from the <paramref name="source"/> and 
+        /// returns the trimmed <see cref="string"/> or <c>null</c> when the <paramref name="source"/> is only whitespace.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        public static string TrimToNull(this string source) {
+            source = source?.Trim();
+            return string.IsNullOrWhiteSpace(source) ? null : source;
+        }
+
+        /// <summary>
+        /// Chops the string upto the specified length
+        /// If the string is smaller than the specified length, it returns the entire string back as it was provided
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        public static string Chop(this string str, int length) {
+            return str.Length <= length ? str : $"{str.Substring(0, length)}...";
+        }
     }
 }

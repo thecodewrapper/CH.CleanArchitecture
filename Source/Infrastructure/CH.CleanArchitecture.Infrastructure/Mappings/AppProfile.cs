@@ -14,7 +14,7 @@ namespace CH.CleanArchitecture.Infrastructure.Mappings
             CreateMap<AuditHistory, AuditHistoryDTO>();
             CreateMap<AuditHistoryDetails, AuditHistoryDetailsDTO>();
             CreateMap<ApplicationConfigurationEntity, ApplicationConfigurationDTO>().ReverseMap();
-
+            CreateMap<NotificationEntity, NotificationDTO>().ReverseMap();
             CreateMap<string, PhoneNumber>().ConvertUsing<StringToPhoneNumberConverter>();
             CreateMap<PhoneNumber, string>().ConvertUsing<PhoneNumberToStringConverter>();
             CreateMap<AddressEntity, Address>().ReverseMap();

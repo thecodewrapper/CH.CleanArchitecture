@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CH.CleanArchitecture.Infrastructure.Services
 {
-    public class UserAuthenticationService : IUserAuthenticationService
+    internal class UserAuthenticationService : IUserAuthenticationService
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;

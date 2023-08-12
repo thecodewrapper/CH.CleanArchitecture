@@ -3,7 +3,7 @@ using CH.CleanArchitecture.Core.Application;
 
 namespace CH.CleanArchitecture.Infrastructure.Services
 {
-    public class UrlTokenService : IUrlTokenService
+    internal class UrlTokenService : IUrlTokenService
     {
         private readonly IJWTService _jwtService;
         private const int TOKEN_LIFETIME_DAYS = 7;
