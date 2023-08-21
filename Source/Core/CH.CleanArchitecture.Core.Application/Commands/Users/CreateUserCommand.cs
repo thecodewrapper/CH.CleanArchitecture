@@ -6,7 +6,7 @@ using CH.Messaging.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Application.Commands
 {
-    public record CreateUserCommand(string Username, string Name, string Surname, string Email, string Password, List<string> Roles) : IRequest<Result>
+    public record CreateUserCommand(string Username, string Name, string Surname, string Email, string Password, List<string> Roles) : IRequest<Result>, ICommand
     {
     }
 

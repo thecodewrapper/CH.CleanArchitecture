@@ -4,7 +4,7 @@ using CH.Messaging.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Application.Commands
 {
-    public record DeactivateUserCommand(string Username) : IRequest<Result>
+    public record DeactivateUserCommand(string Username) : IRequest<Result>, ICommand
     {
     }
 

@@ -4,7 +4,7 @@ using CH.Messaging.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Application.Commands
 {
-    public record ChangeUserPasswordCommand(string Username, string OldPassword, string Password) : IRequest<Result>
+    public record ChangeUserPasswordCommand(string Username, string OldPassword, string Password) : IRequest<Result>, ICommand
     {
     }
 

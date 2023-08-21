@@ -5,7 +5,7 @@ using CH.Messaging.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Application.Queries
 {
-    public class GetOrderByIdQuery : IRequest<Result<OrderReadModel>>
+    public class GetOrderByIdQuery : IRequest<Result<OrderReadModel>>, IQuery
     {
         public Guid OrderId { get; private set; }
 

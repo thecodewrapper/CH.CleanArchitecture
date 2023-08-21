@@ -1,6 +1,6 @@
 ﻿namespace CH.CleanArchitecture.Core.Application.ReadModels
 {
-    public class AddressReadModel
+    public class AddressReadModel : IReadModel
     {
         public string Line1 { get; set; }
         public string Line2 { get; set; }

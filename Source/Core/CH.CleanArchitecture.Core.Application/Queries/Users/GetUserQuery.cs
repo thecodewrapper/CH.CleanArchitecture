@@ -4,7 +4,7 @@ using CH.Messaging.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Application.Queries
 {
-    public class GetUserQuery : IRequest<Result<UserReadModel>>
+    public class GetUserQuery : IRequest<Result<UserReadModel>>, IQuery
     {
         public string Id { get; set; }
     }

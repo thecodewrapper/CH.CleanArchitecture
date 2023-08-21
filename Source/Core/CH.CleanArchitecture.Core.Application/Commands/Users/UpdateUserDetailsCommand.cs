@@ -6,7 +6,7 @@ using CH.Messaging.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Application.Commands
 {
-    public class UpdateUserDetailsCommand : IRequest<Result>
+    public class UpdateUserDetailsCommand : IRequest<Result>, ICommand
     {
         public UpdateUserDetailsCommand() {
 

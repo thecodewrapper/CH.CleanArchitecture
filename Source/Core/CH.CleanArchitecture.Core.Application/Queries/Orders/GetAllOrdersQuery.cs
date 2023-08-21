@@ -5,7 +5,7 @@ using CH.Messaging.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Application.Queries
 {
-    public class GetAllOrdersQuery : IRequest<Result<List<OrderReadModel>>>
+    public class GetAllOrdersQuery : IRequest<Result<List<OrderReadModel>>>, IQuery
     {
     }
 }

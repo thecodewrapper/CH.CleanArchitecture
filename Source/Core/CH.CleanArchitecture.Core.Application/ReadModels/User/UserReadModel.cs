@@ -4,7 +4,7 @@ using CH.CleanArchitecture.Core.Domain;
 
 namespace CH.CleanArchitecture.Core.Application.ReadModels
 {
-    public class UserReadModel
+    public class UserReadModel : IReadModel
     {
         public string ProfilePicture { get; set; }
         public Guid Id { get; set; }

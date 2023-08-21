@@ -6,7 +6,7 @@ using CH.Messaging.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Application.Commands
 {
-    public record CreateNewOrderCommand(string TrackingNumber) : IRequest<Result>
+    public record CreateNewOrderCommand(string TrackingNumber) : IRequest<Result>, ICommand
     {
     }
 

@@ -13,7 +13,7 @@ namespace CH.CleanArchitecture.Core.Application.Commands
     /// <summary>
     /// Add roles to user command handler
     /// </summary>
-    public class AddRolesCommandHandler : BaseMessageHandler<AddRolesCommand, Result>
+    public class AddRolesCommandHandler : BaseMessageHandler<AddRolesCommand, Result>, ICommand
     {
         private readonly IApplicationUserService _applicationUserService;
 

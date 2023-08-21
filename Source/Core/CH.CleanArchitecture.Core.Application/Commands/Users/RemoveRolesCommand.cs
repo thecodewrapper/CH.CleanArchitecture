@@ -6,7 +6,7 @@ using CH.Messaging.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Application.Commands
 {
-    public record RemoveRolesCommand(string Username, List<string> Roles) : IRequest<Result>
+    public record RemoveRolesCommand(string Username, List<string> Roles) : IRequest<Result>, ICommand
     {
     }
 

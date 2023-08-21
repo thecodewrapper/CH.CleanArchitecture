@@ -5,7 +5,7 @@ using CH.Messaging.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Application.Commands
 {
-    public class UpdateUserRolesCommand : IRequest<Result>
+    public class UpdateUserRolesCommand : IRequest<Result>, ICommand
     {
         public UpdateUserRolesCommand() {
 

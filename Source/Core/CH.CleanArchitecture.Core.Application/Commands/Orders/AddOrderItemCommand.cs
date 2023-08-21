@@ -5,7 +5,7 @@ using CH.Messaging.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Application.Commands
 {
-    public record AddOrderItemCommand(Guid OrderId, string ProductName, decimal ProductPrice, int Quantity) : IRequest<Result>
+    public record AddOrderItemCommand(Guid OrderId, string ProductName, decimal ProductPrice, int Quantity) : IRequest<Result>, ICommand
     {
     }
 

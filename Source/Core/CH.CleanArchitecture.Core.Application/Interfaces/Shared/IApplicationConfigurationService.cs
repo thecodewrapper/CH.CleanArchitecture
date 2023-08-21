@@ -40,7 +40,7 @@ namespace CH.CleanArchitecture.Core.Application
         /// </summary>
         /// <param name="id">Primary key of the entity.</param>
         /// <returns>True if the delete was successfull.</returns>
-        Task<Result<bool>> DeleteAsync(string id);
+        Task<Result> DeleteAsync(string id);
 
         /// <summary>
         /// Retrieves a configuration value based on the given key.

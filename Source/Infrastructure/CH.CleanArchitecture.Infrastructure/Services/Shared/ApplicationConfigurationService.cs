@@ -113,8 +113,8 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             return serviceResult;
         }
 
-        public async Task<Result<bool>> DeleteAsync(string id) {
-            var serviceResult = new Result<bool>();
+        public async Task<Result> DeleteAsync(string id) {
+            var serviceResult = new Result();
             try {
                 var entity = await _appConfigRepository.FindAsync(id);
                 if (entity == null) {
@@ -123,7 +123,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                 _appConfigRepository.Delete(entity);
                 await _appConfigRepository.UnitOfWork.SaveChangesAsync();
 
-                serviceResult.Data = true;
+                serviceResult.Succeed();
                 return serviceResult;
             }
             catch (Exception ex) {
