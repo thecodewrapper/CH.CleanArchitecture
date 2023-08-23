@@ -8,10 +8,11 @@ using CH.CleanArchitecture.Infrastructure.DbContexts;
 using CH.CleanArchitecture.Infrastructure.Extensions;
 using CH.CleanArchitecture.Infrastructure.Models;
 using CH.CleanArchitecture.Tests.Mocks;
+using CH.EventStore.EntityFramework;
+using CH.Messaging.Abstractions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -108,7 +109,7 @@ namespace CH.CleanArchitecture.Tests
         private static FakeUserManager InitializeUserManager() {
             var fakeUserManager = new Mock<FakeUserManager>();
             var users = PrepareUsers;
-            var availableRoles = Enum.GetValues(typeof(RolesEnum)).Cast<RolesEnum>();
+            var availableRoles = Enum.GetValues(typeof(RoleEnum)).Cast<RoleEnum>();
 
             fakeUserManager.Setup(x => x.Users)
                 .Returns(users.AsQueryable());
@@ -194,7 +195,7 @@ namespace CH.CleanArchitecture.Tests
 
                 superAdminUser.Roles.Add(new ApplicationUserRole
                 {
-                    Role = new ApplicationRole { Name = RolesEnum.SuperAdmin.ToString() }
+                    Role = new ApplicationRole { Name = RoleEnum.SuperAdmin.ToString() }
                 });
 
                 var basicUser = new ApplicationUser
@@ -208,7 +209,7 @@ namespace CH.CleanArchitecture.Tests
 
                 basicUser.Roles.Add(new ApplicationUserRole
                 {
-                    Role = new ApplicationRole { Name = RolesEnum.User.ToString() }
+                    Role = new ApplicationRole { Name = RoleEnum.User.ToString() }
                 });
 
                 var users = new List<ApplicationUser>();

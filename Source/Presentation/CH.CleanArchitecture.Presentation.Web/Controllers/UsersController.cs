@@ -11,7 +11,9 @@ using CH.CleanArchitecture.Core.Application.Queries;
 using CH.CleanArchitecture.Core.Application.ReadModels;
 using CH.CleanArchitecture.Infrastructure.Resources;
 using CH.CleanArchitecture.Presentation.Framework;
+using CH.CleanArchitecture.Presentation.Web.Services;
 using CH.CleanArchitecture.Presentation.Web.ViewModels;
+using CH.Messaging.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +28,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IMapper _mapper;
         private readonly ILocalizationService _localizer;
-        private readonly INotificationService _notificationService;
+        private readonly TempNotificationService _notificationService;
         private readonly IAuthenticatedUserService _userService;
         private readonly IAuthorizationService _authorizationService;
 
@@ -34,7 +36,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
             IHttpContextAccessor contextAccessor,
             IMapper mapper,
             ILocalizationService localizer,
-            INotificationService notificationService,
+            TempNotificationService notificationService,
             IAuthenticatedUserService userService,
             IAuthorizationService authorizationService) {
             _serviceBus = serviceBus;
@@ -51,9 +53,9 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
         public async Task<IActionResult> LoadData([FromForm] DataTablesParameters parameters) {
             // Getting all users 
             var queryOptions = parameters.ToQueryOptions();
-            var usersQuery = await _serviceBus.Send(new GetAllUsersQuery { Options = queryOptions });
+            var usersQuery = await _serviceBus.SendAsync(new GetAllUsersQuery { Options = queryOptions });
 
-            if (usersQuery.Failed) return null;
+            if (usersQuery.IsFailed) return null;
 
             var recordCount = usersQuery.GetMetadata<int>("RecordCount");
             //Returning Json Data  
@@ -82,9 +84,9 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var user = await _serviceBus.Send(new GetUserQuery { Id = id.ToString() ?? _userService.UserId });
+            var user = await _serviceBus.SendAsync(new GetUserQuery { Id = id.ToString() ?? _userService.UserId });
 
-            if (user.Succeeded)
+            if (user.IsSuccessful)
                 return View(_mapper.Map<UserDetailsModel>(user.Data));
             else {
                 _notificationService.ErrorNotification("Unable to retrieve user.  Please try again");
@@ -114,9 +116,9 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
             if (!ModelState.IsValid)
                 return View(createUserModel);
 
-            Result result = await _serviceBus.Send(_mapper.Map<CreateUserCommand>(createUserModel));
+            Result result = await _serviceBus.SendAsync(_mapper.Map<CreateUserCommand>(createUserModel));
 
-            if (result.Succeeded) {
+            if (result.IsSuccessful) {
                 var returnUrl = _contextAccessor.HttpContext.Request.Query["ReturnUrl"];
                 if (!string.IsNullOrWhiteSpace(returnUrl))
                     return Redirect(returnUrl);
@@ -140,9 +142,9 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var user = await _serviceBus.Send(new GetUserQuery { Id = id });
+            var user = await _serviceBus.SendAsync(new GetUserQuery { Id = id });
 
-            if (user.Failed || user.Data == null)
+            if (user.IsFailed || user.Data == null)
                 return NotFound();
 
             var userEditModel = _mapper.Map<EditUserViewModel>(user.Data);
@@ -158,9 +160,9 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var user = await _serviceBus.Send(new GetUserQuery { Id = id });
+            var user = await _serviceBus.SendAsync(new GetUserQuery { Id = id });
 
-            if (user.Failed)
+            if (user.IsFailed)
                 return BadRequest();
 
             if (await HandleUserUpdate(model, user.Data) == false)
@@ -174,27 +176,21 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
             try {
                 using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled)) {
                     var updateUserDetailsCommand = _mapper.Map<UpdateUserDetailsCommand>(model);
-                    var updateResult = await _serviceBus.Send(updateUserDetailsCommand);
-                    if (updateResult.Failed)
+                    var updateResult = await _serviceBus.SendAsync(updateUserDetailsCommand);
+                    if (updateResult.IsFailed)
                         throw new Exception(updateResult.MessageWithErrors);
-
-                    if (!string.IsNullOrWhiteSpace(model.Password)) {
-                        var changePasswordResult = await _serviceBus.Send(new ChangeUserPasswordCommand(user.Username, model.Password));
-                        if (changePasswordResult.Failed)
-                            throw new Exception(changePasswordResult.MessageWithErrors);
-                    }
 
                     if (user.IsActive != model.IsActive) {
                         var updateStatusResult = model.IsActive
-                                ? await _serviceBus.Send(new ActivateUserCommand(model.Username))
-                                : await _serviceBus.Send(new DeactivateUserCommand(model.Username));
-                        if (updateStatusResult.Failed)
+                                ? await _serviceBus.SendAsync(new ActivateUserCommand(model.Username))
+                                : await _serviceBus.SendAsync(new DeactivateUserCommand(model.Username));
+                        if (updateStatusResult.IsFailed)
                             throw new Exception(updateResult.MessageWithErrors);
                     }
 
                     if (!user.Roles.All(model.Roles.Contains) || user.Roles.Count() != model.Roles.Count()) {
-                        var updateRolesResult = await _serviceBus.Send(_mapper.Map<UpdateUserRolesCommand>(model));
-                        if (updateRolesResult.Failed)
+                        var updateRolesResult = await _serviceBus.SendAsync(_mapper.Map<UpdateUserRolesCommand>(model));
+                        if (updateRolesResult.IsFailed)
                             throw new Exception(updateRolesResult.MessageWithErrors);
                     }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Components;
 
@@ -41,6 +42,67 @@ namespace CH.CleanArchitecture.Common
             }
 
             return result;
+        }
+
+        public static string Base64UrlEncode(this string value) {
+            var bytes = Encoding.UTF8.GetBytes(value);
+            var s = Convert.ToBase64String(bytes); // Regular base64 encoder
+            s = s.Split('=')[0]; // Remove any trailing '='s
+            s = s.Replace('+', '-'); // 62nd char of encoding
+            s = s.Replace('/', '_'); // 63rd char of encoding
+            return s;
+        }
+
+        public static string Base64UrlDecode(this string value) {
+            var s = value;
+            s = s.Replace('-', '+'); // 62nd char of encoding
+            s = s.Replace('_', '/'); // 63rd char of encoding
+            switch (s.Length % 4) // Pad with trailing '='s
+            {
+                case 0:
+                    break; // No pad chars in this case
+                case 2:
+                    s += "==";
+                    break; // Two pad chars
+                case 3:
+                    s += "=";
+                    break; // One pad char
+                default:
+                    throw new Exception("Illegal base64 url string!");
+            }
+
+            var bytes = Convert.FromBase64String(s); // Standard base64 decoder
+            return Encoding.UTF8.GetString(bytes);
+        }
+
+        public static string FirstCharToUpper(this string input) =>
+        input switch
+        {
+            null => input,
+            "" => input,
+            _ => input.First().ToString().ToUpper() + input.Substring(1)
+        };
+
+        /// <summary>
+        /// Trims any leading and trailing whitespace characters from the <paramref name="source"/> and 
+        /// returns the trimmed <see cref="string"/> or <c>null</c> when the <paramref name="source"/> is only whitespace.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        public static string TrimToNull(this string source) {
+            source = source?.Trim();
+            return string.IsNullOrWhiteSpace(source) ? null : source;
+        }
+
+        /// <summary>
+        /// Chops the string upto the specified length
+        /// If the string is smaller than the specified length, it returns the entire string back as it was provided
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        public static string Chop(this string str, int length) {
+            return str.Length <= length ? str : $"{str.Substring(0, length)}...";
         }
     }
 }

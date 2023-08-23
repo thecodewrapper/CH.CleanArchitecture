@@ -31,7 +31,7 @@ namespace CH.CleanArchitecture.Presentation.Web.ViewModels
 
         [Display(Name = ResourceKeys.Labels_Roles)]
         [Required(ErrorMessage = ResourceKeys.Validations_Required)]
-        public IEnumerable<RolesEnum> Roles { get; set; }
+        public IEnumerable<RoleEnum> Roles { get; set; }
 
         [Display(Name = ResourceKeys.Labels_Active)]
         [Required(ErrorMessage = ResourceKeys.Validations_Required)]

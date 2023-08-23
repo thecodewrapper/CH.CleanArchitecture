@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using CH.CleanArchitecture.Infrastructure.Models;
+using CH.Data.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -30,6 +30,7 @@ namespace CH.CleanArchitecture.Infrastructure.DbContexts
                         break;
 
                     case EntityState.Modified:
+                        change.Entity.DateModified = now;
                         if (!string.IsNullOrEmpty(username)) {
                             change.Entity.ModifiedBy = username;
                         }

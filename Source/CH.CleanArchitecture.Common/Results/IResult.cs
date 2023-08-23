@@ -7,7 +7,7 @@ namespace CH.CleanArchitecture.Common
         IReadOnlyCollection<IResultError> Errors { get; }
         string Message { get; }
 
-        bool Succeeded { get; }
+        bool IsSuccessful { get; }
     }
 
     public interface IResult<out T> : IResult

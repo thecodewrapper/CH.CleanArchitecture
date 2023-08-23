@@ -2,10 +2,11 @@
 using System.Threading.Tasks;
 using CH.CleanArchitecture.Common;
 using CH.CleanArchitecture.Core.Application.DTOs;
+using CH.Messaging.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Application.Commands
 {
-    public record RemoveRolesCommand(string Username, List<string> Roles) : IRequest<Result>
+    public record RemoveRolesCommand(string Username, List<string> Roles) : IRequest<Result>, ICommand
     {
     }
 
@@ -27,7 +28,7 @@ namespace CH.CleanArchitecture.Core.Application.Commands
                 Roles = command.Roles
             };
 
-            return await _applicationUserService.RemoveRoles(request);
+            return await _applicationUserService.RemoveRolesAsync(request);
         }
     }
 }

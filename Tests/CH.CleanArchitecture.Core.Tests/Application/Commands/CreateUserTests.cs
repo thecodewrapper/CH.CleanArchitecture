@@ -18,13 +18,14 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Commands
             var command = new CreateUserCommand(
                 "testUser",
                 "testName",
+                "testSurname",
                 "test@test.com",
                 null,
                 null);
 
-            Result result = await ServiceBus.Send(command);
+            Result result = await ServiceBus.SendAsync(command);
 
-            result.Succeeded.Should().BeFalse();
+            result.IsSuccessful.Should().BeFalse();
             result.Exception.Should().BeOfType<ArgumentNullException>();
         }
 
@@ -33,13 +34,14 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Commands
             var command = new CreateUserCommand(
                 "testUser",
                 Guid.NewGuid().ToString("N"),
+                Guid.NewGuid().ToString("N"),
                  "test@test.com",
                 "test test",
                 null);
 
-            Result result = await ServiceBus.Send(command);
+            Result result = await ServiceBus.SendAsync(command);
 
-            result.Succeeded.Should().BeTrue();
+            result.IsSuccessful.Should().BeTrue();
             result.Exception.Should().BeNull();
         }
     }

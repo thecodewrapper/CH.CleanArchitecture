@@ -16,7 +16,7 @@ namespace CH.CleanArchitecture.Core.Application
                 logger.LogError($"Result errors: {string.Join(Environment.NewLine, serviceResult.Errors)}");
             }
             serviceResult
-                .Failed()
+                .Fail()
                 .WithMessage(uiErrorMessage)
                 .WithException(ex)
                 .WithData(default);
@@ -28,7 +28,7 @@ namespace CH.CleanArchitecture.Core.Application
                 logger.LogError($"Result errors: {string.Join(Environment.NewLine, serviceResult.Errors)}");
             }
             serviceResult
-                .Failed()
+                .Fail()
                 .WithException(ex)
                 .WithMessage(uiErrorMessage);
         }

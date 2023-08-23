@@ -2,11 +2,22 @@
 using AutoMapper;
 using CH.CleanArchitecture.Common;
 using CH.CleanArchitecture.Core.Application.DTOs;
+using CH.Messaging.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Application.Commands
 {
-    public record UpdateUserDetailsCommand(string UserId, string Username, string Email, string Name, string PrimaryPhone, string SecondaryPhone) : IRequest<Result>
+    public class UpdateUserDetailsCommand : IRequest<Result>, ICommand
     {
+        public UpdateUserDetailsCommand() {
+
+        }
+
+        public string Id { get; set; }
+        public string Username { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string PrimaryPhone { get; set; }
+        public string SecondaryPhone { get; set; }
     }
 
     /// <summary>
@@ -23,7 +34,7 @@ namespace CH.CleanArchitecture.Core.Application.Commands
         }
 
         public override async Task<Result> HandleAsync(UpdateUserDetailsCommand command) {
-            return await _applicationUserService.UpdateUserDetails(_mapper.Map<UpdateUserDetailsDTO>(command));
+            return await _applicationUserService.UpdateUserDetailsAsync(_mapper.Map<UpdateUserDetailsDTO>(command));
         }
     }
 }

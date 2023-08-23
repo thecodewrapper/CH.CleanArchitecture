@@ -1,8 +1,10 @@
-﻿namespace CH.CleanArchitecture.Presentation.Framework
+﻿using CH.CleanArchitecture.Presentation.Framework.Interfaces;
+
+namespace CH.CleanArchitecture.Presentation.Framework
 {
-    internal static class CRUDElementsHelper
+    public class DefaultCRUDElementsHelper : ICRUDElementHelper
     {
-        internal static string GetCRUDIconHTML(CRUDElementTypeEnum type) {
+        public string GetCRUDIconHTML(CRUDElementTypeEnum type) {
             switch (type) {
                 case CRUDElementTypeEnum.View: return "<i class=\"fas fa-info\"></i>";
                 case CRUDElementTypeEnum.Delete: return "<i class=\"fas fa-trash\"></i>";
@@ -13,7 +15,7 @@
             }
         }
 
-        internal static string GetCRUDButtonHtml(CRUDElementTypeEnum type) {
+        public string GetCRUDButtonHtml(CRUDElementTypeEnum type) {
             switch (type) {
                 case CRUDElementTypeEnum.View: return "btn-info";
                 case CRUDElementTypeEnum.Delete: return "btn-danger";

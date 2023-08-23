@@ -22,6 +22,10 @@ namespace CH.CleanArchitecture.Presentation.Web.ViewModels
         public string Name { get; set; }
 
         [Required(ErrorMessage = ResourceKeys.Validations_Required)]
+        [Display(Name = ResourceKeys.Labels_Surname)]
+        public string Surname { get; set; }
+
+        [Required(ErrorMessage = ResourceKeys.Validations_Required)]
         [Display(Name = ResourceKeys.Labels_Email)]
         [EmailAddress(ErrorMessage = ResourceKeys.Validations_EmailFormat)]
         public string Email { get; set; }
@@ -31,6 +35,6 @@ namespace CH.CleanArchitecture.Presentation.Web.ViewModels
 
         [Display(Name = ResourceKeys.Labels_Roles)]
         [Required(ErrorMessage = ResourceKeys.Validations_Required)]
-        public IEnumerable<RolesEnum> Roles { get; set; }
+        public IEnumerable<RoleEnum> Roles { get; set; }
     }
 }

@@ -7,6 +7,6 @@ namespace CH.CleanArchitecture.Core.Application
     /// </summary>
     public interface ILocalizationKeyProvider
     {
-        string GetRoleLocalizationKey(RolesEnum role);
+        string GetRoleLocalizationKey(RoleEnum role);
     }
 }

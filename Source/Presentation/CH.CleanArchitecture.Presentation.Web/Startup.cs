@@ -1,18 +1,9 @@
 using System.Reflection;
-using Blazored.Modal;
-using Blazored.Toast;
-using CH.CleanArchitecture.Core.Application;
-using CH.CleanArchitecture.Core.Application.Extensions;
 using CH.CleanArchitecture.Infrastructure.Resources;
 using CH.CleanArchitecture.Infrastructure.Shared.Culture;
-using CH.CleanArchitecture.Presentation.Framework;
-using CH.CleanArchitecture.Presentation.Framework.Interfaces;
-using CH.CleanArchitecture.Presentation.Framework.Services;
 using CH.CleanArchitecture.Presentation.Web.Extensions;
-using CH.CleanArchitecture.Presentation.Web.Helpers;
-using CH.CleanArchitecture.Presentation.Web.Mappings;
-using CH.CleanArchitecture.Presentation.Web.Middleware;
-using CH.CleanArchitecture.Presentation.Web.Services;
+using Hangfire;
+using Hangfire.Dashboard;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -50,12 +41,6 @@ namespace CH.CleanArchitecture.Presentation.Web
                 options.DetailedErrors = true;
             });
 
-            services.AddBlazoredToast();
-            services.AddBlazoredModal();
-            services.AddScoped<IModalService, ModalService>();
-            services.AddScoped<IToastService, ToastService>();
-            services.AddScoped<IAuthorizationStateProvider, AuthorizationStateProvider>();
-
             //MVC
             var mvcBuilder = services.AddMvc(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
             mvcBuilder.AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix);
@@ -73,10 +58,7 @@ namespace CH.CleanArchitecture.Presentation.Web
 
             services.AddInfrastructure(Configuration);
 
-            services.AddScoped(typeof(RolesToMultiSelectResolver<>));
-            services.AddScoped<ILocalizationKeyProvider, LocalizationKeyProvider>();
-            services.AddScoped<UserHelper>();
-            services.AddApplicationLayer();
+            services.AddApplication();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration) {
@@ -98,7 +80,12 @@ namespace CH.CleanArchitecture.Presentation.Web
 
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseMustChangePassword();
+            //app.UseMustChangePassword();
+
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                Authorization = new[] { app.ApplicationServices.GetService<IDashboardAuthorizationFilter>() }
+            });
 
             var supportedCultures = new[] { "el", "en" };
             var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])
@@ -115,8 +102,6 @@ namespace CH.CleanArchitecture.Presentation.Web
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapBlazorHub();
             });
-
-
         }
     }
 }

@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using CH.CleanArchitecture.Core.Application;
-using CH.CleanArchitecture.Core.Application.Exceptions;
-using CH.CleanArchitecture.Core.Domain;
+using CH.Data.Abstractions;
+using CH.Domain.Abstractions;
+using CH.EventStore.Abstractions;
 using Microsoft.Extensions.Logging;
 
 namespace CH.CleanArchitecture.Infrastructure
@@ -43,7 +43,7 @@ namespace CH.CleanArchitecture.Infrastructure
                     fromVersion = snapshotAggregate.Version + 1;
                 }
 
-                var eventsForAggregate = await _eventStore.LoadAsync<TId>(id.ToString(), aggregateName, fromVersion, int.MaxValue);
+                var eventsForAggregate = await _eventStore.LoadAsync<TId>(id, aggregateName, fromVersion, int.MaxValue);
 
                 //if no events are found, return default
                 if (!eventsForAggregate.Any() && snapshotAggregate == default) //if no events or snapshot is found
@@ -82,7 +82,6 @@ namespace CH.CleanArchitecture.Infrastructure
                 if (ShouldSnapshot(aggregate.Version, uncommittedEvents.Count())) {
                     await _snapshotService.SaveSnapshotAsync<T, TId>(aggregate, lastEventId);
                 }
-                //TODO[CH]: Consider publishing events here
                 aggregatePersistence.ClearUncommittedEvents();
             }
             catch (Exception ex) {

@@ -1,9 +1,10 @@
 ﻿using System.Threading.Tasks;
 using CH.CleanArchitecture.Common;
+using CH.Messaging.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Application.Commands
 {
-    public record ChangeUserPasswordCommand(string Username, string Password) : IRequest<Result>
+    public record ChangeUserPasswordCommand(string Username, string OldPassword, string Password) : IRequest<Result>, ICommand
     {
     }
 
@@ -19,7 +20,7 @@ namespace CH.CleanArchitecture.Core.Application.Commands
         }
 
         public override async Task<Result> HandleAsync(ChangeUserPasswordCommand command) {
-            return await _applicationUserService.ChangePassword(command.Username, command.Password);
+            return await _applicationUserService.ChangePasswordAsync(command.Username, command.OldPassword, command.Password);
         }
     }
 }

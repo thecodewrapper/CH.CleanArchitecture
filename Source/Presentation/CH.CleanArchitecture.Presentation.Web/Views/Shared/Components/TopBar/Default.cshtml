@@ -51,7 +51,13 @@
 
             <div class="collapse navbar-collapse" id="topnav-menu-content">
                 <ul class="navbar-nav">
-                    @if (Model.IsAdmin) {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" asp-controller="Orders" asp-action="Index" id="topnav-users" role="button">
+                            <i class="fas fa-user mr-2"></i><span key="t-orders">Orders</span>
+                        </a>
+                    </li>
+                    @if (Model.IsAdmin)
+                    {
                         <li class="nav-item dropdown">
                             <a class="nav-link" asp-controller="Users" asp-action="Index" id="topnav-users" role="button">
                                 <i class="fas fa-user mr-2"></i><span key="t-users">@L[ResourceKeys.Navigation_Top_Users]</span>
@@ -59,7 +65,8 @@
                         </li>
                     }
 
-                    @if (Model.IsSuperAdmin) {
+                    @if (Model.IsSuperAdmin)
+                    {
                         <li class="nav-item dropdown">
                             <a class="nav-link" asp-controller="Developer" asp-action="Index" id="topnav-dashboard" role="button">
                                 <i class="fa fa-file-medical-alt mr-2"></i><span key="t-reports">Developer</span>
@@ -74,8 +81,8 @@
 </div>
 
 <script>
-    $(document).ready(function () {
-        $('#logoutLink').click(function () {
+    $(document).ready(function() {
+        $('#logoutLink').click(function() {
             document.logoutForm.submit(); return false;
         }).show();
     });

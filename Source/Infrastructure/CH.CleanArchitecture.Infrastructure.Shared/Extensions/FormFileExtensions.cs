@@ -181,7 +181,6 @@ namespace CH.CleanArchitecture.Infrastructure.Shared.Extensions
             var imageEncoder = Configuration.Default.ImageFormatsManager.FindEncoder(imageFormat);
             switch (imageEncoder) {
                 case JpegEncoder jpegEncoder:
-                    jpegEncoder.Subsample = JpegSubsample.Ratio444;
                     jpegEncoder.Encode(image, stream);
                     break;
 

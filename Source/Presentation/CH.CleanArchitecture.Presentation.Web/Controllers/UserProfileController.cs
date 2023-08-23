@@ -3,7 +3,9 @@ using AutoMapper;
 using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Core.Application.Commands;
 using CH.CleanArchitecture.Infrastructure.Resources;
+using CH.CleanArchitecture.Presentation.Web.Services;
 using CH.CleanArchitecture.Presentation.Web.ViewModels;
+using CH.Messaging.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +18,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
     {
         private readonly IServiceBus _serviceBus;
         private readonly ILocalizationService _localizer;
-        private readonly INotificationService _notificationService;
+        private readonly TempNotificationService _notificationService;
         private readonly IAuthenticatedUserService _userService;
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _webHost;
@@ -24,7 +26,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
 
         public UserProfileController(IServiceBus serviceBus,
             ILocalizationService localizer,
-            INotificationService notificationService,
+            TempNotificationService notificationService,
             IAuthenticatedUserService userService,
             IMapper mapper,
             IWebHostEnvironment webHost,
@@ -50,11 +52,11 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
         [Route("ChangePassword")]
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordModel model) {
-            var changePasswordCommand = new ChangeUserPasswordCommand(_userService.Username, model.NewPassword);
+            var changePasswordCommand = new ChangeUserPasswordCommand(_userService.Username, model.OldPassword, model.NewPassword);
 
-            var result = await _serviceBus.Send(changePasswordCommand);
+            var result = await _serviceBus.SendAsync(changePasswordCommand);
 
-            if (result.Failed) {
+            if (result.IsFailed) {
                 _notificationService.ErrorNotification(result.Message);
                 return RedirectToAction(nameof(Index), new { t = "changepassword" });
             }

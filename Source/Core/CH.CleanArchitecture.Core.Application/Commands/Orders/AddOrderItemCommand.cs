@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CH.CleanArchitecture.Common;
+using CH.Messaging.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Application.Commands
 {
-    public record AddOrderItemCommand(Guid OrderId, string ProductName, decimal ProductPrice, int Quantity) : IRequest<Result>
+    public record AddOrderItemCommand(Guid OrderId, string ProductName, decimal ProductPrice, int Quantity) : IRequest<Result>, ICommand
     {
     }
 
@@ -24,7 +25,7 @@ namespace CH.CleanArchitecture.Core.Application.Commands
             order.AddOrderItem(command.ProductName, command.ProductPrice, command.Quantity);
             _orderRepository.Update(order);
             await _orderRepository.UnitOfWork.SaveChangesAsync();
-            return new Result().Successful();
+            return new Result().Succeed();
         }
     }
 }

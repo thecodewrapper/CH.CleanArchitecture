@@ -1,20 +1,26 @@
 ﻿using System;
 using AutoMapper.Extensions.ExpressionMapping;
-using CH.CleanArchitecture.Common;
+using Blazored.Modal;
+using Blazored.Toast;
 using CH.CleanArchitecture.Core.Application;
-using CH.CleanArchitecture.Infrastructure.DbContexts;
+using CH.CleanArchitecture.Core.Application.Extensions;
+using CH.CleanArchitecture.Core.Domain;
 using CH.CleanArchitecture.Infrastructure.Extensions;
-using CH.CleanArchitecture.Infrastructure.Identity.Factories;
-using CH.CleanArchitecture.Infrastructure.Models;
 using CH.CleanArchitecture.Infrastructure.Resources;
-using CH.CleanArchitecture.Infrastructure.Shared.Extensions;
+using CH.CleanArchitecture.Presentation.Framework;
+using CH.CleanArchitecture.Presentation.Framework.Interfaces;
 using CH.CleanArchitecture.Presentation.Framework.Services;
+using CH.CleanArchitecture.Presentation.Web.Helpers;
 using CH.CleanArchitecture.Presentation.Web.Mappings;
 using CH.CleanArchitecture.Presentation.Web.Services;
 using FluentValidation;
+using Hangfire.Dashboard;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,10 +28,31 @@ namespace CH.CleanArchitecture.Presentation.Web.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration) {
-            services.AddInfrastructureLayer(configuration);
-            services.AddSharedServices();
-            services.AddApplicationCookie();
+        /// <summary>
+        /// Add MVC/Web App related services here
+        /// </summary>
+        /// <param name="services"></param>
+        public static void AddApplication(this IServiceCollection services) {
+            services.AddApplicationLayer();
+            services.AddScoped(typeof(RolesToMultiSelectResolver<>));
+            services.AddScoped<TempNotificationService>();
+
+            services.AddScoped<UserHelper>();
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.AddScoped<IUrlHelper>(x =>
+            {
+                var actionContext = x.GetRequiredService<IActionContextAccessor>().ActionContext;
+                var factory = x.GetRequiredService<IUrlHelperFactory>();
+                return factory.GetUrlHelper(actionContext);
+            });
+
+            services.AddBlazoredToast();
+            services.AddBlazoredModal();
+            services.AddSingleton<ICRUDElementHelper, DefaultCRUDElementsHelper>();
+            services.AddScoped<IModalService, DefaultModalService>();
+            services.AddScoped<IToastService, ToastService>();
+            services.AddScoped<IAuthorizationStateProvider, AuthorizationStateProvider>();
+            services.AddTransient<IAuthenticatedUserService, AuthenticatedUserService>();
 
             services.AddScoped<LocalizedRolesResolver>();
             services.AddScoped<LoaderService>();
@@ -35,10 +62,22 @@ namespace CH.CleanArchitecture.Presentation.Web.Extensions
                 config.AddExpressionMapping();
             });
 
-            services.AddTransient<IAuthenticatedUserService, AuthenticatedUserService>();
+            services.AddApplicationCookie();
+
+            //Configure Hangfire dashboard authorization
+            services.AddApplicationAuthorization((options) => options.AddPolicy(WebFrameworkConstants.HANGFIRE_DASHBOARD_POLICY_NAME, policy =>
+            {
+                policy.RequireAuthenticatedUser();
+                policy.RequireRole(RoleEnum.SuperAdmin.ToString());
+            }));
+
+            services.AddHangfireDashboardAuthorizationFilter();
+        }
+
+        public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration) {
+            services.AddInfrastructureLayer(configuration);
             services.AddScoped<ILocalizationService, LocalizationService>();
-            services.AddScoped<INotificationService, NotificationService>();
-            services.AddStorageOptions(configuration);
+            services.AddScoped<ILocalizationKeyProvider, LocalizationKeyProvider>();
             services.AddValidatorsFromAssemblyContaining<Startup>();
         }
 
@@ -55,8 +94,14 @@ namespace CH.CleanArchitecture.Presentation.Web.Extensions
             });
         }
 
-        private static void AddStorageOptions(this IServiceCollection services, IConfiguration configuration) {
-            services.Configure<FileStorageOptions>(x => configuration.GetSection("Storage").Bind(x));
+        private static void AddHangfireDashboardAuthorizationFilter(this IServiceCollection services) {
+            // Register the HangfireDashboardAuthorizationFilter using a factory method
+            services.AddTransient<IDashboardAuthorizationFilter>(serviceProvider =>
+            {
+                var authorizationService = serviceProvider.GetRequiredService<IAuthorizationService>();
+                var httpContextAccessor = serviceProvider.GetRequiredService<IHttpContextAccessor>();
+                return new HangfireDashboardAuthorizationFilter(authorizationService, httpContextAccessor);
+            });
         }
     }
 }

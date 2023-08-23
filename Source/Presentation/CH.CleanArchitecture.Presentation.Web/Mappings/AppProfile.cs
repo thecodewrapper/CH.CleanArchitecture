@@ -2,9 +2,7 @@
 using AutoMapper;
 using CH.CleanArchitecture.Core.Application.Commands;
 using CH.CleanArchitecture.Core.Application.DTOs;
-using CH.CleanArchitecture.Core.Application.Mappings;
 using CH.CleanArchitecture.Core.Application.ReadModels;
-using CH.CleanArchitecture.Core.Domain;
 using CH.CleanArchitecture.Core.Domain.Entities.UserAggregate;
 using CH.CleanArchitecture.Presentation.Web.ViewModels;
 
@@ -28,13 +26,9 @@ namespace CH.CleanArchitecture.Presentation.Web.Mappings
             CreateMap<LoginViewModel, LoginRequestDTO>();
             CreateMap<UserReadModel, EditUserViewModel>();
             CreateMap<UserReadModel, UserDetailsModel>();
-            CreateMap<User, UserReadModel>()
-               .ForMember(target => target.LocalizedRoles, source => source.MapFrom<LocalizedRolesResolver>());
+            CreateMap<User, UserReadModel>().ForMember(target => target.LocalizedRoles, source => source.MapFrom<LocalizedRolesResolver>());
 
             #endregion
-
-            CreateMap<string, PhoneNumber>().ConvertUsing<StringToPhoneNumberConverter>();
-            CreateMap<PhoneNumber, string>().ConvertUsing<PhoneNumberToStringConverter>();
         }
     }
 }

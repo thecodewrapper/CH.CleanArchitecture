@@ -1,15 +1,23 @@
 ﻿using AutoMapper.Extensions.ExpressionMapping;
+using CH.CleanArchitecture.Common;
 using CH.CleanArchitecture.Core.Application;
+using CH.CleanArchitecture.Core.Application.Commands;
+using CH.CleanArchitecture.Infrastructure.DbContexts;
+using CH.CleanArchitecture.Infrastructure.Factories;
+using CH.CleanArchitecture.Infrastructure.Handlers.Queries;
 using CH.CleanArchitecture.Infrastructure.Mappings;
+using CH.CleanArchitecture.Infrastructure.Models;
 using CH.CleanArchitecture.Infrastructure.Repositories;
 using CH.CleanArchitecture.Infrastructure.Services;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using CH.CleanArchitecture.Infrastructure.DbContexts;
-using Microsoft.EntityFrameworkCore;
-using CH.CleanArchitecture.Infrastructure.Models;
+using CH.Data.Abstractions;
+using CH.EventStore.EntityFramework.Extensions;
+using CH.Messaging.Abstractions;
+using Hangfire;
+using MassTransit;
 using Microsoft.AspNetCore.Identity;
-using CH.CleanArchitecture.Infrastructure.Identity.Factories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CH.CleanArchitecture.Infrastructure.Extensions
 {
@@ -19,8 +27,11 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
             services.AddDatabasePersistence(configuration);
             services.AddRepositories();
             services.AddIdentity();
-            services.AddEventStore();
-            services.AddScoped<OrderAddressResolver>();
+            services.AddEventStoreEFCore((o) =>
+            {
+                o.UseInMemoryDatabase = configuration.GetValue<bool>("UseInMemoryDatabase");
+                o.ConnectionStringSQL = configuration.GetConnectionString("ApplicationConnection");
+            });
             services.AddAutoMapper(config =>
             {
                 config.AddExpressionMapping();
@@ -28,29 +39,89 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
                 config.AddProfile<EventProfile>();
                 config.AddProfile<UserProfile>();
             });
-            
+
+            services.AddSharedServices();
+            services.AddStorageServices(configuration);
+            services.AddCommunicationServices();
+            services.AddCryptoServices();
+            services.AddAuthServices();
+            services.AddScheduledJobs(configuration);
+
+            services.AddMediator(x =>
+            {
+                #region Commands
+
+                #region User
+
+                x.AddConsumer<CreateUserCommandHandler>();
+                x.AddConsumer<ActivateUserCommandHandler>();
+                x.AddConsumer<DeactivateUserCommandHandler>();
+                x.AddConsumer<AddRolesCommandHandler>();
+                x.AddConsumer<RemoveRolesCommandHandler>();
+                x.AddConsumer<ChangeUserPasswordCommandHandler>();
+                x.AddConsumer<UpdateUserRolesCommandHandler>();
+                x.AddConsumer<UpdateUserDetailsCommandHandler>();
+                x.AddConsumer<CreateNewOrderCommandHandler>();
+
+                #endregion User
+
+                #endregion Commands
+
+                #region Queries
+
+                x.AddConsumer<GetAllUsersQueryHandler>();
+                x.AddConsumer<GetUserQueryHandler>();
+                x.AddConsumer<GetAllOrdersQueryHandler>();
+                x.AddConsumer<GetOrderByIdQueryHandler>();
+
+                #endregion
+            });
+
             services.AddScoped<IServiceBus, ServiceBusMediator>();
         }
 
-        public static void AddSharedServices(this IServiceCollection services) {
-            services.AddScoped<IPasswordGeneratorService, PasswordGeneratorIdentityService>();
+        private static void AddScheduledJobs(this IServiceCollection services, IConfiguration configuration) {
+            services.AddHangfire(x => x.UseSqlServerStorage(configuration.GetConnectionString("ApplicationConnection")));
+            services.AddHangfireServer();
+            services.AddScoped<IScheduledJobService, ScheduledJobService>();
+        }
+
+        private static void AddAuthServices(this IServiceCollection services) {
+            services.AddScoped<IUserAuthenticationService, UserAuthenticationService>();
+            services.AddScoped<IApplicationUserService, ApplicationUserService>();
+        }
+
+        private static void AddSharedServices(this IServiceCollection services) {
+
             services.AddScoped<IApplicationConfigurationService, ApplicationConfigurationService>();
+            services.AddScoped<IAuditHistoryService, AuditHistoryService>();
+            services.AddScoped<INotificationService, NotificationService>();
+        }
+
+        private static void AddStorageServices(this IServiceCollection services, IConfiguration configuration) {
+            services.AddStorageOptions(configuration);
             services.AddScoped<IFileStorageService, FileStorageService>();
+        }
+
+        private static void AddCommunicationServices(this IServiceCollection services) {
+            services.AddScoped<IEmailService, EmailSMTPService>();
+            services.AddScoped<ISMSService, SMSService>();
+        }
+
+        private static void AddCryptoServices(this IServiceCollection services) {
+            services.AddScoped<IJWTService, JWTService>();
+            services.AddScoped<IUrlTokenService, UrlTokenService>();
+            services.AddScoped<IPasswordGeneratorService, PasswordGeneratorIdentityService>();
         }
 
         private static void AddDatabasePersistence(this IServiceCollection services, IConfiguration configuration) {
             if (configuration.GetValue<bool>("UseInMemoryDatabase")) {
-                services.AddDbContext<IdentityDbContext>(options =>
-                    options.UseInMemoryDatabase("IdentityDb"));
-                services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseInMemoryDatabase("ApplicationDb"));
-                services.AddDbContext<EventStoreDbContext>(options =>
-                    options.UseInMemoryDatabase("EventStoreDb"));
+                services.AddDbContext<IdentityDbContext>(options => options.UseInMemoryDatabase("IdentityDb"));
+                services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("ApplicationDb"));
             }
             else {
                 services.AddDbContext<IdentityDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("IdentityConnection")));
                 services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ApplicationConnection")));
-                services.AddDbContext<EventStoreDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ApplicationConnection")));
             }
             services.AddScoped<IDbInitializerService, DbInitializerService>();
         }
@@ -86,14 +157,10 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
                 options.Password = passwordOptions;
 
             });
-            services.AddScoped<IUserAuthenticationService, UserAuthenticationService>();
-            services.AddScoped<IApplicationUserService, ApplicationUserService>();
         }
 
-        private static void AddEventStore(this IServiceCollection services) {
-            services.AddScoped<IEventStore, EFEventStore>();
-            services.AddScoped<IEventStoreSnapshotProvider, EFEventStoreSnapshotProvider>();
-            services.AddScoped<IRetroactiveEventsService, RetroactiveEventsService>();
+        private static void AddStorageOptions(this IServiceCollection services, IConfiguration configuration) {
+            services.Configure<FileStorageOptions>(x => configuration.GetSection("Storage").Bind(x));
         }
     }
 }

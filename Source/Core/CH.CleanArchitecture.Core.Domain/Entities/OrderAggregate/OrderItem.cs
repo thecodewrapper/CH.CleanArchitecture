@@ -1,4 +1,5 @@
 ﻿using System;
+using CH.Domain.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Domain.Entities.OrderAggregate
 {
@@ -9,7 +10,7 @@ namespace CH.CleanArchitecture.Core.Domain.Entities.OrderAggregate
         public decimal ProductPrice { get; private set; }
         public int Quantity { get; set; }
 
-        public OrderItem(string productName, decimal productPrice, int quantity) {
+        internal OrderItem(string productName, decimal productPrice, int quantity) {
             ProductName = productName;
             ProductPrice = productPrice;
             Quantity = quantity;

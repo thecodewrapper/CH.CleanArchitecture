@@ -1,9 +1,10 @@
 ﻿using System.Threading.Tasks;
 using CH.CleanArchitecture.Common;
+using CH.Messaging.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Application.Commands
 {
-    public record DeactivateUserCommand(string Username) : IRequest<Result>
+    public record DeactivateUserCommand(string Username) : IRequest<Result>, ICommand
     {
     }
 
@@ -19,7 +20,7 @@ namespace CH.CleanArchitecture.Core.Application.Commands
         }
 
         public override async Task<Result> HandleAsync(DeactivateUserCommand command) {
-            return await _applicationUserService.DeactivateUser(command.Username);
+            return await _applicationUserService.DeactivateUserAsync(command.Username);
         }
     }
 }

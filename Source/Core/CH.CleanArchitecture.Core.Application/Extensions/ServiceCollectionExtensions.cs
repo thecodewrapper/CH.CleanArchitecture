@@ -1,8 +1,6 @@
-﻿using CH.CleanArchitecture.Core.Application.Authorization;
-using CH.CleanArchitecture.Core.Application.Commands;
+﻿using System;
+using CH.CleanArchitecture.Core.Application.Authorization;
 using CH.CleanArchitecture.Core.Application.Mappings;
-using CH.CleanArchitecture.Core.Application.Queries;
-using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,41 +18,25 @@ namespace CH.CleanArchitecture.Core.Application.Extensions
                 config.AddProfile<UserProfile>();
                 config.AddProfile<OrderProfile>();
             });
-            services.AddMediator(x =>
-            {
-                #region Commands
+        }
 
-                #region User
-
-                x.AddConsumer<CreateUserCommandHandler>();
-                x.AddConsumer<ActivateUserCommandHandler>();
-                x.AddConsumer<DeactivateUserCommandHandler>();
-                x.AddConsumer<AddRolesCommandHandler>();
-                x.AddConsumer<RemoveRolesCommandHandler>();
-                x.AddConsumer<ChangeUserPasswordCommandHandler>();
-                x.AddConsumer<UpdateUserRolesCommandHandler>();
-                x.AddConsumer<UpdateUserDetailsCommandHandler>();
-                x.AddConsumer<CreateNewOrderCommandHandler>();
-
-                #endregion User
-
-                #endregion Commands
-
-                #region Queries
-
-                x.AddConsumer<GetAllUsersQueryHandler>();
-                x.AddConsumer<GetUserQueryHandler>();
-
-                #endregion
-            });
-
-            services.AddAuthorizationCore();
+        public static IServiceCollection AddApplicationAuthorization(this IServiceCollection services, Action<AuthorizationOptions> configure = default) {
+            if (configure == null) {
+                services.AddAuthorizationCore();
+            }
+            else {
+                services.AddAuthorizationCore(configure);
+            }
             services.AddAuthorizationPolicies();
+
+            return services;
         }
 
         private static void AddAuthorizationPolicies(this IServiceCollection services) {
             services.AddSingleton<IAuthorizationPolicyProvider, CustomAuthorizationPolicyProvider>();
-            services.AddScoped<IAuthorizationHandler, UserOperationAuthorizationHandler>();
+
+            //Known issue in .NET7 prevents IAuthorizationHandler from being registered as scoped
+            services.AddTransient<IAuthorizationHandler, UserOperationAuthorizationHandler>();
         }
     }
 }

@@ -412,6 +412,15 @@ namespace CH.CleanArchitecture.Infrastructure.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Surname.
+        /// </summary>
+        public static string Labels_Surname {
+            get {
+                return ResourceManager.GetString("Labels_Surname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Username.
         /// </summary>
         public static string Labels_Username {

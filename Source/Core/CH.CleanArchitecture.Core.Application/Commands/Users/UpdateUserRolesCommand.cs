@@ -1,11 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using CH.CleanArchitecture.Common;
+using CH.Messaging.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Application.Commands
 {
-    public record UpdateUserRolesCommand(string Username, List<string> Roles) : IRequest<Result>
+    public class UpdateUserRolesCommand : IRequest<Result>, ICommand
     {
+        public UpdateUserRolesCommand() {
+
+        }
+
+        public string Username { get; set; }
+        public List<string> Roles { get; set; }
     }
 
     /// <summary>
@@ -20,7 +27,7 @@ namespace CH.CleanArchitecture.Core.Application.Commands
         }
 
         public override async Task<Result> HandleAsync(UpdateUserRolesCommand command) {
-            return await _applicationUserService.UpdateRoles(command.Username, command.Roles);
+            return await _applicationUserService.UpdateRolesAsync(command.Username, command.Roles);
         }
     }
 }

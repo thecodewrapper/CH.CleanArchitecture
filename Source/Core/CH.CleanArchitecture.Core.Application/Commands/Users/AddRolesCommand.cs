@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using CH.CleanArchitecture.Common;
 using CH.CleanArchitecture.Core.Application.DTOs;
+using CH.Messaging.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Application.Commands
 {
@@ -12,7 +13,7 @@ namespace CH.CleanArchitecture.Core.Application.Commands
     /// <summary>
     /// Add roles to user command handler
     /// </summary>
-    public class AddRolesCommandHandler : BaseMessageHandler<AddRolesCommand, Result>
+    public class AddRolesCommandHandler : BaseMessageHandler<AddRolesCommand, Result>, ICommand
     {
         private readonly IApplicationUserService _applicationUserService;
 
@@ -27,7 +28,7 @@ namespace CH.CleanArchitecture.Core.Application.Commands
                 Roles = command.Roles
             };
 
-            return await _applicationUserService.AddRoles(request);
+            return await _applicationUserService.AddRolesAsync(request);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using CH.Data.Abstractions;
 
 namespace CH.CleanArchitecture.Infrastructure.Models
 {

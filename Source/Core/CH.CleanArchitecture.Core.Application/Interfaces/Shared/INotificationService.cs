@@ -1,5 +1,8 @@
-﻿using System;
+﻿using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using CH.CleanArchitecture.Common;
+using CH.CleanArchitecture.Core.Application.DTOs;
 
 namespace CH.CleanArchitecture.Core.Application
 {
@@ -9,38 +12,30 @@ namespace CH.CleanArchitecture.Core.Application
     public partial interface INotificationService
     {
         /// <summary>
-        /// Display notification
+        /// Sends a notification to recipients, specified by the type of notification
         /// </summary>
-        /// <param name="type">Notification type</param>
-        /// <param name="message">Message</param>
-        /// <param name="encode">A value indicating whether the message should not be encoded</param>
-        void Notification(NotificationType type, string message, bool encode = true);
+        /// <param name="dto">The request parameters object</param>
+        /// <returns></returns>
+        Task<Result<int>> SendNotificationAsync(SendNotificationDTO dto);
 
         /// <summary>
-        /// Display success notification
+        /// Get all user notifications for the specified user
         /// </summary>
-        /// <param name="message">Message</param>
-        /// <param name="encode">A value indicating whether the message should not be encoded</param>
-        void SuccessNotification(string message, bool encode = true);
+        /// <param name="user">User for which notifications will be retrieved.</param>
+        /// <returns>IQueryable with Notification DTO's. See <see cref="NotificationDTO"/> for more information.</returns>
+        Result<IQueryable<NotificationDTO>> GetAllForUser(string user);
 
         /// <summary>
-        /// Display warning notification
+        /// Get all user notifications
         /// </summary>
-        /// <param name="message">Message</param>
-        /// <param name="encode">A value indicating whether the message should not be encoded</param>
-        void WarningNotification(string message, bool encode = true);
+        /// <returns>IQueryable with Notification DTO's. See <see cref="NotificationDTO"/> for more information.</returns>
+        Result<IQueryable<NotificationDTO>> GetAll();
 
         /// <summary>
-        /// Display error notification
+        /// Purge the notifications DB table based on the configuration variable NotificationsPurgeHistoryTableInterval.
         /// </summary>
-        /// <param name="message">Message</param>
-        /// <param name="encode">A value indicating whether the message should not be encoded</param>
-        void ErrorNotification(string message, bool encode = true);
-
-        /// <summary>
-        /// Display error notification
-        /// </summary>
-        /// <param name="exception">Exception</param>
-        void ErrorNotification(Exception exception);
+        /// <param name="cancellationToken">A System.Threading.CancellationToken to observe while waiting for the task to complete.</param>
+        /// <returns></returns>
+        Task<Result> PurgeNotificationsAsync(CancellationToken cancellationToken = default);
     }
 }

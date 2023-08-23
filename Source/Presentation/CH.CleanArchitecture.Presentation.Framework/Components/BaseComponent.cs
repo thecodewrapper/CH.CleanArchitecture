@@ -5,6 +5,7 @@ using AutoMapper;
 using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Presentation.Framework.Interfaces;
 using CH.CleanArchitecture.Presentation.Framework.Services;
+using CH.Messaging.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Components;
@@ -87,7 +88,7 @@ namespace CH.CleanArchitecture.Presentation.Framework.Components
             if (showLoader)
                 Loader.Show();
 
-            var result = await ServiceBus.Send(request, cancellationToken);
+            var result = await ServiceBus.SendAsync(request, cancellationToken);
 
             if (showLoader)
                 Loader.Hide();

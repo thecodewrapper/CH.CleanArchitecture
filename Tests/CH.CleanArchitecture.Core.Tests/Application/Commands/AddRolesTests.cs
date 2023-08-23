@@ -16,12 +16,12 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Commands
         public async void AddRoles_WhenRoleIsValidAndNotAssigned_ShouldSucceed() {
             var command = new AddRolesCommand("basicUser", new List<string>
                 {
-                    RolesEnum.SuperAdmin.ToString()
+                    RoleEnum.SuperAdmin.ToString()
                 });
 
-            var result = await ServiceBus.Send(command);
+            var result = await ServiceBus.SendAsync(command);
 
-            result.Succeeded.Should().BeTrue();
+            result.IsSuccessful.Should().BeTrue();
         }
 
         [Fact]
@@ -31,9 +31,9 @@ namespace CH.CleanArchitecture.Core.Tests.Application.Commands
                     "InvalidRole"
                 });
 
-            var result = await ServiceBus.Send(command);
+            var result = await ServiceBus.SendAsync(command);
 
-            result.Succeeded.Should().BeFalse();
+            result.IsSuccessful.Should().BeFalse();
             result.Errors.Should().Contain(e => e.Error == $"Role InvalidRole is invalid.");
         }
     }

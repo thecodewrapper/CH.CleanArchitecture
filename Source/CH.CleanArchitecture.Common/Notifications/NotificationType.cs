@@ -5,19 +5,9 @@
     /// </summary>
     public enum NotificationType
     {
-        /// <summary>
-        /// Success
-        /// </summary>
-        Success,
-
-        /// <summary>
-        /// Error
-        /// </summary>
-        Error,
-
-        /// <summary>
-        /// Warning
-        /// </summary>
-        Warning
+        SMS,
+        Email,
+        Portal,
+        Push
     }
 }

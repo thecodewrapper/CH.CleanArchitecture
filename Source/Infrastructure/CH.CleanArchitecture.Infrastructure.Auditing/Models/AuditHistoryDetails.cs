@@ -5,7 +5,7 @@ namespace CH.CleanArchitecture.Infrastructure.Auditing
     /// <summary>
     /// Changed Values details
     /// </summary>
-    public class AutoHistoryDetails
+    public class AuditHistoryDetails
     {
         /// <summary>
         /// The values after action.

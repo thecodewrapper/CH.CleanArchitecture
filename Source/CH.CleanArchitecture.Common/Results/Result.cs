@@ -11,7 +11,7 @@ namespace CH.CleanArchitecture.Common
         private List<IResultError> _errors = new List<IResultError>();
 
         public Result() {
-            Succeeded = true;
+            IsSuccessful = true;
         }
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace CH.CleanArchitecture.Common
         /// <summary>
         /// An indication whether the result has failed
         /// </summary>
-        public bool Failed => !Succeeded;
+        public bool IsFailed => !IsSuccessful;
 
         /// <summary>
         /// The result message
@@ -42,7 +42,7 @@ namespace CH.CleanArchitecture.Common
         /// <summary>
         /// An indication whether the result is succesful
         /// </summary>
-        public bool Succeeded { get; internal set; }
+        public bool IsSuccessful { get; internal set; }
 
         /// <summary>
         /// Any exception that might have been thrown

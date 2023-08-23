@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using CH.CleanArchitecture.Common;
-using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Core.Application.Commands;
+using CH.Messaging.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CH.CleanArchitecture.Presentation.Web.Controllers
@@ -18,10 +18,10 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
 
         [Route("CreateUser")]
         public async Task<IActionResult> CreateUser() {
-            Result result = await _serviceBus.Send(
-                new CreateUserCommand("dev", "Developer User", "dev@dev.dev", "12345678!!", new List<string>() { "SuperAdmin", "Admin" }));
+            Result result = await _serviceBus.SendAsync(
+                new CreateUserCommand("dev", "Developer User", "surname", "dev@dev.dev", "12345678!!", new List<string>() { "SuperAdmin", "Admin" }));
 
-            if (result.Succeeded) {
+            if (result.IsSuccessful) {
                 return RedirectToAction("Index", "Home");
             }
             else {
@@ -31,8 +31,8 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
 
         [Route("CreateOrder")]
         public async Task<IActionResult> CreateOrder() {
-            Result result = await _serviceBus.Send(new CreateNewOrderCommand("TRACKING NUMBER HERE"));
-            if (result.Succeeded) {
+            Result result = await _serviceBus.SendAsync(new CreateNewOrderCommand("TRACKING NUMBER HERE"));
+            if (result.IsSuccessful) {
                 return RedirectToAction("Index", "Home");
             }
             else {

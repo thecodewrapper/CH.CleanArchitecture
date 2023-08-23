@@ -23,7 +23,7 @@ namespace CH.CleanArchitecture.Presentation.Web.ViewModels
         public string PhoneNumber { get; set; }
 
         [Display(Name = ResourceKeys.Labels_Roles)]
-        public IEnumerable<RolesEnum> Roles { get; set; }
+        public IEnumerable<RoleEnum> Roles { get; set; }
 
         [Display(Name = ResourceKeys.Labels_Status)]
         public bool IsActive { get; set; }

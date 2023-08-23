@@ -16,14 +16,14 @@ namespace CH.CleanArchitecture.Infrastructure.Auditing
         public static void EnsureAuditHistory(this DbContext context, string username) {
             var entries = context.ChangeTracker.Entries().Where(e => !AuditUtilities.IsAuditDisabled(e.Entity.GetType()) && (e.State == EntityState.Added || e.State == EntityState.Modified || e.State == EntityState.Deleted)).ToArray();
             foreach (var entry in entries) {
-                context.Add(entry.AutoHistory(username));
+                context.Add(entry.CreateAuditHistory(username));
             }
         }
 
-        private static AuditHistory AutoHistory(this EntityEntry entry, string username) {
+        private static AuditHistory CreateAuditHistory(this EntityEntry entry, string username) {
             var history = new AuditHistory
             {
-                TableName = entry.Metadata.GetTableName(),
+                TableName = entry.Metadata.GetDefaultTableName(),
                 Username = username
             };
 
@@ -34,7 +34,7 @@ namespace CH.CleanArchitecture.Infrastructure.Auditing
             foreach (var prop in properties) {
                 string propertyName = prop.Metadata.Name;
                 if (prop.Metadata.IsPrimaryKey()) {
-                    history.AutoHistoryDetails.NewValues[propertyName] = prop.CurrentValue;
+                    history.AuditHistoryDetails.NewValues[propertyName] = prop.CurrentValue;
                     continue;
                 }
 
@@ -42,25 +42,28 @@ namespace CH.CleanArchitecture.Infrastructure.Auditing
                     case EntityState.Added:
                         history.RowId = "0";
                         history.Kind = EntityState.Added;
-                        history.AutoHistoryDetails.NewValues.Add(propertyName, prop.CurrentValue);
+                        history.AuditHistoryDetails.NewValues.Add(propertyName, prop.CurrentValue);
                         break;
 
                     case EntityState.Modified:
                         history.RowId = entry.PrimaryKey();
                         history.Kind = EntityState.Modified;
-                        history.AutoHistoryDetails.OldValues.Add(propertyName, prop.OriginalValue);
-                        history.AutoHistoryDetails.NewValues.Add(propertyName, prop.CurrentValue);
+                        if (prop.IsModified) {
+                            history.AuditHistoryDetails.OldValues.Add(propertyName, prop.OriginalValue);
+                            history.AuditHistoryDetails.NewValues.Add(propertyName, prop.CurrentValue);
+                        }
+
                         break;
 
                     case EntityState.Deleted:
                         history.RowId = entry.PrimaryKey();
                         history.Kind = EntityState.Deleted;
-                        history.AutoHistoryDetails.OldValues.Add(propertyName, prop.OriginalValue);
+                        history.AuditHistoryDetails.OldValues.Add(propertyName, prop.OriginalValue);
                         break;
                 }
             }
 
-            history.Changed = JsonSerializer.Serialize(history.AutoHistoryDetails);
+            history.Changed = JsonSerializer.Serialize(history.AuditHistoryDetails);
 
             return history;
         }

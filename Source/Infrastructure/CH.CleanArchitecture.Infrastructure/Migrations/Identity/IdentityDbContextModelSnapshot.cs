@@ -18,12 +18,51 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("Identity")
-                .HasAnnotation("ProductVersion", "6.0.0-rc.1.21452.10")
+                .HasAnnotation("ProductVersion", "7.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CH.CleanArchitecture.Infrastructure.Identity.ApplicationRole", b =>
+            modelBuilder.Entity("CH.CleanArchitecture.Infrastructure.Models.AddressEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("newsequentialid()");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Line1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Line2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Postcode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserAddresses", "Identity");
+                });
+
+            modelBuilder.Entity("CH.CleanArchitecture.Infrastructure.Models.ApplicationRole", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -47,16 +86,19 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
                         .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles", "Identity");
                 });
 
-            modelBuilder.Entity("CH.CleanArchitecture.Infrastructure.Identity.ApplicationUser", b =>
+            modelBuilder.Entity("CH.CleanArchitecture.Infrastructure.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<Guid?>("AddressId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -113,6 +155,9 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Surname")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<byte>("Theme")
                         .HasColumnType("tinyint");
 
@@ -128,6 +173,8 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AddressId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -136,10 +183,10 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users", "Identity");
                 });
 
-            modelBuilder.Entity("CH.CleanArchitecture.Infrastructure.Identity.ApplicationUserRole", b =>
+            modelBuilder.Entity("CH.CleanArchitecture.Infrastructure.Models.ApplicationUserRole", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -151,7 +198,7 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("UserRoles", (string)null);
+                    b.ToTable("UserRoles", "Identity");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -160,7 +207,7 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -176,7 +223,7 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RoleClaims", (string)null);
+                    b.ToTable("RoleClaims", "Identity");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -185,7 +232,7 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -201,7 +248,7 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserClaims", (string)null);
+                    b.ToTable("UserClaims", "Identity");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -223,7 +270,7 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserLogins", (string)null);
+                    b.ToTable("UserLogins", "Identity");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -242,18 +289,27 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("UserTokens", (string)null);
+                    b.ToTable("UserTokens", "Identity");
                 });
 
-            modelBuilder.Entity("CH.CleanArchitecture.Infrastructure.Identity.ApplicationUserRole", b =>
+            modelBuilder.Entity("CH.CleanArchitecture.Infrastructure.Models.ApplicationUser", b =>
                 {
-                    b.HasOne("CH.CleanArchitecture.Infrastructure.Identity.ApplicationRole", "Role")
+                    b.HasOne("CH.CleanArchitecture.Infrastructure.Models.AddressEntity", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
+                    b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("CH.CleanArchitecture.Infrastructure.Models.ApplicationUserRole", b =>
+                {
+                    b.HasOne("CH.CleanArchitecture.Infrastructure.Models.ApplicationRole", "Role")
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CH.CleanArchitecture.Infrastructure.Identity.ApplicationUser", "User")
+                    b.HasOne("CH.CleanArchitecture.Infrastructure.Models.ApplicationUser", "User")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -266,7 +322,7 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("CH.CleanArchitecture.Infrastructure.Identity.ApplicationRole", null)
+                    b.HasOne("CH.CleanArchitecture.Infrastructure.Models.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -275,7 +331,7 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("CH.CleanArchitecture.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("CH.CleanArchitecture.Infrastructure.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -284,7 +340,7 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("CH.CleanArchitecture.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("CH.CleanArchitecture.Infrastructure.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -293,19 +349,19 @@ namespace CH.CleanArchitecture.Infrastructure.Migrations.Identity
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("CH.CleanArchitecture.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("CH.CleanArchitecture.Infrastructure.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CH.CleanArchitecture.Infrastructure.Identity.ApplicationRole", b =>
+            modelBuilder.Entity("CH.CleanArchitecture.Infrastructure.Models.ApplicationRole", b =>
                 {
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("CH.CleanArchitecture.Infrastructure.Identity.ApplicationUser", b =>
+            modelBuilder.Entity("CH.CleanArchitecture.Infrastructure.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Roles");
                 });

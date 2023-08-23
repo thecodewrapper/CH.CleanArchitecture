@@ -1,4 +1,5 @@
 ﻿using System;
+using CH.Data.Abstractions;
 using Microsoft.EntityFrameworkCore;
 
 namespace CH.CleanArchitecture.Infrastructure.Auditing
@@ -7,7 +8,7 @@ namespace CH.CleanArchitecture.Infrastructure.Auditing
     /// DB Entity of audit
     /// </summary>
     [NotAuditable]
-    public class AuditHistory
+    public class AuditHistory : IDataEntity<int>
     {
         /// <summary>
         /// Gets or sets the primary key.
@@ -53,6 +54,6 @@ namespace CH.CleanArchitecture.Infrastructure.Auditing
         /// <summary>
         /// The structured values contained on the property <see cref="Changed"/>.
         /// </summary>
-        public AutoHistoryDetails AutoHistoryDetails { get; set; } = new AutoHistoryDetails();
+        public AuditHistoryDetails AuditHistoryDetails { get; set; } = new AuditHistoryDetails();
     }
 }

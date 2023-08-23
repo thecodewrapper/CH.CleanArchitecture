@@ -48,6 +48,7 @@ namespace CH.CleanArchitecture.Infrastructure.Resources
         public const string Labels_Searching = "Labels_Searching";
         public const string Labels_Settings = "Labels_Settings";
         public const string Labels_Status = "Labels_Status";
+        public const string Labels_Surname = "Labels_Surname";
         public const string Labels_Username = "Labels_Username";
         public const string Labels_Welcome = "Labels_Welcome";
         public const string Navigation_Top_Users = "Navigation_Top_Users";

@@ -7,6 +7,7 @@ using CH.CleanArchitecture.Common;
 using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Core.Application.DTOs;
 using CH.CleanArchitecture.Infrastructure.Models;
+using CH.Data.Abstractions;
 using Microsoft.Extensions.Logging;
 
 namespace CH.CleanArchitecture.Infrastructure.Services
@@ -28,7 +29,19 @@ namespace CH.CleanArchitecture.Infrastructure.Services
 
         #region Public Methods
 
-        public async Task<Result> Create(ApplicationConfigurationDTO dto) {
+        public Result<IQueryable<ApplicationConfigurationDTO>> GetAll() {
+            var serviceResult = new Result<IQueryable<ApplicationConfigurationDTO>>();
+            try {
+                serviceResult.Data = _mapper.ProjectTo<ApplicationConfigurationDTO>(_appConfigRepository.GetAll());
+                return serviceResult;
+            }
+            catch (Exception ex) {
+                ServicesHelper.HandleServiceError(ref serviceResult, _logger, ex, "Error while trying to retrieve application configurations from database");
+                return serviceResult;
+            }
+        }
+
+        public async Task<Result> CreateAsync(ApplicationConfigurationDTO dto) {
             var serviceResult = new Result<ApplicationConfigurationDTO>();
             try {
                 _appConfigs = null;
@@ -37,7 +50,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
 
                 await _appConfigRepository.AddAsync(_mapper.Map<ApplicationConfigurationEntity>(dto));
                 await _appConfigRepository.UnitOfWork.SaveChangesAsync();
-                serviceResult.Successful();
+                serviceResult.Succeed();
             }
             catch (Exception ex) {
                 ServicesHelper.HandleServiceError(ref serviceResult, _logger, ex, "Error while trying to create application configuration");
@@ -45,14 +58,14 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             return serviceResult;
         }
 
-        public async Task<Result<ApplicationConfigurationDTO>> Details(string id, bool decrypt) {
+        public async Task<Result<ApplicationConfigurationDTO>> DetailsAsync(string id, bool decrypt) {
             var serviceResult = new Result<ApplicationConfigurationDTO>();
             try {
                 if (id == null) {
                     throw new Exception("Config not found");
                 }
 
-                var entity = await _appConfigRepository.FindAsync(id);
+                var entity = await _appConfigRepository.GetSingleAsync(ac => ac.Id == id);
 
                 if (entity == null) {
                     throw new Exception("Config not found");
@@ -62,7 +75,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                     entity.Value = StringCipherHelper.DecryptWithRandomSalt(entity.Value);
 
                 serviceResult.Data = _mapper.Map<ApplicationConfigurationDTO>(entity);
-                serviceResult.Successful();
+                serviceResult.Succeed();
             }
             catch (Exception ex) {
                 ServicesHelper.HandleServiceError(ref serviceResult, _logger, ex, "Error while trying to retrieve application configuration");
@@ -70,7 +83,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             return serviceResult;
         }
 
-        public async Task<Result> Edit(ApplicationConfigurationDTO dto) {
+        public async Task<Result> EditAsync(ApplicationConfigurationDTO dto) {
             var serviceResult = new Result();
             try {
                 _logger.LogDebug($"Editing application configuration {nameof(dto.Id)}: {dto.Id}");
@@ -92,7 +105,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                 //reset the appconfigs in order to refresh on next request
                 _appConfigs = null;
                 _logger.LogDebug($"Application configuration '{dto.Id}' edited succesfully");
-                serviceResult.Successful();
+                serviceResult.Succeed();
             }
             catch (Exception ex) {
                 ServicesHelper.HandleServiceError(ref serviceResult, _logger, ex, "Error while trying to edit application configuration");
@@ -100,17 +113,17 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             return serviceResult;
         }
 
-        public async Task<Result<bool>> Delete(string id) {
-            var serviceResult = new Result<bool>();
+        public async Task<Result> DeleteAsync(string id) {
+            var serviceResult = new Result();
             try {
-                var entity = await _appConfigRepository.GetSingleAsync(a => a.Id == id);
+                var entity = await _appConfigRepository.FindAsync(id);
                 if (entity == null) {
                     throw new Exception("Page not found");
                 }
                 _appConfigRepository.Delete(entity);
                 await _appConfigRepository.UnitOfWork.SaveChangesAsync();
 
-                serviceResult.Data = true;
+                serviceResult.Succeed();
                 return serviceResult;
             }
             catch (Exception ex) {
@@ -206,8 +219,8 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             var serviceResult = new Result<string[]>();
             try {
                 var valueResult = GetValue(key);
-                if (!valueResult.Succeeded) {
-                    return serviceResult.Failed().WithMessage("Unable to fetch multiple keys from");
+                if (!valueResult.IsSuccessful) {
+                    return serviceResult.Fail().WithMessage("Unable to fetch multiple keys from");
                 }
                 serviceResult.Data = valueResult.Data.Split(delimiter);
             }

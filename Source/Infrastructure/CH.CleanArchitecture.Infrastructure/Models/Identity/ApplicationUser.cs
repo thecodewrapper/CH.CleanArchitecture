@@ -7,23 +7,17 @@ namespace CH.CleanArchitecture.Infrastructure.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        #region Constants
-
-        public const string MustChangePasswordClaimType = "user:mustchangepassword";
-        public const string FullNameClaimType = "user:fullname";
-        public const string ProfilePictureClaimType = "user:avatar";
-        public const string ThemeClaimType = "user:theme";
-        public const string CultureClaimType = "localization:culture";
-        public const string UiCultureClaimType = "localization:uiculture";
-
-        #endregion
-
         #region Public Properties
 
         /// <summary>
         /// The user's name
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// The user's surname
+        /// </summary>
+        public string Surname { get; set; }
 
         /// <summary>
         /// The user's secondary phone number
@@ -59,6 +53,11 @@ namespace CH.CleanArchitecture.Infrastructure.Models
         /// The user's UI culture
         /// </summary>
         public string UICulture { get; set; } = "el";
+
+        /// <summary>
+        /// The user's address
+        /// </summary>
+        public AddressEntity Address { get; set; }
 
         /// <summary>
         /// Navigation property for the roles this user belongs to.

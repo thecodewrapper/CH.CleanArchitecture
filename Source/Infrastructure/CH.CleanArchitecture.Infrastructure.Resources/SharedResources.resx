@@ -234,6 +234,9 @@
   <data name="Labels_Status" xml:space="preserve">
     <value>Status</value>
   </data>
+  <data name="Labels_Surname" xml:space="preserve">
+    <value>Surname</value>
+  </data>
   <data name="Labels_Username" xml:space="preserve">
     <value>Username</value>
   </data>
