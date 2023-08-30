@@ -1,4 +1,5 @@
-﻿using CH.CleanArchitecture.Infrastructure.Models;
+﻿using CH.CleanArchitecture.Infrastructure.DbContexts;
+using CH.CleanArchitecture.Infrastructure.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -10,8 +11,8 @@ namespace CH.CleanArchitecture.Tests
 {
     public class FakeSignInManager : SignInManager<ApplicationUser>
     {
-        public FakeSignInManager()
-            : base(new FakeUserManager(),
+        public FakeSignInManager(IdentityDbContext context)
+            : base(new FakeUserManager(context),
                 new Mock<IHttpContextAccessor>().Object,
                 new Mock<IUserClaimsPrincipalFactory<ApplicationUser>>().Object,
                 new Mock<IOptions<IdentityOptions>>().Object,

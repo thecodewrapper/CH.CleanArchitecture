@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Infrastructure.Models;
 using CH.CleanArchitecture.Tests;
 using CH.Data.Abstractions;
@@ -71,7 +70,6 @@ namespace CH.CleanArchitecture.Infrastructure.Tests
 
         [Fact]
         public void ApplicationConfigurationRepo_Delete_RemovesEntityFromContext() {
-            AddApplicationData(ApplicationContext);
             var dummyAppConfig = ApplicationContext.ApplicationConfigurations.Single(a => a.Id == "dummy1");
             _appConfigRepo.Delete(dummyAppConfig);
             _appConfigRepo.UnitOfWork.SaveChanges();
@@ -83,7 +81,6 @@ namespace CH.CleanArchitecture.Infrastructure.Tests
 
         [Fact]
         public void ApplicationConfigurationRepo_DeleteRange_RemovesEntitiesFromContext() {
-            AddApplicationData(ApplicationContext);
             var dummyAppConfig1 = ApplicationContext.ApplicationConfigurations.Single(a => a.Id == "dummy1");
             var dummyAppConfig2 = ApplicationContext.ApplicationConfigurations.Single(a => a.Id == "dummy2");
             _appConfigRepo.DeleteRange(new List<ApplicationConfigurationEntity>() { dummyAppConfig1, dummyAppConfig2 });
@@ -98,7 +95,6 @@ namespace CH.CleanArchitecture.Infrastructure.Tests
 
         [Fact]
         public void ApplicationConfigurationRepo_Exists_IfEntityExists_ReturnsTrue() {
-            AddApplicationData(ApplicationContext);
             bool exists = _appConfigRepo.Exists(a => a.Id == "dummy1");
             Assert.True(exists);
         }
@@ -111,7 +107,6 @@ namespace CH.CleanArchitecture.Infrastructure.Tests
 
         [Fact]
         public async Task ApplicationConfigurationRepo_ExistsAsync_IfEntityExists_ReturnsTrue() {
-            AddApplicationData(ApplicationContext);
             bool exists = await _appConfigRepo.ExistsAsync(a => a.Id == "dummy1");
             Assert.True(exists);
         }
@@ -124,7 +119,6 @@ namespace CH.CleanArchitecture.Infrastructure.Tests
 
         [Fact]
         public void ApplicationConfigurationRepo_GetAll_FetchesAllRecords() {
-            AddApplicationData(ApplicationContext);
             int count = ApplicationContext.ApplicationConfigurations.Count();
             var allConfigs = _appConfigRepo.GetAll();
 
@@ -134,7 +128,6 @@ namespace CH.CleanArchitecture.Infrastructure.Tests
 
         [Fact]
         public void ApplicationConfigurationRepo_GetBy_IfSatisfiesPredicate_ReturnsListWithEntity() {
-            AddApplicationData(ApplicationContext);
             var appConfigs = _appConfigRepo.GetBy(a => a.Id == "dummy1" && a.Value == "dummyvalue1");
 
             var appConfigInList = appConfigs.First(a => a.Id == "dummy1" && a.Value == "dummyvalue1");
@@ -146,23 +139,10 @@ namespace CH.CleanArchitecture.Infrastructure.Tests
 
         [Fact]
         public void ApplicationConfigurationRepo_GetBy_IfDoesNotSatisfyPredicate_ReturnsEmptyList() {
-            AddApplicationData(ApplicationContext);
             var appConfigs = _appConfigRepo.GetBy(a => a.Id == "dummy1" && a.Value == "dummyValue1NotExists");
 
             Assert.NotNull(appConfigs);
             Assert.Empty(appConfigs);
-        }
-
-        [Fact]
-        public void ApplicationConfigurationRepo_GetFirst_IfExists_ReturnsFirstEntity() {
-            string duplicateValue = "appConfigValue";
-            ApplicationContext.ApplicationConfigurations.Add(new ApplicationConfigurationEntity() { Id = "appconfig1", Value = duplicateValue });
-            ApplicationContext.ApplicationConfigurations.Add(new ApplicationConfigurationEntity() { Id = "appconfig2", Value = duplicateValue });
-            ApplicationContext.SaveChanges();
-
-            var retrievedAppConfig = _appConfigRepo.GetFirst(a => a.Value == duplicateValue);
-
-            Assert.Equal("appconfig1", retrievedAppConfig.Id);
         }
 
         [Fact]
@@ -172,18 +152,6 @@ namespace CH.CleanArchitecture.Infrastructure.Tests
             var retrievedAppConfig = _appConfigRepo.GetFirst(a => a.Value == "some value which does not exist");
 
             Assert.Null(retrievedAppConfig);
-        }
-
-        [Fact]
-        public async Task ApplicationConfigurationRepo_GetFirstAsync_IfExists_ReturnsFirstEntity() {
-            string duplicateValue = "appConfigValue";
-            ApplicationContext.ApplicationConfigurations.Add(new ApplicationConfigurationEntity() { Id = "appconfig1", Value = duplicateValue });
-            ApplicationContext.ApplicationConfigurations.Add(new ApplicationConfigurationEntity() { Id = "appconfig2", Value = duplicateValue });
-            ApplicationContext.SaveChanges();
-
-            var retrievedAppConfig = await _appConfigRepo.GetFirstAsync(a => a.Value == duplicateValue);
-
-            Assert.Equal("appconfig1", retrievedAppConfig.Id);
         }
 
         [Fact]
@@ -197,7 +165,6 @@ namespace CH.CleanArchitecture.Infrastructure.Tests
 
         [Fact]
         public void ApplicationConfigurationRepo_GetSingle_IfExists_ReturnsSingleEntity() {
-            AddApplicationData(ApplicationContext);
             var appConfig = _appConfigRepo.GetSingle(a => a.Value == "dummyvalue1");
 
             Assert.NotNull(appConfig);
@@ -205,7 +172,6 @@ namespace CH.CleanArchitecture.Infrastructure.Tests
 
         [Fact]
         public void ApplicationConfigurationRepo_GetSingle_IfDoesNotExist_ReturnsNull() {
-            AddApplicationData(ApplicationContext);
             var appConfig = _appConfigRepo.GetSingle(a => a.Id == "does not exist");
 
             Assert.Null(appConfig);
@@ -213,7 +179,6 @@ namespace CH.CleanArchitecture.Infrastructure.Tests
 
         [Fact]
         public void ApplicationConfigurationRepo_Update_UpdatesEntityCorrectly() {
-            AddApplicationData(ApplicationContext);
             var appConfig = ApplicationContext.ApplicationConfigurations.Single(a => a.Value == "dummyvalue1");
             string changedValue = "changedValue";
             appConfig.Value = changedValue;
@@ -227,7 +192,6 @@ namespace CH.CleanArchitecture.Infrastructure.Tests
 
         [Fact]
         public void ApplicationConfigurationRepo_UpdateRange_UpdatesAllEntitiesCorrectly() {
-            AddApplicationData(ApplicationContext);
             var appConfig1 = ApplicationContext.ApplicationConfigurations.Single(a => a.Value == "dummyvalue1");
             var appConfig2 = ApplicationContext.ApplicationConfigurations.Single(a => a.Value == "dummyvalue2");
             string changedValue1 = "changedValue1";

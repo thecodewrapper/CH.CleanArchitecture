@@ -1,4 +1,5 @@
-﻿using CH.CleanArchitecture.Infrastructure.DbContexts;
+﻿using CH.CleanArchitecture.Core.Domain;
+using CH.CleanArchitecture.Infrastructure.DbContexts;
 using CH.CleanArchitecture.Infrastructure.Models;
 using CH.EventStore.EntityFramework;
 
@@ -6,17 +7,84 @@ namespace CH.CleanArchitecture.Tests
 {
     internal class DbInitializer
     {
-        #region Application
         public static void Initialize(ApplicationDbContext context) {
-            if (context.ApplicationConfigurations.Any()) {
-                return;
-            }
-
-            Seed(context);
+            AddApplicationConfigurations(context);
         }
 
-        private static void Seed(ApplicationDbContext context) {
-            // Seed additional data according to your application here
+        public static void Initialize(EventStoreDbContext context) {
+            if (context.Events.Any()) {
+                return;
+            }
+        }
+
+        public static void Initialize(IdentityDbContext context) {
+            AddUsers(context);
+        }
+
+        private static void AddUsers(IdentityDbContext context) {
+
+            var activeUser = new ApplicationUser
+            {
+                UserName = "activeUser",
+                Name = "Active User",
+                Surname = "Active User",
+                Id = "0a9da724-e527-46ca-9a6d-1d019b8f6f95",
+                Email = "test@test.it",
+                IsActive = true
+            };
+
+            var inactiveUser = new ApplicationUser
+            {
+                UserName = "inactiveUser",
+                Name = "Inactive User",
+                Surname = "Inactive User",
+                Id = "0a9da724-e527-46ca-9a6d-1d019b8f6f96",
+                Email = "test@test.it",
+                IsActive = false
+            };
+
+            var superAdminUser = new ApplicationUser
+            {
+                UserName = "superAdminUser",
+                Name = "Super Admin",
+                Surname = "Super Admin",
+                Id = Guid.NewGuid().ToString(),
+                Email = "test@test.it",
+                IsActive = true
+            };
+
+            superAdminUser.Roles.Add(new ApplicationUserRole
+            {
+                Role = new ApplicationRole { Name = RoleEnum.SuperAdmin.ToString() }
+            });
+
+            var basicUser = new ApplicationUser
+            {
+                UserName = "basicUser",
+                Name = "Super Admin",
+                Surname = "Super Admin",
+                Id = Guid.NewGuid().ToString(),
+                Email = "test@test.it",
+                IsActive = true
+            };
+
+            basicUser.Roles.Add(new ApplicationUserRole
+            {
+                Role = new ApplicationRole { Name = RoleEnum.User.ToString() }
+            });
+
+            var users = new List<ApplicationUser>
+            {
+                activeUser,
+                inactiveUser,
+                superAdminUser,
+                basicUser
+            };
+            context.Users.AddRange(users);
+            context.SaveChanges();
+        }
+
+        private static void AddApplicationConfigurations(ApplicationDbContext context) {
             var appConfigs = new List<ApplicationConfigurationEntity>
             {
                 new ApplicationConfigurationEntity
@@ -48,29 +116,5 @@ namespace CH.CleanArchitecture.Tests
             context.ApplicationConfigurations.AddRange(appConfigs);
             context.SaveChanges();
         }
-        #endregion Application
-
-        #region Identity
-        public static void Initialize(IdentityDbContext context) {
-
-        }
-
-        private static void Seed(IdentityDbContext context) {
-
-        }
-        #endregion Identity
-
-        #region EventStore
-        public static void Initialize(EventStoreDbContext context) {
-            if (context.Events.Any()) {
-                return;
-            }
-
-            Seed(context);
-        }
-
-        private static void Seed(EventStoreDbContext context) {
-        }
-        #endregion EventStore
     }
 }
