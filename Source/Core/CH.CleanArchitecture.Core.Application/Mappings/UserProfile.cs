@@ -8,7 +8,6 @@ namespace CH.CleanArchitecture.Core.Application
     {
         public UserProfile() {
             CreateMap<UpdateUserDetailsCommand, UpdateUserDetailsDTO>();
-            //CreateMap<User, UserReadModel>();
         }
     }
 }
