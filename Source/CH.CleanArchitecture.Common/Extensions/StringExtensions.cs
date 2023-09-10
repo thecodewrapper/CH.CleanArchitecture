@@ -44,9 +44,19 @@ namespace CH.CleanArchitecture.Common
             return result;
         }
 
-        public static string Base64UrlEncode(this string value) {
+        public static string Base64Encode(this string value) {
             var bytes = Encoding.UTF8.GetBytes(value);
             var s = Convert.ToBase64String(bytes); // Regular base64 encoder
+            return s;
+        }
+
+        public static string Base64Decode(this string value) {
+            var bytes = Convert.FromBase64String(value); // Standard base64 decoder
+            return Encoding.UTF8.GetString(bytes);
+        }
+
+        public static string Base64UrlEncode(this string value) {
+            var s = Base64Encode(value);
             s = s.Split('=')[0]; // Remove any trailing '='s
             s = s.Replace('+', '-'); // 62nd char of encoding
             s = s.Replace('/', '_'); // 63rd char of encoding
@@ -71,8 +81,7 @@ namespace CH.CleanArchitecture.Common
                     throw new Exception("Illegal base64 url string!");
             }
 
-            var bytes = Convert.FromBase64String(s); // Standard base64 decoder
-            return Encoding.UTF8.GetString(bytes);
+            return Base64Decode(s);
         }
 
         public static string FirstCharToUpper(this string input) =>
