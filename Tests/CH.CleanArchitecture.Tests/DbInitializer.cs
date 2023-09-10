@@ -1,4 +1,5 @@
-﻿using CH.CleanArchitecture.Core.Domain;
+﻿using CH.CleanArchitecture.Common.Constants;
+using CH.CleanArchitecture.Core.Domain;
 using CH.CleanArchitecture.Infrastructure.DbContexts;
 using CH.CleanArchitecture.Infrastructure.Models;
 using CH.EventStore.EntityFramework;
@@ -87,6 +88,9 @@ namespace CH.CleanArchitecture.Tests
         private static void AddApplicationConfigurations(ApplicationDbContext context) {
             var appConfigs = new List<ApplicationConfigurationEntity>
             {
+                new ApplicationConfigurationEntity { Id = AppConfigKeys.CRYPTO.JWT_SYMMETRIC_KEY, IsEncrypted = false, Value = "testsecrettestsecrettestsecrettestsecrettestsecret", Description = "The symmetric key to use for JWT signing" },
+                new ApplicationConfigurationEntity { Id = AppConfigKeys.CRYPTO.JWT_ISSUER, IsEncrypted = false, Value = "Issuer", Description = "The issuer for the generated JWT tokens" },
+                new ApplicationConfigurationEntity { Id = AppConfigKeys.CRYPTO.JWT_AUTHORITY, IsEncrypted = false, Value = "Authority", Description = "The issuer for the generated JWT tokens" },
                 new ApplicationConfigurationEntity
                 {
                     Id = "dummy1",
