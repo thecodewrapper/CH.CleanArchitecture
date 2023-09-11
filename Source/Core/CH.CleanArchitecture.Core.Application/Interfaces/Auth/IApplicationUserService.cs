@@ -108,9 +108,9 @@ namespace CH.CleanArchitecture.Core.Application
         /// <summary>
         /// Generates an email confirmation token for the specified <paramref name="user"/>
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        Task<Result<string>> GenerateEmailConfirmationTokenAsync(User user);
+        Task<Result<string>> GenerateEmailConfirmationTokenAsync(string userId);
 
         /// <summary>
         /// Generates a password reset token for the specified <paramref name="userEmail"/>
