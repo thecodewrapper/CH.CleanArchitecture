@@ -74,7 +74,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
         /// <param name="message"></param>
         /// <returns></returns>
         public Task<Result> SendEmailAsync(string to, string subject, string message) {
-            return this.SendEmailAsync(_fromEmail, to, subject, message);
+            return SendEmailAsync(_fromEmail, to, subject, message);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
         /// <param name="message"></param>
         /// <returns></returns>
         public Task<Result> SendEmailAsync(List<string> tos, string subject, string message) {
-            return this.SendEmailAsync(_fromEmail, tos, subject, message);
+            return SendEmailAsync(_fromEmail, tos, subject, message);
         }
 
         #endregion Public Methods
