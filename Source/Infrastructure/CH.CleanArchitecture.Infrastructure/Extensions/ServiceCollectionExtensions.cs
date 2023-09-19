@@ -1,5 +1,4 @@
 ﻿using AutoMapper.Extensions.ExpressionMapping;
-using CH.CleanArchitecture.Common;
 using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Core.Application.Commands;
 using CH.CleanArchitecture.Infrastructure.DbContexts;
@@ -7,6 +6,7 @@ using CH.CleanArchitecture.Infrastructure.Factories;
 using CH.CleanArchitecture.Infrastructure.Handlers.Queries;
 using CH.CleanArchitecture.Infrastructure.Mappings;
 using CH.CleanArchitecture.Infrastructure.Models;
+using CH.CleanArchitecture.Infrastructure.Options;
 using CH.CleanArchitecture.Infrastructure.Repositories;
 using CH.CleanArchitecture.Infrastructure.Services;
 using CH.Data.Abstractions;
@@ -38,11 +38,12 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
                 config.AddProfile<AppProfile>();
                 config.AddProfile<EventProfile>();
                 config.AddProfile<UserProfile>();
+                config.AddProfile<OrderProfile>();
             });
 
             services.AddSharedServices();
             services.AddStorageServices(configuration);
-            services.AddCommunicationServices();
+            services.AddCommunicationServices(configuration);
             services.AddCryptoServices();
             services.AddAuthServices();
             services.AddScheduledJobs(configuration);
@@ -103,8 +104,15 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
             services.AddScoped<IFileStorageService, FileStorageService>();
         }
 
-        private static void AddCommunicationServices(this IServiceCollection services) {
-            services.AddScoped<IEmailService, EmailSMTPService>();
+        private static void AddCommunicationServices(this IServiceCollection services, IConfiguration configuration) {
+            var emailSenderOptions = GetEmailSenderOptions(configuration);
+            if (emailSenderOptions.UseSendGrid) {
+                services.AddScoped<IEmailService, EmailSendGridService>();
+            }
+            else {
+                services.AddScoped<IEmailService, EmailSMTPService>();
+            }
+
             services.AddScoped<ISMSService, SMSService>();
         }
 
@@ -161,6 +169,13 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
 
         private static void AddStorageOptions(this IServiceCollection services, IConfiguration configuration) {
             services.Configure<FileStorageOptions>(x => configuration.GetSection("Storage").Bind(x));
+        }
+
+        private static EmailSenderOptions GetEmailSenderOptions(IConfiguration configuration) {
+            EmailSenderOptions emailSenderOptions = new EmailSenderOptions();
+            configuration.GetSection("EmailSender").Bind(emailSenderOptions);
+
+            return emailSenderOptions;
         }
     }
 }
