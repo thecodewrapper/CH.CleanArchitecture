@@ -32,14 +32,7 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
                 o.UseInMemoryDatabase = configuration.GetValue<bool>("UseInMemoryDatabase");
                 o.ConnectionStringSQL = configuration.GetConnectionString("ApplicationConnection");
             });
-            services.AddAutoMapper(config =>
-            {
-                config.AddExpressionMapping();
-                config.AddProfile<AppProfile>();
-                config.AddProfile<EventProfile>();
-                config.AddProfile<UserProfile>();
-                config.AddProfile<OrderProfile>();
-            });
+            services.AddMapping();
 
             services.AddSharedServices();
             services.AddStorageServices(configuration);
@@ -47,7 +40,29 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
             services.AddCryptoServices();
             services.AddAuthServices();
             services.AddScheduledJobs(configuration);
+            services.AddServiceBusMediator();
+        }
 
+        private static void AddDatabasePersistence(this IServiceCollection services, IConfiguration configuration) {
+            if (configuration.GetValue<bool>("UseInMemoryDatabase")) {
+                services.AddDbContext<IdentityDbContext>(options => options.UseInMemoryDatabase("IdentityDb"));
+                services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("ApplicationDb"));
+            }
+            else {
+                services.AddDbContext<IdentityDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("IdentityConnection")));
+                services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ApplicationConnection")));
+            }
+            services.AddScoped<IDbInitializerService, DbInitializerService>();
+        }
+
+        private static void AddRepositories(this IServiceCollection services) {
+            services.AddScoped(typeof(IEntityRepository<,>), typeof(DataEntityRepository<,>));
+            services.AddScoped(typeof(IESRepository<,>), typeof(ESRepository<,>));
+            services.AddScoped<IOrderRepository, OrderRepository>();
+        }
+
+        private static void AddServiceBusMediator(this IServiceCollection services) {
+            services.AddScoped<IServiceBus, ServiceBusMediator>();
             services.AddMediator(x =>
             {
                 #region Commands
@@ -77,8 +92,17 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
 
                 #endregion
             });
+        }
 
-            services.AddScoped<IServiceBus, ServiceBusMediator>();
+        private static void AddMapping(this IServiceCollection services) {
+            services.AddAutoMapper(config =>
+            {
+                config.AddExpressionMapping();
+                config.AddProfile<AppProfile>();
+                config.AddProfile<EventProfile>();
+                config.AddProfile<UserProfile>();
+                config.AddProfile<OrderProfile>();
+            });
         }
 
         private static void AddScheduledJobs(this IServiceCollection services, IConfiguration configuration) {
@@ -120,24 +144,6 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
             services.AddScoped<IJWTService, JWTService>();
             services.AddScoped<IUrlTokenService, UrlTokenService>();
             services.AddScoped<IPasswordGeneratorService, PasswordGeneratorIdentityService>();
-        }
-
-        private static void AddDatabasePersistence(this IServiceCollection services, IConfiguration configuration) {
-            if (configuration.GetValue<bool>("UseInMemoryDatabase")) {
-                services.AddDbContext<IdentityDbContext>(options => options.UseInMemoryDatabase("IdentityDb"));
-                services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("ApplicationDb"));
-            }
-            else {
-                services.AddDbContext<IdentityDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("IdentityConnection")));
-                services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ApplicationConnection")));
-            }
-            services.AddScoped<IDbInitializerService, DbInitializerService>();
-        }
-
-        private static void AddRepositories(this IServiceCollection services) {
-            services.AddScoped(typeof(IEntityRepository<,>), typeof(DataEntityRepository<,>));
-            services.AddScoped(typeof(IESRepository<,>), typeof(ESRepository<,>));
-            services.AddScoped<IOrderRepository, OrderRepository>();
         }
 
         private static void AddIdentity(this IServiceCollection services) {
