@@ -53,6 +53,7 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
                 services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ApplicationConnection")));
             }
             services.AddScoped<IDbInitializerService, DbInitializerService>();
+            services.AddScoped<IAuthenticatedUserService, DefaultAuthenticatedUserService>();
         }
 
         private static void AddRepositories(this IServiceCollection services) {
