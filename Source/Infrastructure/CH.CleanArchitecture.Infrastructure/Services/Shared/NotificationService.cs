@@ -178,7 +178,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             return result;
         }
 
-        public async Task<Result> MarkAllAsReadForUser(string user) {
+        public async Task<Result> MarkAllAsReadForUserAsync(string user) {
             var result = new Result();
             try {
                 var allNotificationsForUser = _notificationRepository.GetAll().Where(n => n.UserFor == user && n.IsNew).ToList();
@@ -194,7 +194,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             return result;
         }
 
-        public async Task<Result> MarkAsRead(Guid id) {
+        public async Task<Result> MarkAsReadAsync(Guid id) {
             var result = new Result();
             try {
                 var notification = await _notificationRepository.GetSingleAsync(n => n.Id == id);

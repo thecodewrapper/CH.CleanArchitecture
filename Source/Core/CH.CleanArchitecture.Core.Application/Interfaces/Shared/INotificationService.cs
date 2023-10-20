@@ -44,13 +44,13 @@ namespace CH.CleanArchitecture.Core.Application
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        Task<Result> MarkAllAsReadForUser(string user);
+        Task<Result> MarkAllAsReadForUserAsync(string user);
 
         /// <summary>
         /// Marks the notification specified by <paramref name="id"/> as read
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<Result> MarkAsRead(Guid id);
+        Task<Result> MarkAsReadAsync(Guid id);
     }
 }
