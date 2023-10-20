@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CH.CleanArchitecture.Common;
@@ -37,5 +38,19 @@ namespace CH.CleanArchitecture.Core.Application
         /// <param name="cancellationToken">A System.Threading.CancellationToken to observe while waiting for the task to complete.</param>
         /// <returns></returns>
         Task<Result> PurgeNotificationsAsync(CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Marks all notifications for the user as read
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        Task<Result> MarkAllAsReadForUser(string user);
+
+        /// <summary>
+        /// Marks the notification specified by <paramref name="id"/> as read
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<Result> MarkAsRead(Guid id);
     }
 }

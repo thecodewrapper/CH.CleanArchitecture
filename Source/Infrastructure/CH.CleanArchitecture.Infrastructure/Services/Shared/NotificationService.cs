@@ -178,6 +178,38 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             return result;
         }
 
+        public async Task<Result> MarkAllAsReadForUser(string user) {
+            var result = new Result();
+            try {
+                var allNotificationsForUser = _notificationRepository.GetAll().Where(n => n.UserFor == user && n.IsNew).ToList();
+                allNotificationsForUser.ForEach(n => n.IsNew = false);
+
+                _notificationRepository.UpdateRange(allNotificationsForUser);
+                await _notificationRepository.UnitOfWork.SaveChangesAsync();
+                result.Succeed();
+            }
+            catch (Exception ex) {
+                ServicesHelper.HandleServiceError(ref result, _logger, ex, "Error while trying to mark notifications for user as read");
+            }
+            return result;
+        }
+
+        public async Task<Result> MarkAsRead(Guid id) {
+            var result = new Result();
+            try {
+                var notification = await _notificationRepository.GetSingleAsync(n => n.Id == id);
+                notification.IsNew = false;
+
+                _notificationRepository.Update(notification);
+                await _notificationRepository.UnitOfWork.SaveChangesAsync();
+                result.Succeed();
+            }
+            catch (Exception ex) {
+                ServicesHelper.HandleServiceError(ref result, _logger, ex, $"Error while trying to mark notification with id {id} as read");
+            }
+            return result;
+        }
+
         #endregion Public Methods
 
         #region Private Methods

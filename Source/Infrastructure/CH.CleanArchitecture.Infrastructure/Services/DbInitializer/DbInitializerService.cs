@@ -70,7 +70,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                     new ApplicationConfigurationEntity { Id = AppConfigKeys.SECURITY.GOOGLE_RECAPTCHA_SECRETKEY, Value = @"{secretKey}", Description = "Use this for communication between the site and Google"},
                     new ApplicationConfigurationEntity { Id = AppConfigKeys.EVENTSTORE.SNAPSHOT_FREQUENCY, IsEncrypted = false, Value = "50", Description = "The number of events after which a snapshot in the event store will be taken"},
                     new ApplicationConfigurationEntity { Id = AppConfigKeys.NOTIFICATIONS.PURGE_HISTORYTABLE_INTERVAL, Value = "0", Description = "Declares how many days the system keeps the user notifications. Set it to 0 if you wish to leave the notifications for ever." },
-                    new ApplicationConfigurationEntity { Id = AppConfigKeys.NOTIFICATIONS.PURGE_SERVICE_INTERVAL_HOURS, Value = "24", Description = "The interval in hours that the purging of User Notifications will get place. Set it to 0 if you actually want to disable the service." }
+                    new ApplicationConfigurationEntity { Id = AppConfigKeys.NOTIFICATIONS.PURGE_SERVICE_INTERVAL_HOURS, Value = "23", Description = "The interval in hours that the purging of User Notifications will get place. Set it to 0 if you actually want to disable the service." }
                 };
                 appConfigs.AddRange(applicationConfigurations);
             }
