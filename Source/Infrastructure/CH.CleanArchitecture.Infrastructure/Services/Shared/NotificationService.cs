@@ -197,7 +197,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
         public async Task<Result> MarkAsReadAsync(Guid id) {
             var result = new Result();
             try {
-                var notification = await _notificationRepository.GetSingleAsync(n => n.Id == id);
+                var notification = await _notificationRepository.FindAsync(id);
                 notification.IsNew = false;
 
                 _notificationRepository.Update(notification);
