@@ -16,7 +16,6 @@ namespace CH.CleanArchitecture.Core.Application.Extensions
             {
                 config.ConstructServicesUsing(t => services.BuildServiceProvider().GetRequiredService(t));
                 config.AddProfile<UserProfile>();
-                config.AddProfile<OrderProfile>();
             });
         }
 

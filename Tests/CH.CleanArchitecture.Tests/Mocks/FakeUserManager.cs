@@ -1,16 +1,17 @@
-﻿using System;
-using CH.CleanArchitecture.Infrastructure.Models;
+﻿using CH.CleanArchitecture.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
+using IdentityDbContext = CH.CleanArchitecture.Infrastructure.DbContexts.IdentityDbContext;
 
 namespace CH.CleanArchitecture.Tests
 {
     public class FakeUserManager : UserManager<ApplicationUser>
     {
-        public FakeUserManager()
-            : base(new Mock<IUserStore<ApplicationUser>>().Object,
+        public FakeUserManager(IdentityDbContext context)
+            : base(new UserStore<ApplicationUser>(context),
                 new Mock<IOptions<IdentityOptions>>().Object,
                 new Mock<IPasswordHasher<ApplicationUser>>().Object,
                 Array.Empty<IUserValidator<ApplicationUser>>(),

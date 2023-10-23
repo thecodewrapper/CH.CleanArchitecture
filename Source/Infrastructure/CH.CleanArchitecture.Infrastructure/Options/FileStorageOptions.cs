@@ -1,4 +1,4 @@
-﻿namespace CH.CleanArchitecture.Common
+﻿namespace CH.CleanArchitecture.Infrastructure.Options
 {
     public class FileStorageOptions
     {

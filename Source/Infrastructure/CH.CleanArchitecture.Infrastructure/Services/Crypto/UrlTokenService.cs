@@ -14,14 +14,13 @@ namespace CH.CleanArchitecture.Infrastructure.Services
 
         /// <summary>
         /// Creates a safe url token containing the given payload
-        /// Creates a JWT from the provided payload, encrypted with random salt and URL encoded in Base64
+        /// Creates a JWT from the provided payload, URL encoded in Base64
         /// </summary>
         /// <param name="payload"></param>
         /// <returns></returns>
         public string CreateSafeUrlToken(object payload) {
             var jwt = _jwtService.CreateJWT(payload, TOKEN_LIFETIME_DAYS);
-            string cipheredJwt = StringCipherHelper.EncryptWithRandomSalt(jwt);
-            return cipheredJwt.Base64UrlEncode();
+            return jwt.Base64UrlEncode();
         }
 
         /// <summary>
@@ -33,8 +32,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
         /// <returns></returns>
         public T ReadSafeUrlToken<T>(string token) {
             string decodedToken = token.Base64UrlDecode();
-            string decipheredToken = StringCipherHelper.DecryptWithRandomSalt(decodedToken);
-            return _jwtService.ReadJWT<T>(decipheredToken);
+            return _jwtService.ReadJWT<T>(decodedToken);
         }
     }
 }

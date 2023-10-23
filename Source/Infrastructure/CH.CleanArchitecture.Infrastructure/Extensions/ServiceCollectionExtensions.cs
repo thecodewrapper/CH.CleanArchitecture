@@ -1,5 +1,4 @@
 ﻿using AutoMapper.Extensions.ExpressionMapping;
-using CH.CleanArchitecture.Common;
 using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Core.Application.Commands;
 using CH.CleanArchitecture.Infrastructure.DbContexts;
@@ -7,6 +6,7 @@ using CH.CleanArchitecture.Infrastructure.Factories;
 using CH.CleanArchitecture.Infrastructure.Handlers.Queries;
 using CH.CleanArchitecture.Infrastructure.Mappings;
 using CH.CleanArchitecture.Infrastructure.Models;
+using CH.CleanArchitecture.Infrastructure.Options;
 using CH.CleanArchitecture.Infrastructure.Repositories;
 using CH.CleanArchitecture.Infrastructure.Services;
 using CH.Data.Abstractions;
@@ -32,21 +32,38 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
                 o.UseInMemoryDatabase = configuration.GetValue<bool>("UseInMemoryDatabase");
                 o.ConnectionStringSQL = configuration.GetConnectionString("ApplicationConnection");
             });
-            services.AddAutoMapper(config =>
-            {
-                config.AddExpressionMapping();
-                config.AddProfile<AppProfile>();
-                config.AddProfile<EventProfile>();
-                config.AddProfile<UserProfile>();
-            });
+            services.AddMapping();
 
             services.AddSharedServices();
             services.AddStorageServices(configuration);
-            services.AddCommunicationServices();
+            services.AddCommunicationServices(configuration);
             services.AddCryptoServices();
             services.AddAuthServices();
             services.AddScheduledJobs(configuration);
+            services.AddServiceBusMediator();
+        }
 
+        private static void AddDatabasePersistence(this IServiceCollection services, IConfiguration configuration) {
+            if (configuration.GetValue<bool>("UseInMemoryDatabase")) {
+                services.AddDbContext<IdentityDbContext>(options => options.UseInMemoryDatabase("IdentityDb"));
+                services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("ApplicationDb"));
+            }
+            else {
+                services.AddDbContext<IdentityDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("IdentityConnection")));
+                services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ApplicationConnection")));
+            }
+            services.AddScoped<IDbInitializerService, DbInitializerService>();
+            services.AddScoped<IAuthenticatedUserService, DefaultAuthenticatedUserService>();
+        }
+
+        private static void AddRepositories(this IServiceCollection services) {
+            services.AddScoped(typeof(IEntityRepository<,>), typeof(DataEntityRepository<,>));
+            services.AddScoped(typeof(IESRepository<,>), typeof(ESRepository<,>));
+            services.AddScoped<IOrderRepository, OrderRepository>();
+        }
+
+        private static void AddServiceBusMediator(this IServiceCollection services) {
+            services.AddScoped<IServiceBus, ServiceBusMediator>();
             services.AddMediator(x =>
             {
                 #region Commands
@@ -76,8 +93,17 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
 
                 #endregion
             });
+        }
 
-            services.AddScoped<IServiceBus, ServiceBusMediator>();
+        private static void AddMapping(this IServiceCollection services) {
+            services.AddAutoMapper(config =>
+            {
+                config.AddExpressionMapping();
+                config.AddProfile<AppProfile>();
+                config.AddProfile<EventProfile>();
+                config.AddProfile<UserProfile>();
+                config.AddProfile<OrderProfile>();
+            });
         }
 
         private static void AddScheduledJobs(this IServiceCollection services, IConfiguration configuration) {
@@ -103,8 +129,15 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
             services.AddScoped<IFileStorageService, FileStorageService>();
         }
 
-        private static void AddCommunicationServices(this IServiceCollection services) {
-            services.AddScoped<IEmailService, EmailSMTPService>();
+        private static void AddCommunicationServices(this IServiceCollection services, IConfiguration configuration) {
+            var emailSenderOptions = GetEmailSenderOptions(configuration);
+            if (emailSenderOptions.UseSendGrid) {
+                services.AddScoped<IEmailService, EmailSendGridService>();
+            }
+            else {
+                services.AddScoped<IEmailService, EmailSMTPService>();
+            }
+
             services.AddScoped<ISMSService, SMSService>();
         }
 
@@ -112,24 +145,6 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
             services.AddScoped<IJWTService, JWTService>();
             services.AddScoped<IUrlTokenService, UrlTokenService>();
             services.AddScoped<IPasswordGeneratorService, PasswordGeneratorIdentityService>();
-        }
-
-        private static void AddDatabasePersistence(this IServiceCollection services, IConfiguration configuration) {
-            if (configuration.GetValue<bool>("UseInMemoryDatabase")) {
-                services.AddDbContext<IdentityDbContext>(options => options.UseInMemoryDatabase("IdentityDb"));
-                services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("ApplicationDb"));
-            }
-            else {
-                services.AddDbContext<IdentityDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("IdentityConnection")));
-                services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ApplicationConnection")));
-            }
-            services.AddScoped<IDbInitializerService, DbInitializerService>();
-        }
-
-        private static void AddRepositories(this IServiceCollection services) {
-            services.AddScoped(typeof(IEntityRepository<,>), typeof(DataEntityRepository<,>));
-            services.AddScoped(typeof(IESRepository<,>), typeof(ESRepository<,>));
-            services.AddScoped<IOrderRepository, OrderRepository>();
         }
 
         private static void AddIdentity(this IServiceCollection services) {
@@ -161,6 +176,13 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
 
         private static void AddStorageOptions(this IServiceCollection services, IConfiguration configuration) {
             services.Configure<FileStorageOptions>(x => configuration.GetSection("Storage").Bind(x));
+        }
+
+        private static EmailSenderOptions GetEmailSenderOptions(IConfiguration configuration) {
+            EmailSenderOptions emailSenderOptions = new EmailSenderOptions();
+            configuration.GetSection("EmailSender").Bind(emailSenderOptions);
+
+            return emailSenderOptions;
         }
     }
 }

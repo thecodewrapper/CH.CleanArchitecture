@@ -14,6 +14,7 @@
             public const string FROM_ADDRESS = "EmailFromAddress";
             public const string USE_BCC = "EmailUseBcc";
             public const string BCC_ADDRESS = "EmailBccAddress";
+            public const string SENDGRID_API_KEY = "EmailSendGridApiKey";
         }
 
         public static class SECURITY
