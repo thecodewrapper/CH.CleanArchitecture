@@ -65,7 +65,7 @@ namespace CH.CleanArchitecture.Presentation.Framework.Components
 
         #region Public Methods
 
-        public async Task<ClaimsPrincipal> GetCurrentUser() {
+        public async Task<ClaimsPrincipal> GetCurrentUserAsync() {
             var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
             return authState.User;
         }
@@ -75,7 +75,7 @@ namespace CH.CleanArchitecture.Presentation.Framework.Components
         }
 
         public async Task<bool> AuthorizeAsync(OperationAuthorizationRequirement requirement) {
-            var authorizationResult = await AuthService.AuthorizeAsync(await GetCurrentUser(), null, requirement);
+            var authorizationResult = await AuthService.AuthorizeAsync(await GetCurrentUserAsync(), null, requirement);
             return authorizationResult.Succeeded;
         }
 
