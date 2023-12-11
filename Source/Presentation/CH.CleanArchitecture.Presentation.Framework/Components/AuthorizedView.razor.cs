@@ -29,7 +29,8 @@ namespace CH.CleanArchitecture.Presentation.Framework.Components
         public bool Visible { get; set; }
 
         protected override async Task OnParametersSetAsync() {
-            Visible = await AuthorizationState.TryAddAndCheckRequirement(Operation);
+            var user = await GetCurrentUserAsync();
+            Visible = await AuthorizationState.CheckRequirement(user, Operation);
 
             await base.OnParametersSetAsync();
         }

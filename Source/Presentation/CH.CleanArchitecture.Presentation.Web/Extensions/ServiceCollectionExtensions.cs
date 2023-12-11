@@ -52,7 +52,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Extensions
             services.AddScoped<IModalService, DefaultModalService>();
             services.AddScoped<IToastService, ToastService>();
             services.AddScoped<IAuthorizationStateProvider, AuthorizationStateProvider>();
-            services.AddTransient<IAuthenticatedUserService, AuthenticatedUserService>();
+            services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
 
             services.AddScoped<LocalizedRolesResolver>();
             services.AddScoped<LoaderService>();

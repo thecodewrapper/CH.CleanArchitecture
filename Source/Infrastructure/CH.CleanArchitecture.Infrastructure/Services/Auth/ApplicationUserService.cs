@@ -391,11 +391,11 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             return serviceResult;
         }
 
-        public async Task<Result<string>> GenerateEmailConfirmationTokenAsync(User user) {
+        public async Task<Result<string>> GenerateEmailConfirmationTokenAsync(string userEmail) {
             var serviceResult = new Result<string>();
             try {
-                ApplicationUser appUser = _mapper.Map<ApplicationUser>(user);
-                string token = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
+                var user = await _userManager.FindByEmailAsync(userEmail);
+                string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
                 serviceResult.Succeed().WithData(token);
             }

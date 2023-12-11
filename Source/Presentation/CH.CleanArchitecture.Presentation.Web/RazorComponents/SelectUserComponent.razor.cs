@@ -39,7 +39,7 @@ namespace CH.CleanArchitecture.Presentation.Web.RazorComponents
 
             AvailableUsers = result.Data.ToList();
 
-            var currentUser = await GetCurrentUser();
+            var currentUser = await GetCurrentUserAsync();
 
             if (ExcludeLoggedInUser)
                 AvailableUsers = AvailableUsers.Where(u => u.Username != currentUser.Identity.Name);
