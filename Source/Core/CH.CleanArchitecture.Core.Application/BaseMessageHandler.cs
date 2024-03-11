@@ -16,7 +16,7 @@ namespace CH.CleanArchitecture.Core.Application
         where TRequest : class, IRequest<TResponse>
         where TResponse : class
     {
-        public async Task Consume(ConsumeContext<TRequest> context) {
+        public virtual async Task Consume(ConsumeContext<TRequest> context) {
             var messageResult = await HandleAsync(context.Message);
             await context.RespondAsync(messageResult);
         }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using CH.CleanArchitecture.Common;
 using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Core.Domain;
@@ -15,5 +16,6 @@ namespace CH.CleanArchitecture.Infrastructure.Services
         public string UiCulture => string.Empty;
         public IEnumerable<RoleEnum> Roles => Enumerable.Empty<RoleEnum>();
         public ThemeEnum Theme => ThemeEnum.Light;
+        public ClaimsPrincipal User => new ClaimsPrincipal();
     }
 }
