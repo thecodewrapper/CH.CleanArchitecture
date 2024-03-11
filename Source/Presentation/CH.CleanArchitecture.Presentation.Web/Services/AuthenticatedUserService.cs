@@ -60,7 +60,11 @@ namespace CH.CleanArchitecture.Presentation.Web.Services
         }
 
         private ClaimsPrincipal GetUser(IHttpContextAccessor httpContextAccessor) {
-            return httpContextAccessor.HttpContext.User;
+            if (httpContextAccessor.HttpContext != null) {
+                return httpContextAccessor.HttpContext.User;
+            }
+
+            return new ClaimsPrincipal();
         }
     }
 }

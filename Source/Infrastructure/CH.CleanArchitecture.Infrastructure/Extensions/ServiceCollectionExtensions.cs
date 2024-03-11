@@ -124,9 +124,21 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
             services.AddScoped<INotificationService, NotificationService>();
         }
 
+        /// <summary>
+        /// Adds storage services. Conditionally add the required storage services here. See <see cref="IResourceStore"/>.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configuration"></param>
         private static void AddStorageServices(this IServiceCollection services, IConfiguration configuration) {
-            services.AddStorageOptions(configuration);
-            services.AddScoped<IFileStorageService, FileStorageService>();
+            var options = services.AddStorageOptions(configuration);
+
+            //TODO[CH]: refactor below
+            if (options.StorageProvider == "azure") {
+                services.AddScoped<IResourceStore, AzureStorageResourceStore>();
+            }
+            else if (options.StorageProvider == "aws") {
+                services.AddScoped<IResourceStore, AWSS3ResourceStore>();
+            }
         }
 
         private static void AddCommunicationServices(this IServiceCollection services, IConfiguration configuration) {
@@ -174,8 +186,11 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
             });
         }
 
-        private static void AddStorageOptions(this IServiceCollection services, IConfiguration configuration) {
-            services.Configure<FileStorageOptions>(x => configuration.GetSection("Storage").Bind(x));
+        private static StorageOptions AddStorageOptions(this IServiceCollection services, IConfiguration configuration) {
+            StorageOptions storageOptions = new StorageOptions();
+            configuration.GetSection("Storage").Bind(storageOptions);
+
+            return storageOptions;
         }
 
         private static EmailSenderOptions GetEmailSenderOptions(IConfiguration configuration) {
