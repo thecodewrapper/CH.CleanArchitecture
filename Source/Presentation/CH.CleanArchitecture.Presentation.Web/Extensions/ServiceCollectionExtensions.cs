@@ -76,8 +76,6 @@ namespace CH.CleanArchitecture.Presentation.Web.Extensions
 
         public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration) {
             services.AddInfrastructureLayer(configuration);
-            services.AddScoped<ILocalizationService, LocalizationService>();
-            services.AddScoped<ILocalizationKeyProvider, LocalizationKeyProvider>();
             services.AddValidatorsFromAssemblyContaining<Startup>();
         }
 

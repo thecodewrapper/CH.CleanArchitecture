@@ -8,6 +8,7 @@ using CH.CleanArchitecture.Infrastructure.Mappings;
 using CH.CleanArchitecture.Infrastructure.Models;
 using CH.CleanArchitecture.Infrastructure.Options;
 using CH.CleanArchitecture.Infrastructure.Repositories;
+using CH.CleanArchitecture.Infrastructure.Resources;
 using CH.CleanArchitecture.Infrastructure.Services;
 using CH.Data.Abstractions;
 using CH.EventStore.EntityFramework.Extensions;
@@ -35,6 +36,7 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
             services.AddMapping();
 
             services.AddSharedServices();
+            services.AddLocalizationServices();
             services.AddStorageServices(configuration);
             services.AddCommunicationServices(configuration);
             services.AddCryptoServices();
@@ -122,6 +124,11 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
             services.AddScoped<IApplicationConfigurationService, ApplicationConfigurationService>();
             services.AddScoped<IAuditHistoryService, AuditHistoryService>();
             services.AddScoped<INotificationService, NotificationService>();
+        }
+
+        private static void AddLocalizationServices(this IServiceCollection services) {
+            services.AddScoped<ILocalizationService, LocalizationService>();
+            services.AddScoped<ILocalizationKeyProvider, LocalizationKeyProvider>();
         }
 
         /// <summary>
