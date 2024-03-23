@@ -46,7 +46,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                 var client = new SendGridClient(_apiKey);
                 var emailFrom = new EmailAddress(from);
                 var emailTo = new EmailAddress(to);
-                var msg = MailHelper.CreateSingleEmail(emailFrom, emailTo, subject, message, "");
+                var msg = MailHelper.CreateSingleEmail(emailFrom, emailTo, subject, string.Empty, message);
                 var response = await client.SendEmailAsync(msg);
                 if (response.IsSuccessStatusCode) {
                     result.Succeed();
@@ -94,7 +94,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                     emailToAddresses.Add(new EmailAddress(email));
                 }
 
-                var msg = MailHelper.CreateSingleEmailToMultipleRecipients(emailFrom, emailToAddresses, subject, message, "");
+                var msg = MailHelper.CreateSingleEmailToMultipleRecipients(emailFrom, emailToAddresses, subject, string.Empty, message);
                 var response = await client.SendEmailAsync(msg);
                 if (response.IsSuccessStatusCode) {
                     result.Succeed();
