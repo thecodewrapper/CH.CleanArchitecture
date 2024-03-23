@@ -170,7 +170,8 @@ namespace CH.CleanArchitecture.Infrastructure.Shared.Extensions
         /// <param name="mimeType">MIME type</param>
         /// <returns>Picture binary or throws an exception</returns>
         public static byte[] ValidatePicture(byte[] pictureBinary, string mimeType) {
-            using var image = Image.Load<Rgba32>(pictureBinary, out var imageFormat);
+            using var image = Image.Load<Rgba32>(pictureBinary);
+            IImageFormat imageFormat = Image.DetectFormat(pictureBinary);
 
             return EncodeImage(image, imageFormat);
         }
@@ -178,19 +179,17 @@ namespace CH.CleanArchitecture.Infrastructure.Shared.Extensions
         private static byte[] EncodeImage<TPixel>(Image<TPixel> image, IImageFormat imageFormat, int? quality = null)
           where TPixel : unmanaged, IPixel<TPixel> {
             using var stream = new MemoryStream();
-            var imageEncoder = Configuration.Default.ImageFormatsManager.FindEncoder(imageFormat);
+            var imageEncoder = Configuration.Default.ImageFormatsManager.GetEncoder(imageFormat);
             switch (imageEncoder) {
                 case JpegEncoder jpegEncoder:
                     jpegEncoder.Encode(image, stream);
                     break;
 
                 case PngEncoder pngEncoder:
-                    pngEncoder.ColorType = PngColorType.RgbWithAlpha;
                     pngEncoder.Encode(image, stream);
                     break;
 
                 case BmpEncoder bmpEncoder:
-                    bmpEncoder.BitsPerPixel = BmpBitsPerPixel.Pixel32;
                     bmpEncoder.Encode(image, stream);
                     break;
 
