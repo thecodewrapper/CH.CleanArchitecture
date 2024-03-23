@@ -27,11 +27,11 @@ namespace CH.CleanArchitecture.Presentation.Web.Services
         #region Public Methods
 
         public void ShowSuccess(string message) {
-            _blazoredService.ShowSuccess(message, _localizer[ResourceKeys.Notifications_Success]);
+            _blazoredService.ShowSuccess(message);
         }
 
         public void ShowError(string message) {
-            _blazoredService.ShowError(message ?? _localizer[ResourceKeys.Common_SomethingWentWrong], _localizer[ResourceKeys.Notifications_Error]);
+            _blazoredService.ShowError(message ?? _localizer[ResourceKeys.Common_SomethingWentWrong]);
         }
 
         public void ShowError(RenderFragment message) {
@@ -39,7 +39,7 @@ namespace CH.CleanArchitecture.Presentation.Web.Services
         }
 
         public void ShowWarning(string message) {
-            _blazoredService.ShowWarning(message, _localizer[ResourceKeys.Notifications_Warning]);
+            _blazoredService.ShowWarning(message);
         }
 
         #endregion

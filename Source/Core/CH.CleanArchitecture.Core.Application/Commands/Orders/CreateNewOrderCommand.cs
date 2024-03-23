@@ -1,23 +1,29 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using CH.CleanArchitecture.Common;
 using CH.CleanArchitecture.Core.Domain;
 using CH.CleanArchitecture.Core.Domain.Entities.OrderAggregate;
-using CH.Messaging.Abstractions;
 
 namespace CH.CleanArchitecture.Core.Application.Commands
 {
-    public record CreateNewOrderCommand(string TrackingNumber) : IRequest<Result>, ICommand
+    public class CreateNewOrderCommand : BaseCommand<Result>
     {
+        public string TrackingNumber { get; private set; }
+
+        public CreateNewOrderCommand(string trackingNumber)
+        {
+            TrackingNumber = trackingNumber;
+        }
     }
 
     /// <summary>
     /// Create New Order Command Handler
     /// </summary>
-    public class CreateNewOrderCommandHandler : BaseMessageHandler<CreateNewOrderCommand, Result>
+    public class CreateNewOrderCommandHandler : BaseCommandHandler<CreateNewOrderCommand, Result>
     {
         private readonly IOrderRepository _orderRepository;
 
-        public CreateNewOrderCommandHandler(IOrderRepository orderRepository) {
+        public CreateNewOrderCommandHandler(IServiceProvider serviceProvider, IOrderRepository orderRepository) : base(serviceProvider) {
             _orderRepository = orderRepository;
         }
 

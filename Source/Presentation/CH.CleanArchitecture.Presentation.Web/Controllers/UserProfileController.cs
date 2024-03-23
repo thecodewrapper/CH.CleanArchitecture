@@ -22,22 +22,19 @@ namespace CH.CleanArchitecture.Presentation.Web.Controllers
         private readonly IAuthenticatedUserService _userService;
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _webHost;
-        private readonly IFileStorageService _fileStorageService;
 
         public UserProfileController(IServiceBus serviceBus,
             ILocalizationService localizer,
             TempNotificationService notificationService,
             IAuthenticatedUserService userService,
             IMapper mapper,
-            IWebHostEnvironment webHost,
-            IFileStorageService fileStorageService) {
+            IWebHostEnvironment webHost) {
             _serviceBus = serviceBus;
             _localizer = localizer;
             _notificationService = notificationService;
             _userService = userService;
             _mapper = mapper;
             _webHost = webHost;
-            _fileStorageService = fileStorageService;
         }
 
         public IActionResult Index() {

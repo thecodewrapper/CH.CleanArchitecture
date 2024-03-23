@@ -46,7 +46,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             try {
                 _appConfigs = null;
                 if (dto.IsEncrypted)
-                    dto.Value = StringCipherHelper.EncryptWithRandomSalt(dto.Value);
+                    dto.Value = StringCipherHelper.EncryptWithStaticSalt(dto.Value);
 
                 await _appConfigRepository.AddAsync(_mapper.Map<ApplicationConfigurationEntity>(dto));
                 await _appConfigRepository.UnitOfWork.SaveChangesAsync();
@@ -72,7 +72,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                 }
 
                 if (decrypt && entity != null && entity.IsEncrypted)
-                    entity.Value = StringCipherHelper.DecryptWithRandomSalt(entity.Value);
+                    entity.Value = StringCipherHelper.DecryptWithStaticSalt(entity.Value);
 
                 serviceResult.Data = _mapper.Map<ApplicationConfigurationDTO>(entity);
                 serviceResult.Succeed();
@@ -90,7 +90,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                 _appConfigs = null;
                 var originalEntity = await _appConfigRepository.FindAsync(dto.Id);
                 if ((dto.IsEncrypted && !originalEntity.IsEncrypted) || (dto.IsEncrypted && dto.Value != originalEntity.Value))
-                    dto.Value = StringCipherHelper.EncryptWithRandomSalt(dto.Value);
+                    dto.Value = StringCipherHelper.EncryptWithStaticSalt(dto.Value);
 
                 string originalEntityId = originalEntity.Id;
                 var updatedEntity = _mapper.Map(dto, originalEntity);
@@ -138,7 +138,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                 var entity = GetConfigurations().Where(m => m.Id == key).FirstOrDefault();
                 string value = entity.Value;
                 if (entity.IsEncrypted)
-                    value = StringCipherHelper.DecryptWithRandomSalt(entity.Value);
+                    value = StringCipherHelper.DecryptWithStaticSalt(entity.Value);
 
                 serviceResult.Data = value;
                 return serviceResult;
@@ -155,7 +155,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                 var entity = GetConfigurations().Where(m => m.Id == key).FirstOrDefault();
                 string value = entity.Value;
                 if (entity.IsEncrypted)
-                    value = StringCipherHelper.DecryptWithRandomSalt(entity.Value);
+                    value = StringCipherHelper.DecryptWithStaticSalt(entity.Value);
 
                 if (int.TryParse(value, out int valueInt)) {
                     serviceResult.Data = valueInt;
@@ -176,7 +176,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                 var entity = GetConfigurations().Where(m => m.Id == key).FirstOrDefault();
                 string value = entity.Value;
                 if (entity.IsEncrypted)
-                    value = StringCipherHelper.DecryptWithRandomSalt(entity.Value);
+                    value = StringCipherHelper.DecryptWithStaticSalt(entity.Value);
 
                 if (bool.TryParse(value, out bool valueBool)) {
                     serviceResult.Data = valueBool;
@@ -197,7 +197,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                 var entity = GetConfigurations().Where(m => m.Id == key).FirstOrDefault();
                 string value = entity.Value;
                 if (entity.IsEncrypted)
-                    value = StringCipherHelper.DecryptWithRandomSalt(entity.Value);
+                    value = StringCipherHelper.DecryptWithStaticSalt(entity.Value);
 
                 if (DateTime.TryParse(value, out DateTime valueDate)) {
                     serviceResult.Data = valueDate;

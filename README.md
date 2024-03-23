@@ -4,8 +4,8 @@
 My personal take on Clean Architecture. Please read my post at [Implementing a Clean Architecture in ASP.NET Core 6](https://thecodewrapper.com/dev/tcw-clean-achitecture) for more information.
 
 ## Technologies used
-- ASP.NET Core 6 (RC1 at the time of writing)
-- Entity Framework Core 6 (RC1 at the time of writing)
+- ASP.NET Core 8
+- Entity Framework Core 8
 - MassTransit
 - AutoMapper
 - Razor Components

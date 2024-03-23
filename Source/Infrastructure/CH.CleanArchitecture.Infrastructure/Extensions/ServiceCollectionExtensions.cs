@@ -8,6 +8,7 @@ using CH.CleanArchitecture.Infrastructure.Mappings;
 using CH.CleanArchitecture.Infrastructure.Models;
 using CH.CleanArchitecture.Infrastructure.Options;
 using CH.CleanArchitecture.Infrastructure.Repositories;
+using CH.CleanArchitecture.Infrastructure.Resources;
 using CH.CleanArchitecture.Infrastructure.Services;
 using CH.Data.Abstractions;
 using CH.EventStore.EntityFramework.Extensions;
@@ -35,6 +36,7 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
             services.AddMapping();
 
             services.AddSharedServices();
+            services.AddLocalizationServices();
             services.AddStorageServices(configuration);
             services.AddCommunicationServices(configuration);
             services.AddCryptoServices();
@@ -124,9 +126,26 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
             services.AddScoped<INotificationService, NotificationService>();
         }
 
+        private static void AddLocalizationServices(this IServiceCollection services) {
+            services.AddScoped<ILocalizationService, LocalizationService>();
+            services.AddScoped<ILocalizationKeyProvider, LocalizationKeyProvider>();
+        }
+
+        /// <summary>
+        /// Adds storage services. Conditionally add the required storage services here. See <see cref="IResourceStore"/>.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configuration"></param>
         private static void AddStorageServices(this IServiceCollection services, IConfiguration configuration) {
-            services.AddStorageOptions(configuration);
-            services.AddScoped<IFileStorageService, FileStorageService>();
+            var options = services.AddStorageOptions(configuration);
+
+            //TODO[CH]: refactor below
+            if (options.StorageProvider == "azure") {
+                services.AddScoped<IResourceStore, AzureStorageResourceStore>();
+            }
+            else if (options.StorageProvider == "aws") {
+                services.AddScoped<IResourceStore, AWSS3ResourceStore>();
+            }
         }
 
         private static void AddCommunicationServices(this IServiceCollection services, IConfiguration configuration) {
@@ -174,8 +193,11 @@ namespace CH.CleanArchitecture.Infrastructure.Extensions
             });
         }
 
-        private static void AddStorageOptions(this IServiceCollection services, IConfiguration configuration) {
-            services.Configure<FileStorageOptions>(x => configuration.GetSection("Storage").Bind(x));
+        private static StorageOptions AddStorageOptions(this IServiceCollection services, IConfiguration configuration) {
+            StorageOptions storageOptions = new StorageOptions();
+            configuration.GetSection("Storage").Bind(storageOptions);
+
+            return storageOptions;
         }
 
         private static EmailSenderOptions GetEmailSenderOptions(IConfiguration configuration) {
