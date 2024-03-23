@@ -33,19 +33,5 @@ namespace CH.CleanArchitecture.Common.Extensions
         public static string FindProfilePicture(this ClaimsPrincipal claimsPrincipal) {
             return claimsPrincipal?.FindFirstValue(ApplicationClaimTypes.User.ProfilePicture);
         }
-
-        public static string GetCulture(this ClaimsPrincipal principal) {
-            if (principal == null)
-                throw new ArgumentNullException(nameof(principal));
-
-            return principal.FindFirstValue(ApplicationClaimTypes.User.Culture);
-        }
-
-        public static string GetUICulture(this ClaimsPrincipal principal) {
-            if (principal == null)
-                throw new ArgumentNullException(nameof(principal));
-
-            return principal.FindFirstValue(ApplicationClaimTypes.User.UiCulture);
-        }
     }
 }

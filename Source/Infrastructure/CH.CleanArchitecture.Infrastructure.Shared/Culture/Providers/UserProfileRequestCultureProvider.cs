@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using CH.CleanArchitecture.Common.Extensions;
 using CH.CleanArchitecture.Infrastructure.Shared.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
@@ -19,12 +20,12 @@ namespace CH.CleanArchitecture.Infrastructure.Shared.Culture
             string userCulture = null;
             string userUICulture = null;
 
-            string cultureClaim = httpContext.User.GetCulture();
+            string cultureClaim = httpContext.User.FindCulture();
             if (!string.IsNullOrWhiteSpace(cultureClaim)) {
                 userCulture = cultureClaim;
             }
 
-            string uicultureClaim = httpContext.User.GetUICulture();
+            string uicultureClaim = httpContext.User.FindUiCulture();
             if (!string.IsNullOrWhiteSpace(uicultureClaim)) {
                 userUICulture = uicultureClaim;
             }
