@@ -36,11 +36,11 @@ namespace CH.CleanArchitecture.Infrastructure.Services
 
         #region Public Methods
 
-        public string GetResourceURI(string containerName, string resourceId) {
+        public string GetResourceURI(string resourceId, string containerName) {
             return $"{_baseUri}{containerName}/{resourceId}";
         }
 
-        public async Task<bool> DeleteResourceAsync(string containerName, string resourceId) {
+        public async Task<bool> DeleteResourceAsync(string resourceId, string containerName) {
             try {
                 var blob = GetBlobReference(containerName, resourceId);
                 _logger.LogDebug($"Attempting to delete resource {resourceId} from Azure Storage Blob (Container: {containerName}).");
@@ -52,7 +52,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             }
         }
 
-        public async Task SaveResourceAsync(Stream stream, string containerName, string resourceId) {
+        public async Task SaveResourceAsync(Stream stream, string containerName, bool isPublic, string resourceId) {
             try {
                 var blob = GetBlobReference(containerName, resourceId);
                 await blob.UploadAsync(stream);
@@ -64,9 +64,9 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             }
         }
 
-        public async Task<string> SaveResourceAsync(Stream imageStream, string containerName) {
+        public async Task<string> SaveResourceAsync(Stream imageStream, string containerName, bool isPublic) {
             string resourceId = Guid.NewGuid().ToString(); //generating a random resource id
-            await SaveResourceAsync(imageStream, containerName, resourceId);
+            await SaveResourceAsync(imageStream, containerName, isPublic, resourceId);
             return resourceId;
         }
 

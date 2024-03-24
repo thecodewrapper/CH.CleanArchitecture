@@ -8,10 +8,10 @@ namespace CH.CleanArchitecture.Core.Application
     /// </summary>
     public interface IResourceStore
     {
-        Task SaveResourceAsync(Stream stream, string path, string resourceId);
-        Task<string> SaveResourceAsync(Stream stream, string path);
-        Task<Stream> DownloadResourceAsync(string path, string resourceId);
-        Task<bool> DeleteResourceAsync(string path, string resourceId);
-        string GetResourceURI(string path, string resourceId);
+        Task SaveResourceAsync(Stream stream, string path, bool isPublic, string resourceId);
+        Task<string> SaveResourceAsync(Stream stream, string path, bool isPublic);
+        Task<Stream> DownloadResourceAsync(string containerName, string resourceId);
+        Task<bool> DeleteResourceAsync(string resourceId, string path);
+        string GetResourceURI(string resourceId, string folder);
     }
 }

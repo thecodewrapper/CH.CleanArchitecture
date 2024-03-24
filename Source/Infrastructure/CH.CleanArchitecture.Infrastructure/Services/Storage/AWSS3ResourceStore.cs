@@ -15,7 +15,8 @@ namespace CH.CleanArchitecture.Infrastructure.Services
     /// Implementation of <see cref="IResourceStore"/> using AWS S3 as the underlying store.
     /// This implementation retrieves relevant options from application configurations. You may change this to use <see cref="StorageOptions"/> along with any configuration required.
     /// </summary>
-    internal class AWSS3ResourceStore : IResourceStore {
+    internal class AWSS3ResourceStore : IResourceStore
+    {
         private readonly ILogger<AWSS3ResourceStore> _logger;
         private readonly IApplicationConfigurationService _appConfigService;
         private string _bucketName;
@@ -27,7 +28,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             _bucketName = _appConfigService.GetValue(AppConfigKeys.AWS.S3_BUCKET_NAME).Unwrap();
         }
 
-        public async Task<bool> DeleteResourceAsync(string folder, string resourceId) {
+        public async Task<bool> DeleteResourceAsync(string resourceId, string folder) {
             try {
                 var deleteObjectRequest = new DeleteObjectRequest
                 {
@@ -65,13 +66,13 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             }
         }
 
-        public string GetResourceURI(string folder, string resourceId) {
+        public string GetResourceURI(string resourceId, string folder) {
             string endpointFormat = _appConfigService.GetValue(AppConfigKeys.AWS.S3_ENDPOINT_FORMAT).Unwrap();
             string baseUrl = string.Format(endpointFormat, _bucketName, _bucketRegion.SystemName);
             return $"{baseUrl}/{GetS3ObjectKey(folder, resourceId)}";
         }
 
-        public async Task SaveResourceAsync(Stream stream, string folder, string resourceId) {
+        public async Task SaveResourceAsync(Stream stream, string folder, bool isPublic, string resourceId) {
             try {
                 var putRequest = new PutObjectRequest
                 {
@@ -79,6 +80,10 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                     Key = GetS3ObjectKey(folder, resourceId),
                     InputStream = stream
                 };
+
+                if (isPublic) {
+                    putRequest.CannedACL = S3CannedACL.PublicRead;
+                }
 
                 AmazonS3Client client = GetAmazonS3Client();
                 PutObjectResponse response = await client.PutObjectAsync(putRequest);
@@ -90,9 +95,9 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             }
         }
 
-        public async Task<string> SaveResourceAsync(Stream stream, string path) {
+        public async Task<string> SaveResourceAsync(Stream stream, string path, bool isPublic) {
             string resourceId = Guid.NewGuid().ToString(); //generating a random resource id
-            await SaveResourceAsync(stream, path, resourceId);
+            await SaveResourceAsync(stream, path, isPublic, resourceId);
             return resourceId;
         }
 
