@@ -81,9 +81,14 @@ namespace CH.CleanArchitecture.Infrastructure.Services
                     InputStream = stream
                 };
 
-                if (isPublic) {
-                    putRequest.CannedACL = S3CannedACL.PublicRead;
-                }
+                //comment out and modify the below to fit your needs on S3
+                //https://docs.aws.amazon.com/AmazonS3/latest/userguide/about-object-ownership.html?icmpid=docs_amazons3_console
+                //if (isPublic) {
+                //    putRequest.CannedACL = S3CannedACL.PublicRead;
+                //}
+                //else {
+                //    putRequest.CannedACL = S3CannedACL.BucketOwnerFullControl;
+                //}
 
                 AmazonS3Client client = GetAmazonS3Client();
                 PutObjectResponse response = await client.PutObjectAsync(putRequest);
