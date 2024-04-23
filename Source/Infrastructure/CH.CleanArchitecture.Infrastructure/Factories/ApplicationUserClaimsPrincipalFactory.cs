@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
-using CH.CleanArchitecture.Common.Constants;
+using CH.CleanArchitecture.Core.Application.Constants;
 using CH.CleanArchitecture.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;

@@ -1,7 +1,7 @@
 ﻿using System;
 using CH.CleanArchitecture.Common;
-using CH.CleanArchitecture.Common.Constants;
 using CH.CleanArchitecture.Core.Application;
+using CH.CleanArchitecture.Infrastructure.Constants;
 using Hangfire;
 using Microsoft.Extensions.Logging;
 

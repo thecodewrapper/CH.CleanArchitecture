@@ -1,12 +1,12 @@
-﻿using Azure.Identity;
-using Azure.Storage.Blobs;
-using CH.CleanArchitecture.Common;
-using CH.CleanArchitecture.Common.Constants;
-using CH.CleanArchitecture.Core.Application;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using Azure.Identity;
+using Azure.Storage.Blobs;
+using CH.CleanArchitecture.Common;
+using CH.CleanArchitecture.Core.Application;
+using CH.CleanArchitecture.Infrastructure.Constants;
+using Microsoft.Extensions.Logging;
 
 namespace CH.CleanArchitecture.Infrastructure.Services
 {

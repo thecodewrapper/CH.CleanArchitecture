@@ -1,4 +1,4 @@
-﻿namespace CH.CleanArchitecture.Common.Constants
+﻿namespace CH.CleanArchitecture.Infrastructure.Constants
 {
     public static class AppConfigKeys
     {

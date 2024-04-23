@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CH.CleanArchitecture.Common.Extensions;
+using CH.CleanArchitecture.Core.Application;
 using CH.CleanArchitecture.Infrastructure.Shared.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;

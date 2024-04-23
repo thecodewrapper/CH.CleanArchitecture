@@ -1,13 +1,13 @@
-﻿using Amazon;
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
+using Amazon;
 using Amazon.S3;
 using Amazon.S3.Model;
 using CH.CleanArchitecture.Common;
-using CH.CleanArchitecture.Common.Constants;
 using CH.CleanArchitecture.Core.Application;
+using CH.CleanArchitecture.Infrastructure.Constants;
 using Microsoft.Extensions.Logging;
-using System;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace CH.CleanArchitecture.Infrastructure.Services
 {

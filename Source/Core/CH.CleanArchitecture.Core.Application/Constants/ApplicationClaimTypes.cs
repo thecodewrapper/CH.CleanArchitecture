@@ -1,4 +1,4 @@
-﻿namespace CH.CleanArchitecture.Common.Constants
+﻿namespace CH.CleanArchitecture.Core.Application.Constants
 {
     public static class ApplicationClaimTypes
     {
