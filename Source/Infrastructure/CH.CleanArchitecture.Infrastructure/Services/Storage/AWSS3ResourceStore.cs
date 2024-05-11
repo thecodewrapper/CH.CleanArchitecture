@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Amazon;
+using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
 using CH.CleanArchitecture.Common;
@@ -26,6 +27,7 @@ namespace CH.CleanArchitecture.Infrastructure.Services
             _logger = logger;
             _appConfigService = appConfigService;
             _bucketName = _appConfigService.GetValue(AppConfigKeys.AWS.S3_BUCKET_NAME).Unwrap();
+            _bucketRegion = RegionEndpoint.GetBySystemName(_appConfigService.GetValue(AppConfigKeys.AWS.S3_REGION).Unwrap());
         }
 
         public async Task<bool> DeleteResourceAsync(string resourceId, string folder) {
@@ -67,9 +69,9 @@ namespace CH.CleanArchitecture.Infrastructure.Services
         }
 
         public string GetResourceURI(string resourceId, string folder) {
-            string endpointFormat = _appConfigService.GetValue(AppConfigKeys.AWS.S3_ENDPOINT_FORMAT).Unwrap();
-            string baseUrl = string.Format(endpointFormat, _bucketName, _bucketRegion.SystemName);
-            return $"{baseUrl}/{GetS3ObjectKey(folder, resourceId)}";
+            string baseUrl = GetAmazonS3ServiceURL();
+            string resourceURI = Path.Combine(baseUrl, GetS3ObjectKey(folder, resourceId));
+            return resourceURI;
         }
 
         public async Task SaveResourceAsync(Stream stream, string folder, bool isPublic, string resourceId) {
@@ -107,11 +109,24 @@ namespace CH.CleanArchitecture.Infrastructure.Services
         }
 
         private AmazonS3Client GetAmazonS3Client() {
-            _bucketRegion = RegionEndpoint.GetBySystemName(_appConfigService.GetValue(AppConfigKeys.AWS.S3_REGION).Unwrap());
             string awsAccessKeyId = _appConfigService.GetValue(AppConfigKeys.AWS.AWS_ACCESS_KEY_ID).Unwrap();
             string awsSecretAccessKey = _appConfigService.GetValue(AppConfigKeys.AWS.AWS_SECRET_ACCESS_KEY).Unwrap();
 
-            return new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, _bucketRegion);
+            AWSCredentials credentials = new BasicAWSCredentials(awsAccessKeyId, awsSecretAccessKey);
+            AmazonS3Config config = new AmazonS3Config()
+            {
+                ServiceURL = GetAmazonS3ServiceURL(),
+                ForcePathStyle = true
+            };
+
+            return new AmazonS3Client(credentials, config);
+        }
+
+        private string GetAmazonS3ServiceURL() {
+            string endpointFormat = _appConfigService.GetValue(AppConfigKeys.AWS.S3_ENDPOINT_FORMAT).Unwrap();
+            string baseUrl = string.Format(endpointFormat, _bucketName, _bucketRegion.SystemName);
+
+            return baseUrl;
         }
 
         private static string GetS3ObjectKey(string folder, string resourceId) {
