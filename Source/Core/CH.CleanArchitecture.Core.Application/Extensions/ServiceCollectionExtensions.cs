@@ -1,6 +1,8 @@
 ﻿using System;
 using CH.CleanArchitecture.Core.Application.Authorization;
 using CH.CleanArchitecture.Core.Application.Mappings;
+using CH.CleanArchitecture.Core.Application.Validators;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,6 +19,8 @@ namespace CH.CleanArchitecture.Core.Application.Extensions
                 config.ConstructServicesUsing(t => services.BuildServiceProvider().GetRequiredService(t));
                 config.AddProfile<UserProfile>();
             });
+
+            services.AddCommandValidators();
         }
 
         public static IServiceCollection AddApplicationAuthorization(this IServiceCollection services, Action<AuthorizationOptions> configure = default) {
@@ -36,6 +40,10 @@ namespace CH.CleanArchitecture.Core.Application.Extensions
 
             //Known issue in .NET7 prevents IAuthorizationHandler from being registered as scoped
             services.AddTransient<IAuthorizationHandler, UserOperationAuthorizationHandler>();
+        }
+
+        private static void AddCommandValidators(this IServiceCollection services) {
+            services.AddValidatorsFromAssembly(typeof(CreateNewOrderCommandValidator).Assembly, ServiceLifetime.Transient, includeInternalTypes: true);
         }
     }
 }

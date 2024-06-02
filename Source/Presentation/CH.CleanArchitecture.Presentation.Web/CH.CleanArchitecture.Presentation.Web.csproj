@@ -23,9 +23,9 @@
 		<PackageReference Include="Blazored.Modal" Version="7.3.1" />
 		<PackageReference Include="Blazored.Toast" Version="4.2.1" />
 		<PackageReference Include="DataJuggler.Blazor.FileUpload" Version="8.0.0" />
-		<PackageReference Include="FluentValidation" Version="11.9.0" />
+		<PackageReference Include="FluentValidation" Version="11.9.1" />
 		<PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
-		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Components" Version="8.0.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Forms" Version="8.0.3" />
