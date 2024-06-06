@@ -3,6 +3,8 @@
 # Clean Architecture
 My personal take on Clean Architecture. Please read my post at [Implementing a Clean Architecture in ASP.NET Core 6](https://thecodewrapper.com/dev/tcw-clean-achitecture) for more information.
 
+If you are looking for the Blazor version of this Clean Architecture, you can find it [here](https://github.com/thecodewrapper/CH.CleanArchitectureBlazor)
+
 ## Technologies used
 - ASP.NET Core 8
 - Entity Framework Core 8
