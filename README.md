@@ -1,7 +1,7 @@
 [![Build Status](https://dev.azure.com/chadjiantoniou/CleanArchitecture/_apis/build/status/thecodewrapper.CH.CleanArchitecture?branchName=develop)](https://dev.azure.com/chadjiantoniou/CleanArchitecture/_build/latest?definitionId=2&branchName=develop)
 
 # Clean Architecture
-My personal take on Clean Architecture. Please read my post at [Implementing a Clean Architecture in ASP.NET Core 6](https://thecodewrapper.com/dev/tcw-clean-achitecture) for more information.
+My personal take on Clean Architecture. Please read my post at [Implementing a Clean Architecture in ASP.NET Core 8](https://thecodewrapper.com/dev/tcw-clean-achitecture) for more information.
 
 If you are looking for the Blazor version of this Clean Architecture, you can find it [here](https://github.com/thecodewrapper/CH.CleanArchitectureBlazor)
 

@@ -15,40 +15,40 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Ardalis.GuardClauses" Version="4.5.0" />
+		<PackageReference Include="Ardalis.GuardClauses" Version="4.6.0" />
 		<PackageReference Include="AutoMapper" Version="13.0.1" />
 		<PackageReference Include="blazor-dragdrop" Version="2.6.1" />
 		<PackageReference Include="BlazorAnimate" Version="3.0.0" />
-		<PackageReference Include="Blazored.FluentValidation" Version="2.1.0" />
+		<PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
 		<PackageReference Include="Blazored.Modal" Version="7.3.1" />
 		<PackageReference Include="Blazored.Toast" Version="4.2.1" />
-		<PackageReference Include="DataJuggler.Blazor.FileUpload" Version="8.0.0" />
-		<PackageReference Include="FluentValidation" Version="11.9.0" />
+		<PackageReference Include="DataJuggler.Blazor.FileUpload" Version="8.0.1" />
+		<PackageReference Include="FluentValidation" Version="11.9.2" />
 		<PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
-		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Components" Version="8.0.3" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.3" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Forms" Version="8.0.3" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.3" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.3" />
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.2" />
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="8.0.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Forms" Version="8.0.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.7" />
 		<PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.3">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.7">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.3">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.7">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.JSInterop" Version="8.0.3" />
-		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
+		<PackageReference Include="Microsoft.JSInterop" Version="8.0.7" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
 		<PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
-		<PackageReference Include="Serilog.Enrichers.Environment" Version="2.3.0" />
-		<PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
-		<PackageReference Include="Serilog.Settings.Configuration" Version="8.0.0" />
-		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-		<PackageReference Include="Serilog.Sinks.Seq" Version="7.0.0" />
-		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.3.10" />
+		<PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />
+		<PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
+		<PackageReference Include="Serilog.Settings.Configuration" Version="8.0.1" />
+		<PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+		<PackageReference Include="Serilog.Sinks.Seq" Version="8.0.0" />
+		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.4.3" />
 		<PackageReference Include="Toolbelt.Blazor.LocalizedDataAnnotationsValidator" Version="1.0.1.1" />
 	</ItemGroup>
 

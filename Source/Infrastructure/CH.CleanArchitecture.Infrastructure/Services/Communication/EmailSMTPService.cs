@@ -4,8 +4,8 @@ using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using CH.CleanArchitecture.Common;
-using CH.CleanArchitecture.Common.Constants;
 using CH.CleanArchitecture.Core.Application;
+using CH.CleanArchitecture.Infrastructure.Constants;
 using Microsoft.Extensions.Logging;
 
 namespace CH.CleanArchitecture.Infrastructure.Services

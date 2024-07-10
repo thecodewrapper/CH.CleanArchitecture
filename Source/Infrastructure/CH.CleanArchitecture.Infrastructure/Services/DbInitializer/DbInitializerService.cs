@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using CH.CleanArchitecture.Common.Constants;
+using CH.CleanArchitecture.Infrastructure.Constants;
 using CH.CleanArchitecture.Infrastructure.DbContexts;
 using CH.CleanArchitecture.Infrastructure.Models;
 using CH.EventStore.EntityFramework;

@@ -1,7 +1,8 @@
-﻿using System.Security.Claims;
-using CH.CleanArchitecture.Common.Constants;
+﻿using System;
+using System.Security.Claims;
+using CH.CleanArchitecture.Core.Application.Constants;
 
-namespace CH.CleanArchitecture.Common.Extensions
+namespace CH.CleanArchitecture.Core.Application
 {
     public static class ClaimsPrincipalExtensions
     {
