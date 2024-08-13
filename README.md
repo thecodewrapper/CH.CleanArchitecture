@@ -5,6 +5,8 @@ My personal take on Clean Architecture. Please read my post at [Implementing a C
 
 If you are looking for the Blazor version of this Clean Architecture, you can find it [here](https://github.com/thecodewrapper/CH.CleanArchitectureBlazor)
 
+> ⚠️ **Warning:** This repository will no longer be maintained/updated. Use the Blazor version from the link above which is 100% maintained.
+
 ## Technologies used
 - ASP.NET Core 8
 - Entity Framework Core 8
