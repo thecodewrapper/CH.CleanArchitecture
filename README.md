@@ -1,4 +1,5 @@
 [![Build Status](https://dev.azure.com/chadjiantoniou/CleanArchitecture/_apis/build/status/thecodewrapper.CH.CleanArchitecture?branchName=develop)](https://dev.azure.com/chadjiantoniou/CleanArchitecture/_build/latest?definitionId=2&branchName=develop)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://www.paypal.com/donate?hosted_button_id=XSXQYY5KBMXYW)
 
 # Clean Architecture
 My personal take on Clean Architecture. Please read my post at [Implementing a Clean Architecture in ASP.NET Core 8](https://thecodewrapper.com/dev/tcw-clean-achitecture) for more information.
